@@ -6,4 +6,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^home/$', 'app.views.home'),
     url(r'^login/$', 'app.views.login'),
+    url(r'^productos/$', 'app.views.productos')
 ]

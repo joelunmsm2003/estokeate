@@ -46,3 +46,7 @@ def login(request):
 	return render(request, 'login.html')
 
 
+def productos(request):
+
+
+	return render(request, 'productos.html')
