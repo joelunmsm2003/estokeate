@@ -40,7 +40,7 @@ def home(request):
 	return render(request, 'home.html')
 
 
-def login(request):
+def autentificacion(request):
 
 
 	return render(request, 'login.html')
@@ -50,3 +50,67 @@ def productos(request):
 
 
 	return render(request, 'productos.html')
+
+def perfil(request):
+
+
+	return render(request, 'perfil.html')
+
+
+
+def registra(request):
+
+	if request.method == 'POST':
+
+		print request.POST
+
+		user = request.POST['username']
+		
+		psw = request.POST['password']
+
+		rpsw = request.POST['password']
+
+		if psw == rpsw:
+
+			User.objects.create_user(user, user, psw)
+
+			user = authenticate(username=user, password=psw)
+
+
+	return render(request, 'perfil.html')
+
+
+
+def ingresar(request):
+
+	if request.user.is_authenticated():
+
+		return HttpResponseRedirect("/productos")
+
+	else:
+
+		if request.method == 'POST':
+
+			print request.POST
+
+			user = request.POST['username']
+			
+			psw = request.POST['password']
+
+			user = authenticate(username=user, password=psw)
+
+		
+			if user is not None:
+
+				if user.is_active:
+
+					login(request, user)
+
+					return HttpResponseRedirect("/home")
+
+			else:
+				return HttpResponseRedirect("/ingresar")
+		
+		else:
+
+			return render(request, 'login.html',{})
