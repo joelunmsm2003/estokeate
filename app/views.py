@@ -80,6 +80,24 @@ def registra(request):
 	return render(request, 'perfil.html')
 
 
+def vender(request):
+
+	if request.method == 'POST':
+
+		print request.POST
+
+		categoria = request.POST['categoria']
+		
+		titulo = request.POST['titulo']
+
+		descripcion = request.POST['descripcion']
+
+		Producto(user_id=user,categoria_id=categoria,descripcion=descripcion).save()
+
+		
+
+	return render(request, 'vender.html')
+
 
 def ingresar(request):
 

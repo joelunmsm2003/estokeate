@@ -164,8 +164,8 @@ class Photoproducto(models.Model):
 
 
 class Producto(models.Model):
-    user = models.IntegerField(blank=True, null=True)
-    categoria = models.IntegerField(blank=True, null=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='user', blank=True, null=True)
+    categoria = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='categoria', blank=True, null=True)
     titulo = models.CharField(max_length=1000, blank=True, null=True)
     descripcion = models.CharField(max_length=1000, blank=True, null=True)
 
