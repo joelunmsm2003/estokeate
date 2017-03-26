@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Vender Estokealo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+ 
+</head>
+<body>
+
+{% include "header.html" %}
+
+<div class="container">
+
+
+
+
+<div class='panel'>
+
+<div class='panel-body'>
+
+  <form method="post" action="/vender/">
+  {% csrf_token %}
+
+    <div class="form-group">
+      <label for="email">Categoria:</label>
+      <select class='form-control' name='categoria'>
+
+      <option value='1'>Vehiculos</option>
+
+      <option value='2'>Propiedades-Inmuebles</option>
+
+      <option value='3'>Teléfonos-Tablets</option>
+
+      <option value='4'>Electrónicos-Video</option>
+
+      <option value='5'>Casa-Muebles-Jardin</option>
+
+      <option value='6'>Moda-Belleza</option>
+
+      <option value='7'>Hobbies-Arte-Diseño</option>
+
+      <option value='8'>Animales y Mascotas</option>
+
+      <option value='9'>Empleos y Servicios</option>
+
+
+      </select>
+    </div>
+<!--     <div class="form-group">
+      <label for="pwd">Agregar fotos para vender mas rapido</label>
+      <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+    </div> -->
+
+    <div class="form-group">
+      <label for="pwd">Titulo</label>
+      <input type="text" class="form-control" name = 'titulo' id="pwd" placeholder="Ingrese titulo">
+    </div>
+
+    <div class="form-group">
+      <label for="pwd">Descripcion</label>
+      <input type="text" class="form-control" name='descripcion' id="pwd" placeholder="Agregar descripcion">
+    </div>
+
+
+    
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+
+  </div>
+
+
+  </div>
+
+  </div>
+
+

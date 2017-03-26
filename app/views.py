@@ -37,7 +37,10 @@ from django.contrib.auth import authenticate
 def home(request):
 
 
-	return render(request, 'home.html')
+	productos= Producto.objects.all()
+
+
+	return render(request, 'home.html',{'productos':productos})
 
 
 def autentificacion(request):
@@ -53,8 +56,39 @@ def productos(request):
 
 def perfil(request):
 
+	user = request.user.id
+
+	productos= Producto.objects.filter(user_id=user)
+
+	usuario= AuthUser.objects.get(id=user)
+
+	return render(request, 'productosuser.html',{'productos':productos,'usuario':usuario})
+
 
 	return render(request, 'perfil.html')
+
+
+@login_required(login_url="/autentificacion/")
+
+def productos(request,id):
+
+	user = request.user.id
+
+	productos= Producto.objects.filter(user_id=user)
+
+	usuario= AuthUser.objects.get(id=user)
+
+	return render(request, 'productosuser.html',{'productos':productos,'usuario':usuario})
+
+@login_required(login_url="/autentificacion/")
+
+def usuario(request,id):
+
+	user = request.user.id
+
+	usuario= AuthUser.objects.get(id=user)
+
+	return render(request, 'usuario.html',{'usuario':usuario})
 
 
 
@@ -79,13 +113,41 @@ def registra(request):
 
 	return render(request, 'perfil.html')
 
+@login_required(login_url="/autentificacion/")
+
+def vender(request):
+
+	user = request.user.id
+
+	usuario= AuthUser.objects.get(id=user)
+
+	if request.method == 'POST':
+
+		print request.POST
+
+		user = request.user.id
+
+		categoria = request.POST['categoria']
+		
+		titulo = request.POST['titulo']
+
+		descripcion = request.POST['descripcion']
+
+		Producto(user_id=user,categoria_id=categoria,descripcion=descripcion).save()
+
+		return HttpResponseRedirect('/productos/'+str(user))
+
+		
+
+	return render(request, 'vender.html',{'usuario':usuario})
+
 
 
 def ingresar(request):
 
 	if request.user.is_authenticated():
 
-		return HttpResponseRedirect("/productos")
+		return HttpResponseRedirect("/vender")
 
 	else:
 
@@ -106,7 +168,7 @@ def ingresar(request):
 
 					login(request, user)
 
-					return HttpResponseRedirect("/home")
+					return HttpResponseRedirect("/vender")
 
 			else:
 				return HttpResponseRedirect("/ingresar")

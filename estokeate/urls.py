@@ -9,5 +9,8 @@ urlpatterns = [
     url(r'^productos/$', 'app.views.productos'),
     url(r'^ingresar/$', 'app.views.ingresar'),
     url(r'^registra/$', 'app.views.registra'),
-    url(r'^perfil/$', 'app.views.perfil')
+    url(r'^perfil/$', 'app.views.perfil'),
+    url(r'^vender/$', 'app.views.vender'),
+    url(r'^productos/(\d+)$', 'app.views.productos'),
+    url(r'^usuario/(\d+)$', 'app.views.usuario'),
 ]
