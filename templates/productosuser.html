@@ -17,18 +17,24 @@
 {% for producto in productos %}
 
 
-<div class='col-md-3'>
+<div class='col-md-3 card1'>
 
-<div class="card" >
-  <img class="card-img-top" src="http://localhost/{{producto.photo.photo__photo}}" alt="Card image cap">
-  <div class="card-block">
-    <h4 class="card-title">{{producto.title}}</h4>
-    <p class="card-text">{{producto.descripcion}}</p>
-    <a href="/producto/{{producto.id}}" class="btn btn-primary">Detalle</a>
-  </div>
-</div>
-</div>
+         <a class='item' href="/producto/{{producto.id}}">
+    
+      
+			<div class="card" >
+			  <img class="card-img-top" src="http://localhost/{{producto.photo.photo__photo}}" alt="Card image cap">
+			  <div class="card-block">
+			    <h4 class="card-title">{{producto.title}}</h4>
+			    <p class="card-text">{{producto.descripcion}}</p>
+			    <a class='btn btn-primary btn-sm' href='/editarproducto/{{producto.id}}'><i class="fa fa-pencil" aria-hidden="true"> </i> Editar
+</a>
 
+			    
+			  </div>
+			</div>
+       </a>
+			</div>
 
 {% endfor %}
 
@@ -36,6 +42,20 @@
 </div>
 
 </div>
+
+<style type="text/css">
+  
+a{
+
+  text-decoration: none !important;
+
+}
+
+.card1{
+  margin-bottom: 12px;
+}
+
+</style>
 
 
 

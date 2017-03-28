@@ -16,4 +16,6 @@ urlpatterns = [
     url(r'^producto/(\d+)$', 'app.views.producto'),
     url(r'^productojson/(\d+)$', 'app.views.productojson'),
     url(r'^usuario/(\d+)$', 'app.views.usuario'),
+    url(r'^editarproducto/(\d+)$', 'app.views.editarproducto'),
+   
 ]

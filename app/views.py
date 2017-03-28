@@ -204,6 +204,38 @@ def registra(request):
 
 	return render(request, 'perfil.html')
 
+@login_required(login_url="/autentificacion/")
+
+def editarproducto(request,id):
+
+
+	if request.method == 'GET':
+
+		producto = Producto.objects.get(id=id)
+
+		return render(request, 'editarproducto.html',{'producto':producto})
+
+	if request.method == 'POST':
+
+		categoria = request.POST['categoria']
+
+		titulo = request.POST['titulo']
+
+		descripcion = request.POST['descripcion']
+
+		p = Producto.objects.get(id=id)
+
+		p.categoria_id = categoria
+		p.titulo = titulo
+		p.descripcion = descripcion
+		p.save()
+
+
+		return render(request, 'editarproducto.html',{'producto':p})
+
+
+
+
 
 
 def vender(request):
@@ -218,17 +250,8 @@ def vender(request):
 
 	if request.method == 'POST':
 
-		print 'Archivos...',request.FILES
 
-		photo =  request.FILES['picture']
-
-		picture1 =  request.FILES['picture1']
-
-		picture2 =  request.FILES['picture2']
-
-		picture3 =  request.FILES['picture3']
-
-		user = request.user.id
+		print 'ooooooo',request.FILES
 
 		categoria = request.POST['categoria']
 		
@@ -240,165 +263,168 @@ def vender(request):
 
 		id_producto = Producto.objects.all().values('id').order_by('-id')[0]['id']
 
-		#Photo
 
-		Photo(photo=photo).save()
 
-		id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
+		for p in request.FILES:
 
-		Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
+			if p == 'picture':
 
-		caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
+				photo =  request.FILES['picture']
 
-		# Para la galeria
+				#Photo
 
-		y = 600
+				Photo(photo=photo).save()
 
-		caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
+				id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
 
-		fd_img = open(caption, 'r')
+				Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
 
-		img = Image.open(fd_img)
+				caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
 
-		img = resizeimage.resize_cover(img, [500, y])
+				# Para la galeria
 
-		img.save(caption_galeria, img.format)
-		
-		fd_img.close()
+				y = 600
 
-		# Para el Home
+				caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
 
-		fd_img = open(caption, 'r')
+				fd_img = open(caption, 'r')
 
-		img = Image.open(fd_img)
+				img = Image.open(fd_img)
 
-		img = resizeimage.resize_cover(img, [250, 300])
+				img = resizeimage.resize_cover(img, [500, y])
 
-		img.save(caption, img.format)
-		
-		fd_img.close()
+				img.save(caption_galeria, img.format)
+				
+				fd_img.close()
 
+				# Para el Home
 
+				fd_img = open(caption, 'r')
 
-		# Photo
+				img = Image.open(fd_img)
 
-		Photo(photo=picture1).save()
+				img = resizeimage.resize_cover(img, [250, 300])
 
-		id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
+				img.save(caption, img.format)
+				
+				fd_img.close()
 
-		Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
 
-		caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
+			if p == 'picture1':
 
-		# Para la galeria
+				# Photo
 
-		caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
+				Photo(photo=picture1).save()
 
-		fd_img = open(caption, 'r')
+				id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
 
-		img = Image.open(fd_img)
+				Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
 
-		img = resizeimage.resize_cover(img, [500, y])
+				caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
 
-		img.save(caption_galeria, img.format)
-		
-		fd_img.close()
+				# Para la galeria
 
-		#Para el home
+				caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
 
-		fd_img = open(caption, 'r')
+				fd_img = open(caption, 'r')
 
-		img = Image.open(fd_img)
+				img = Image.open(fd_img)
 
-		img = resizeimage.resize_cover(img, [250, 300])
+				img = resizeimage.resize_cover(img, [500, y])
 
-		img.save(caption, img.format)
-		
-		fd_img.close()
+				img.save(caption_galeria, img.format)
+				
+				fd_img.close()
 
+				#Para el home
 
+				fd_img = open(caption, 'r')
 
-		# Photo
+				img = Image.open(fd_img)
 
-		Photo(photo=picture2).save()
+				img = resizeimage.resize_cover(img, [250, 300])
 
-		id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
+				img.save(caption, img.format)
+				
+				fd_img.close()
 
-		Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
+			if p=='picture2':
 
-		caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
+						# Photo
 
-		# Para el galeria
+				Photo(photo=picture2).save()
 
- 		caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
+				id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
 
-		fd_img = open(caption, 'r')
+				Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
 
-		img = Image.open(fd_img)
+				caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
 
-		img = resizeimage.resize_cover(img, [500, y])
+				# Para el galeria
 
-		img.save(caption_galeria, img.format)
-		
-		fd_img.close()
+		 		caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
 
-		#Para el home
+				fd_img = open(caption, 'r')
 
-		fd_img = open(caption, 'r')
+				img = Image.open(fd_img)
 
-		img = Image.open(fd_img)
+				img = resizeimage.resize_cover(img, [500, y])
 
-		img = resizeimage.resize_cover(img, [250, 300])
+				img.save(caption_galeria, img.format)
+				
+				fd_img.close()
 
-		img.save(caption, img.format)
-		
-		fd_img.close()
+				#Para el home
 
+				fd_img = open(caption, 'r')
 
+				img = Image.open(fd_img)
 
+				img = resizeimage.resize_cover(img, [250, 300])
 
-		# Photo
+				img.save(caption, img.format)
+				
+				fd_img.close()
 
-		Photo(photo=picture3).save()
 
-		id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
+			if p=='picture3':
 
-		Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
+						# Photo
 
-		caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
+				Photo(photo=picture3).save()
 
-						# Para la galeria
+				id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
 
-		caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
+				Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
 
-		fd_img = open(caption, 'r')
+				caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
 
-		img = Image.open(fd_img)
+								# Para la galeria
 
-		img = resizeimage.resize_cover(img, [500, y])
+				caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
 
-		img.save(caption_galeria, img.format)
-		
-		fd_img.close()
+				fd_img = open(caption, 'r')
 
-		#para el home
+				img = Image.open(fd_img)
 
-		fd_img = open(caption, 'r')
+				img = resizeimage.resize_cover(img, [500, y])
 
-		img = Image.open(fd_img)
+				img.save(caption_galeria, img.format)
+				
+				fd_img.close()
 
-		img = resizeimage.resize_cover(img, [250, 300])
+				#para el home
 
-		img.save(caption, img.format)
-		
-		fd_img.close()
+				fd_img = open(caption, 'r')
 
+				img = Image.open(fd_img)
 
+				img = resizeimage.resize_cover(img, [250, 300])
 
+				img.save(caption, img.format)
+				
+				fd_img.close()
 
-		
-
-		
 
 	return render(request, 'vender.html',{'usuario':usuario})
 

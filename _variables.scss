@@ -249,9 +249,9 @@ $grid-gutter-widths: (
 //
 // Font, line-height, and color for body text, headings, and more.
 
-$font-family-sans-serif: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
-$font-family-serif:      Georgia, "Times New Roman", Times, serif !default;
-$font-family-monospace:  Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-family-sans-serif: "Open Sans", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+$font-family-serif:      "Open Sans",Georgia, "Times New Roman", Times, serif !default;
+$font-family-monospace:  "Open Sans",Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
 $font-family-base:       $font-family-sans-serif !default;
 
 $font-size-base: 1rem !default; // Assumes the browser default, typically `16px`
@@ -450,6 +450,8 @@ $input-padding-y-lg:             .75rem !default;
 $input-height:                   (($font-size-base * $input-line-height) + ($input-padding-y * 2)) !default;
 $input-height-lg:                (($font-size-lg * $line-height-lg) + ($input-padding-y-lg * 2)) !default;
 $input-height-sm:                (($font-size-sm * $line-height-sm) + ($input-padding-y-sm * 2)) !default;
+
+
 
 $input-transition:               border-color ease-in-out .15s, box-shadow ease-in-out .15s !default;
 
