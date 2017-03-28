@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en" class="no-js">
+<html ng-app="myApp" ng-controller="myCtrl">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +10,23 @@
 
 	<title>Estokeate</title>
 </head>
+
+<script>
+var app = angular.module('myApp', []);
+
+app.config(function($interpolateProvider){
+    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    });
+app.controller('myCtrl', function($scope,$http) {
+
+
+    $scope.host = 'http://estokealo.com:8080/'
+
+
+
+});
+</script>
+
 <body>
 
 
@@ -75,7 +94,7 @@
     
       
 			<div class="card" >
-			  <img class="card-img-top" src="http://localhost/{{producto.photo.photo__photo}}" alt="Card image cap">
+			  <img class="card-img-top" src="{[{host}]}{{producto.photo.photo__photo}}" alt="Card image cap">
 			  <div class="card-block">
 			    <h4 class="card-title">{{producto.title}}</h4>
 			    <p class="card-text">{{producto.descripcion}}</p>

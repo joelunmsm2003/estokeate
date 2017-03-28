@@ -10,10 +10,11 @@ from django.db.models import Max,Count
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from app.models import *
+from estokeate import settings
 from django.db import transaction
 from django.contrib.auth.hashers import *
 from django.core.mail import send_mail
-from django.db import connection
+
 from django.utils.six.moves import range
 from django.http import StreamingHttpResponse
 from django.utils.decorators import method_decorator

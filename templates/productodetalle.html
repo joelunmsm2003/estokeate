@@ -17,7 +17,7 @@ app.config(function($interpolateProvider){
 app.controller('myCtrl', function($scope,$http) {
 
 
-
+    $scope.host = 'http://estokealo.com:8080/'
 
     $scope.firstName = "John";
     $scope.lastName = "Doe";
@@ -55,7 +55,7 @@ app.controller('myCtrl', function($scope,$http) {
 	<div class='col-md-6'>
 	
 			
-				<img class="img-responsive" src="http://localhost/{[{photoprincipal}]}" alt="Card image cap">
+				<img class="img-responsive" src="{[{host}]}{[{photoprincipal}]}" alt="Card image cap">
 
 			
 
@@ -71,7 +71,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 						<div ng-click='traeimagen(p)' class="card" >
 
-						<img class="card-img-top" src="http://localhost/{[{p.photo__photo}]}" alt="Card image cap">
+						<img class="card-img-top" src="{[{host}]}{[{p.photo__photo}]}" alt="Card image cap">
 
 						</div>
 
