@@ -147,7 +147,7 @@ class DjangoSession(models.Model):
 
 
 class Photo(models.Model):
-    photo = models.CharField(max_length=1000, blank=True, null=True)
+    photo = models.FileField(upload_to='static')
 
     class Meta:
         managed = False
@@ -155,8 +155,8 @@ class Photo(models.Model):
 
 
 class Photoproducto(models.Model):
-    photo = models.IntegerField(blank=True, null=True)
-    producto = models.IntegerField(blank=True, null=True)
+    photo = models.ForeignKey(Photo, models.DO_NOTHING, db_column='photo', blank=True, null=True)
+    producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='producto', blank=True, null=True)
 
     class Meta:
         managed = False

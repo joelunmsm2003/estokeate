@@ -1,4 +1,6 @@
-
+<html ng-app="myApp" ng-controller="myCtrl">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
 
 {% include "header.html" %}
 
@@ -20,11 +22,11 @@
 <div class='col-md-3'>
 
 <div class="card" >
-  <img class="card-img-top" src="http://assets.liverpool.com.mx/assets/images/categorias/ninos/accesoriosninas-varios.jpg" alt="Card image cap">
+  <img class="card-img-top" src="http://localhost/{{producto.photo.photo__photo}}" alt="Card image cap">
   <div class="card-block">
     <h4 class="card-title">{{producto.title}}</h4>
     <p class="card-text">{{producto.descripcion}}</p>
-    <a href="#" class="btn btn-primary">Detalle</a>
+    <a href="/producto/{{producto.id}}" class="btn btn-primary">Detalle</a>
   </div>
 </div>
 </div>
@@ -36,6 +38,9 @@
 </div>
 
 </div>
+
+</body>
+</html>
 
 
 

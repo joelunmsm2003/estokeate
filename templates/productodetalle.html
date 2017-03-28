@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="myCtrl">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+
+{% include "header.html" %}
+
+
+
+
+<script>
+var app = angular.module('myApp', []);
+
+app.config(function($interpolateProvider){
+    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    });
+app.controller('myCtrl', function($scope,$http) {
+
+
+    $scope.host = 'http://estokealo.com:8080/'
+
+    $scope.firstName = "John";
+    $scope.lastName = "Doe";
+
+    $http.get("/productojson/{{producto.id}}")
+    .then(function(response) {
+
+    	console.log(response.data)
+
+    	$scope.photos = response.data
+        
+    });
+
+    $scope.traeimagen=function(data){
+
+    	console.log(data)
+
+    	$scope.photoprincipal = data.detalle
+    }
+
+
+});
+</script>
+
+
+<div class='container'>
+
+{{producto.titulo}}
+
+{{producto.descripcion}}
+
+
+<div class='row'>
+
+	<div class='col-md-6'>
+	
+			
+				<img class="img-responsive" src="{[{host}]}{[{photoprincipal}]}" alt="Card image cap">
+
+			
+
+	</div>
+
+	<div class='col-md-6'>
+
+			<div class='row'>
+			
+			
+
+						<div ng-repeat="p in photos ">
+
+						<div ng-click='traeimagen(p)' class="card" >
+
+						<img class="card-img-top" src="{[{host}]}{[{p.photo__photo}]}" alt="Card image cap">
+
+						</div>
+
+						</div>
+
+
+			</div>
+
+
+	</div>
+	
+</div>
+
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- {% for producto in productos %}
+
+
+{% for photo in producto.photo %}
+
+ <img class="card-img-top" src="http://localhost/{{photo.photo__photo}}" alt="Card image cap">
+
+{% endfor %}
+
+
+<div class='col-md-3'>
+
+<div class="card" >
+  <img class="card-img-top" src="http://localhost/{{producto.photo.photo__photo}}" alt="Card image cap">
+  <div class="card-block">
+    <h4 class="card-title">{{producto.title}}</h4>
+    <p class="card-text">{{producto.descripcion}}</p>
+    <a href="#" class="btn btn-primary">Detalle</a>
+  </div>
+</div>
+</div>
+
+
+{% endfor %}
+ -->
+

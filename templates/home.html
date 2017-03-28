@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en" class="no-js">
+<html ng-app="myApp" ng-controller="myCtrl">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +10,23 @@
 
 	<title>Estokeate</title>
 </head>
+
+<script>
+var app = angular.module('myApp', []);
+
+app.config(function($interpolateProvider){
+    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    });
+app.controller('myCtrl', function($scope,$http) {
+
+
+    $scope.host = 'http://estokealo.com:8080/'
+
+
+
+});
+</script>
+
 <body>
 
 
@@ -66,14 +85,18 @@
 
 <div class='row'>
 		{% for producto in productos %}
+
+
+    
+    
 			<div class='col-md-3'>
 
 			<div class="card" >
-			  <img class="card-img-top" src="https://ae01.alicdn.com/kf/HTB1NF.OOFXXXXbRaXXXq6xXFXXX1/20CM-Over-Game-2016-Watch-OW-Pachimari-plush-Dolls-Stuffed-Toys.jpg_350x350.jpg" alt="Card image cap">
+			  <img class="card-img-top" src="{[{host}]}{{producto.photo.photo__photo}}" alt="Card image cap">
 			  <div class="card-block">
 			    <h4 class="card-title">{{producto.title}}</h4>
 			    <p class="card-text">{{producto.descripcion}}</p>
-			    <a href="#" class="btn btn-primary">Detalle</a>
+			    <a href="/producto/{{producto.id}}" class="btn btn-primary">Detalle</a>
 			  </div>
 			</div>
 			</div>
