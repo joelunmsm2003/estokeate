@@ -24,20 +24,28 @@ app.controller('myCtrl', function($scope,$http) {
     $scope.firstName = "John";
     $scope.lastName = "Doe";
 
-    $http.get("/productojson/{{producto.id}}")
+    $http.get("/chatin/{{usuario.id}}")
     .then(function(response) {
 
-    	console.log(response.data)
+    	console.log('chatin...',response)
 
-    	$scope.photos = response.data
+    	$scope.chatin = response.data
         
     });
 
-    $scope.traeimagen=function(data){
+    $scope.traemensajes=function(data){
 
     	console.log(data)
 
-    	$scope.photoprincipal = data.detalle
+			$http.get("/listamensajes/"+data.user)
+			.then(function(response) {
+
+			console.log('chatin...',response)
+
+			$scope.mensajes = response.data
+
+			});
+
     }
 
 
@@ -52,8 +60,139 @@ app.controller('myCtrl', function($scope,$http) {
 <br>
 
 
+<div class='row'>
+
+<div class="col-md-2">
+	
+	<div class="row">
+			
+			<div class="col-md-12" ng-repeat="c in chatin">
+				
+
+				<div class='chatin' ng-click='traemensajes(c)'>
+
+					<div class="col-md-12">
+
+					<img src="https://pbs.twimg.com/profile_images/581997434382897152/LQqbuhbV_reasonably_small.jpg" class='img-fluid rounded'>
+					
+					</div>
+
+					<div class="col-md-12" >
+
+					{[{c.user__username}]}
+
+					</div>
+
+
+				</div>
+
+			
+				
+			
+
+
+			</div>
+			
+
+	</div>
+
 
 </div>
+
+
+<div class='col-md-10'>
+
+<div class='row'>
+
+	
+	<div class="col-md-12" ng-repeat="m in mensajes">
+
+		<div class="row">
+
+			<div class="col-md-2 detalleproducto">
+
+				<div class="row">
+
+				<div class="col-md-8">
+						<img src="http://www.telegraph.co.uk/cars/images/2015/12/29/Porsche-Cayman-GT4-front-xlarge_trans_NvBQzQNjv4BqZgEkZX3M936N5BQK4Va8RWtT0gK_6EfZT336f62EI5U.jpg" alt="" class='img-fluid'>
+				</div>
+
+				<div class="col-md-4">
+						{[{m.producto__titulo}]}
+
+						S/.{[{m.producto__precio}]}
+
+				</div>	
+
+				</div>			
+			
+				
+			</div>
+
+			<div class="col-md-10">
+			
+				<div class='useractual'>
+
+				<div class="row">
+					
+					<div class="col-md-2">
+							<p>{[{m.user__username}]}</p>
+						
+					</div>
+
+					<div class="col-md-10">
+									<p>{[{m.mensaje}]}</p>
+	
+						
+
+					</div>
+
+				</div>
+				</div>				
+
+
+			
+
+
+
+			</div>
+				
+			
+
+		</div>
+
+			
+	</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+<style type="text/css">
+	
+	.chatin{
+
+		padding: 2px;
+	}
+
+	.detalleproducto{
+
+		border:1px solid #234;
+		    padding: 0px !important;
+	}
+</style>
 
 </body>
 </html>

@@ -18,7 +18,8 @@ urlpatterns = [
     url(r'^usuario/(\d+)$', 'app.views.usuario'),
     url(r'^editarproducto/(\d+)$', 'app.views.editarproducto'),
     url(r'^chat/$', 'app.views.chat'),
-    url(r'^compradores/(\d+)$', 'app.views.compradores'),
+    url(r'^chatin/(\d+)$', 'app.views.chatin'),
     url(r'^enviamensaje/$', 'app.views.enviamensaje'),
+    url(r'^listamensajes/(\d+)$', 'app.views.listamensajes'),
 
 ]
