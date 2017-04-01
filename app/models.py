@@ -88,6 +88,7 @@ class Chat(models.Model):
     user = models.IntegerField(blank=True, null=True)
     destino = models.IntegerField(blank=True, null=True)
     mensaje = models.CharField(max_length=1000, blank=True, null=True)
+    producto = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False

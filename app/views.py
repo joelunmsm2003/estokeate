@@ -97,8 +97,27 @@ def perfil(request):
 	usuario= AuthUser.objects.get(id=user)
 
 
-	return render(request, 'perfil.html',{'productos':productos,'usuario':usuario})
+	return render(request, 'perfil.html',{'productos':productos,'usuario':usuario,'miperfil':'active'})
 
+
+
+@login_required(login_url="/autentificacion")
+def chat(request):
+
+	user = request.user.id
+
+	productos= Producto.objects.filter(user_id=user)
+
+	print productos
+
+
+
+	usuario= AuthUser.objects.get(id=user)
+
+
+	return render(request, 'chat.html',{'productos':productos,'usuario':usuario,'mimensaje':'active'})
+
+# Prductos de un usuario
 
 @login_required(login_url="/autentificacion/")
 
@@ -121,14 +140,25 @@ def productos(request,id):
 			p.photo = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[0]
 
 
-
-
-
 	usuario= AuthUser.objects.get(id=user)
 
-	return render(request, 'productosuser.html',{'productos':productos,'usuario':usuario})
+	return render(request, 'productosuser.html',{'productos':productos,'usuario':usuario,'mianuncio':'active'})
 
+# Compradores de un usuario
 
+@login_required(login_url="/autentificacion/")
+
+def compradores(request,id):
+
+	user = request.user.id
+
+	compradores = Chat.objects.filter(destino=user).values('id','fecha','mensaje','producto').order_by('-fecha')
+
+	compradores = ValuesQuerySetToDict(compradores)
+
+	compradores = simplejson.dumps(compradores)
+
+	return HttpResponse(compradores, content_type="application/json")
 
 
 def producto(request,id):
@@ -204,6 +234,20 @@ def registra(request):
 
 
 	return render(request, 'perfil.html')
+
+
+
+
+def enviamensaje(request):
+
+	if request.method == 'POST':
+
+		print request.POST
+
+
+	return render(request, 'perfil.html')
+
+
 
 @login_required(login_url="/autentificacion/")
 
@@ -291,6 +335,8 @@ def vender(request):
 				fd_img = open(caption, 'r')
 
 				img = Image.open(fd_img)
+
+				
 
 				img = resizeimage.resize_cover(img, [500, y])
 
