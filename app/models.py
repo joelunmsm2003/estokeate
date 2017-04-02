@@ -84,14 +84,6 @@ class Categoria(models.Model):
         db_table = 'categoria'
 
 
-class Chat(models.Model):
-    user = models.IntegerField(blank=True, null=True)
-    destino = models.IntegerField(blank=True, null=True)
-    mensaje = models.CharField(max_length=1000, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'chat'
 
 
 class Distrito(models.Model):
@@ -168,7 +160,20 @@ class Producto(models.Model):
     categoria = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='categoria', blank=True, null=True)
     titulo = models.CharField(max_length=1000, blank=True, null=True)
     descripcion = models.CharField(max_length=1000, blank=True, null=True)
+    precio = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'producto'
+        
+class Chat(models.Model):
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='user', blank=True, null=True, related_name='user')
+    destino = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='destino', blank=True, null=True, related_name='destino')
+    mensaje = models.CharField(max_length=1000, blank=True, null=True)
+    producto = models.ForeignKey(Producto, models.DO_NOTHING, db_column='producto', blank=True, null=True)
+    fecha = models.DateTimeField()
+
+
+    class Meta:
+        managed = False
+        db_table = 'chat'

@@ -97,8 +97,27 @@ def perfil(request):
 	usuario= AuthUser.objects.get(id=user)
 
 
-	return render(request, 'perfil.html',{'productos':productos,'usuario':usuario})
+	return render(request, 'perfil.html',{'productos':productos,'usuario':usuario,'miperfil':'active'})
 
+
+
+@login_required(login_url="/autentificacion")
+def chat(request):
+
+	user = request.user.id
+
+	productos= Producto.objects.filter(user_id=user)
+
+	print productos
+
+
+
+	usuario= AuthUser.objects.get(id=user)
+
+
+	return render(request, 'chat.html',{'productos':productos,'usuario':usuario,'mimensaje':'active'})
+
+# Prductos de un usuario
 
 @login_required(login_url="/autentificacion/")
 
@@ -121,13 +140,43 @@ def productos(request,id):
 			p.photo = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[0]
 
 
-
-
-
 	usuario= AuthUser.objects.get(id=user)
 
-	return render(request, 'productosuser.html',{'productos':productos,'usuario':usuario})
+	return render(request, 'productosuser.html',{'productos':productos,'usuario':usuario,'mianuncio':'active'})
 
+# Compradores de un usuario
+
+@login_required(login_url="/autentificacion/")
+
+def chatin(request,id):
+
+	user = request.user.id
+
+	compradores = Chat.objects.filter(destino_id=user).values('destino','user','destino__username','user__username').annotate(count=Count('id')).order_by('-fecha')
+
+	compradores = ValuesQuerySetToDict(compradores)
+
+	compradores = simplejson.dumps(compradores)
+
+	return HttpResponse(compradores, content_type="application/json")
+
+
+
+# MEsajes
+
+@login_required(login_url="/autentificacion/")
+
+def listamensajes(request,user):
+
+	destino = request.user.id
+
+	mensajes = Chat.objects.filter(destino_id=destino,user_id=user).values('producto__precio','destino','user','destino__username','user__username','mensaje','producto__titulo','producto__categoria')
+
+	mensajes = ValuesQuerySetToDict(mensajes)
+
+	mensajes = simplejson.dumps(mensajes)
+
+	return HttpResponse(mensajes, content_type="application/json")
 
 
 
@@ -205,6 +254,30 @@ def registra(request):
 
 	return render(request, 'perfil.html')
 
+
+
+@login_required(login_url="/autentificacion/")
+
+def enviamensaje(request):
+
+	if request.method == 'POST':
+
+		user = request.user.id
+
+		producto = request.POST['producto']
+
+		mensaje = request.POST['mensaje']
+
+		receptor = Producto.objects.get(id=producto).user.id
+
+		Chat(user_id=user,destino_id=receptor,mensaje=mensaje,producto_id=producto).save()
+
+
+
+	return HttpResponseRedirect("/producto/"+producto)
+
+
+
 @login_required(login_url="/autentificacion/")
 
 def editarproducto(request,id):
@@ -260,11 +333,13 @@ def vender(request):
 
 		descripcion = request.POST['descripcion']
 
-		Producto(user_id=user,categoria_id=categoria,descripcion=descripcion).save()
+		precio = request.POST['precio']
+
+		Producto(user_id=user,titulo=titulo,categoria_id=categoria,descripcion=descripcion,precio=precio).save()
 
 		id_producto = Producto.objects.all().values('id').order_by('-id')[0]['id']
 
-
+		y = 600
 
 		for p in request.FILES:
 
@@ -284,7 +359,7 @@ def vender(request):
 
 				# Para la galeria
 
-				y = 600
+				
 
 				caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
 
@@ -292,7 +367,9 @@ def vender(request):
 
 				img = Image.open(fd_img)
 
-				img = resizeimage.resize_cover(img, [500, y])
+				
+
+				img = resizeimage.resize_cover(img, [500, 600])
 
 				img.save(caption_galeria, img.format)
 				
@@ -314,6 +391,8 @@ def vender(request):
 			if p == 'picture1':
 
 				# Photo
+
+				picture1 =  request.FILES['picture1']
 
 				Photo(photo=picture1).save()
 
@@ -353,6 +432,8 @@ def vender(request):
 
 						# Photo
 
+				picture2 =  request.FILES['picture2']
+
 				Photo(photo=picture2).save()
 
 				id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
@@ -391,6 +472,8 @@ def vender(request):
 			if p=='picture3':
 
 						# Photo
+
+				picture3 =  request.FILES['picture3']
 
 				Photo(photo=picture3).save()
 
