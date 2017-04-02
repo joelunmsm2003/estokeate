@@ -1,5 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="myApp" ng-controller="myCtrl">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script>
+var app = angular.module('myApp', []);
+
+app.config(function($interpolateProvider){
+    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    });
+app.controller('myCtrl', function($scope,$http) {
+
+
+    $scope.host = 'http://localhost/'
+
+    $scope.firstName = "John";
+    $scope.lastName = "Doe";
+
+    $http.get("/productojson/{{producto.id}}")
+    .then(function(response) {
+
+      console.log(response.data)
+
+      $scope.photos = response.data
+        
+    });
+
+    $scope.traeimagen=function(data){
+
+      console.log(data)
+
+      $scope.photoprincipal = data.detalle
+    }
+
+
+});
+</script>
 <head>
   <title>Estokealo</title>
   <meta charset="utf-8">
@@ -37,13 +71,23 @@
     <ul class="navbar-nav mr-auto">
       
       
-      <li class="nav-item">
-        <a class="nav-link" href="/vender"><button class="btn btn-outline-success my-2 my-sm-0" > <i class="fa fa-camera" aria-hidden="true"></i> Vender</button></a>
-      </li>
+
+
+      <form class="form-inline">
+
+
+      <input class="form-control mr-sm-2" type="text" ng-model='dato' placeholder="¿Que estas buscando?">
+
+
+      <a href='/busqueda/{[{dato}]}' class='btn btn-primary'>Buscar</a>
+      </form>
+
+         
+    
 
       {% if usuario.username %}
 
-      <li class="nav-item">
+      <li class="nav-item my-2 my-sm-0">
         <a class="nav-link" href="/salir">Salir</a>
       </li>
 
@@ -62,12 +106,14 @@
       {% endif %}
 
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="¿Que estas buscando?">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+
+      <a class="nav-link" href="/vender"><button class="btn btn-outline-success my-2 my-sm-0" > <i class="fa fa-camera" aria-hidden="true"></i> Vender</button></a>
+    
+
   </div>
 </nav>
+
+
 
 
 

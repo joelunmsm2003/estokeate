@@ -21,5 +21,7 @@ urlpatterns = [
     url(r'^chatin/(\d+)$', 'app.views.chatin'),
     url(r'^enviamensaje/$', 'app.views.enviamensaje'),
     url(r'^listamensajes/(\d+)$', 'app.views.listamensajes'),
+    url(r'^listamensajes/(\d+)$', 'app.views.listamensajes'),
+    url(r'^busqueda/(\w+)$', 'app.views.busqueda'),
 
 ]
