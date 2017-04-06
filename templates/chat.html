@@ -19,7 +19,7 @@ app.config(function($interpolateProvider){
 app.controller('myCtrl', function($scope,$http) {
 
 
-    $scope.host = 'http://estokealo.com:8080/'
+    $scope.host = 'http://localhost/'
 
     $scope.firstName = "John";
     $scope.lastName = "Doe";
@@ -37,12 +37,16 @@ app.controller('myCtrl', function($scope,$http) {
 
     	console.log(data)
 
+    	$scope.receptor = data.id
+
 			$http.get("/listamensajes/"+data.user)
 			.then(function(response) {
 
 			console.log('chatin...',response)
 
 			$scope.mensajes = response.data
+
+			$scope.mensajestitulo = response.data[0]
 
 			});
 
@@ -69,15 +73,15 @@ app.controller('myCtrl', function($scope,$http) {
 			<div class="col-md-12" ng-repeat="c in chatin">
 				
 
-				<div class='chatin' ng-click='traemensajes(c)'>
+				<div class='row' ng-click='traemensajes(c)'>
 
-					<div class="col-md-12">
+					<div class="col-md-2 col-lg-4">
 
-					<img src="https://pbs.twimg.com/profile_images/581997434382897152/LQqbuhbV_reasonably_small.jpg" class='img-fluid rounded'>
+					<img src="https://pbs.twimg.com/profile_images/581997434382897152/LQqbuhbV_reasonably_small.jpg" class='img-fluid    img-rounded'>
 					
 					</div>
 
-					<div class="col-md-12" >
+					<div class="col-md-10 col-lg-8" >
 
 					{[{c.user__username}]}
 
@@ -100,9 +104,42 @@ app.controller('myCtrl', function($scope,$http) {
 </div>
 
 
-<div class='col-md-10'>
+<div class='col-md-10 '>
+
+
+<div class='row titulomensaje'>
+
+<div class='col-md-2'>
 
 <div class='row'>
+
+	<div class='col-md-6'>
+
+	<img src="{[{host}]}{[{mensajestitulo.photo_producto}]}" alt="" class='img-fluid'>
+
+	</div>
+
+	<div class='col-md-6'>
+
+	{[{mensajestitulo.producto__titulo}]}
+	{[{mensajestitulo.producto__descripcion}]}
+
+
+	</div>
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+</div>
+
+<div class='row chatin'>
 
 	
 	<div class="col-md-12" ng-repeat="m in mensajes">
@@ -114,13 +151,13 @@ app.controller('myCtrl', function($scope,$http) {
 				<div class="row">
 
 				<div class="col-md-8">
-						<img src="http://www.telegraph.co.uk/cars/images/2015/12/29/Porsche-Cayman-GT4-front-xlarge_trans_NvBQzQNjv4BqZgEkZX3M936N5BQK4Va8RWtT0gK_6EfZT336f62EI5U.jpg" alt="" class='img-fluid'>
+						<img src="{[{host}]}{[{m.photo_producto}]}" class='img-fluid'>
 				</div>
 
 				<div class="col-md-4">
 						{[{m.producto__titulo}]}
 
-						S/.{[{m.producto__precio}]}
+						<small>S/.{[{m.producto__precio}]}</small>
 
 				</div>	
 
@@ -129,7 +166,7 @@ app.controller('myCtrl', function($scope,$http) {
 				
 			</div>
 
-			<div class="col-md-10">
+			<div class="col-md-10 ">
 			
 				<div class='useractual'>
 
@@ -141,7 +178,7 @@ app.controller('myCtrl', function($scope,$http) {
 					</div>
 
 					<div class="col-md-10">
-									<p>{[{m.mensaje}]}</p>
+							<p>{[{m.mensaje}]}</p>
 	
 						
 
@@ -167,8 +204,31 @@ app.controller('myCtrl', function($scope,$http) {
 
 
 
-
 </div>
+
+	<div class='row'>
+
+	<div class="col-md-12">
+		
+			<form submit='/enviamensaje_perfil' method='POST'>
+
+			<input type="text" class='form-control' name='receptor' value="{{receptor}}" >
+			<input type="text" class='form-control' name='receptor' value="{{receptor}}" >
+			<input type="text" class='form-control' name='mensaje'>
+
+
+			<button type="submit" class="btn btn-primary btn-md ">Enviar mensaje</button>
+
+			</form>
+
+
+	</div>
+
+
+	</div>
+
+
+
 
 
 </div>
@@ -184,14 +244,21 @@ app.controller('myCtrl', function($scope,$http) {
 	
 	.chatin{
 
-		padding: 2px;
+		    padding: 15px;
+    overflow-y: auto;
+    height: 20em;
 	}
 
-	.detalleproducto{
+	.titulomensaje{
+
+		background: #234;
+	}
+
+/*	.detalleproducto{
 
 		border:1px solid #234;
 		    padding: 0px !important;
-	}
+	}*/
 </style>
 
 </body>

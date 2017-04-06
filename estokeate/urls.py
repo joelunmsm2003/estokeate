@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^chat/$', 'app.views.chat'),
     url(r'^chatin/(\d+)$', 'app.views.chatin'),
     url(r'^enviamensaje/$', 'app.views.enviamensaje'),
+    url(r'^enviamensaje_perfil/$', 'app.views.enviamensaje_perfil'),
     url(r'^listamensajes/(\d+)$', 'app.views.listamensajes'),
     url(r'^listamensajes/(\d+)$', 'app.views.listamensajes'),
     url(r'^busqueda/(\w+)$', 'app.views.busqueda'),

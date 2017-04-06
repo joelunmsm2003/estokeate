@@ -170,7 +170,12 @@ def listamensajes(request,user):
 
 	destino = request.user.id
 
-	mensajes = Chat.objects.filter(destino_id=destino,user_id=user).values('producto__precio','destino','user','destino__username','user__username','mensaje','producto__titulo','producto__categoria')
+	mensajes = Chat.objects.filter(destino_id=destino,user_id=user).values('producto','producto__precio','destino','user','destino__username','user__username','mensaje','producto__titulo','producto__categoria')
+
+	for p in range(len(mensajes)):
+
+		mensajes[p]['photo_producto'] = str(Photoproducto.objects.filter(producto_id=mensajes[p]['producto'])[0].photo.photo)
+
 
 	mensajes = ValuesQuerySetToDict(mensajes)
 
@@ -295,6 +300,28 @@ def enviamensaje(request):
 
 
 	return HttpResponseRedirect("/producto/"+producto)
+
+
+@login_required(login_url="/autentificacion/")
+
+def enviamensaje_perfil(request):
+
+	if request.method == 'POST':
+
+		user = request.user.id
+
+		receptor = request.POST['receptor']
+
+		mensaje = request.POST['mensaje']
+
+		receptor = Producto.objects.get(id=producto).user.id
+
+		Chat(user_id=usuario,destino_id=receptor,mensaje=mensaje,producto_id=producto).save()
+
+
+
+	return HttpResponseRedirect("/producto/"+producto)
+
 
 
 
