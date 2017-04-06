@@ -90,14 +90,81 @@ def perfil(request):
 
 	productos= Producto.objects.filter(user_id=user)
 
-	print productos
-
-
-
 	usuario= AuthUser.objects.get(id=user)
 
 
 	return render(request, 'perfil.html',{'productos':productos,'usuario':usuario,'miperfil':'active'})
+
+
+@login_required(login_url="/autentificacion")
+
+def actualizaperfil(request):
+
+
+	if request.method == 'POST':
+
+		user = request.user.id
+
+		productos= Producto.objects.filter(user_id=user)
+
+		usuario= AuthUser.objects.get(id=user)
+
+		username = request.POST['username']
+		
+		direccion = request.POST['direccion']
+
+		email = request.POST['email']
+
+		telefono = request.POST['telefono']
+
+		for p in request.FILES:
+
+			if p == 'photo':
+
+				photo =  request.FILES['photo']
+
+				u = AuthUser.objects.get(id=user)
+
+				u.photo=photo
+
+				u.save()
+
+
+		u = AuthUser.objects.get(id=user)
+
+		u.direccion = direccion
+
+		u.email=email
+
+		u.telefono=telefono
+
+		u.save()
+
+
+		for p in request.FILES:
+
+			if p == 'photo':
+
+				caption = '/var/www/html/'+str(u.photo)
+
+				fd_img = open(caption, 'r')
+
+				img = Image.open(fd_img)
+
+				img = resizeimage.resize_cover(img, [500, 500])
+
+				img.save(caption, img.format)
+
+				fd_img.close()
+
+
+
+
+
+        return render(request, 'perfil.html',{'productos':productos,'usuario':usuario,'miperfil':'active'})
+
+        
+
 
 
 
@@ -152,7 +219,7 @@ def chatin(request,id):
 
 	user = request.user.id
 
-	compradores = Chat.objects.filter(destino_id=user).values('destino','user','destino__username','user__username').annotate(count=Count('id')).order_by('-fecha')
+	compradores = Chat.objects.filter(destino_id=user).values('user','user__username','user__photo','producto','producto__titulo','producto__precio','producto__titulo',).annotate(count=Count('id')).order_by('-fecha')
 
 	compradores = ValuesQuerySetToDict(compradores)
 
@@ -166,11 +233,19 @@ def chatin(request,id):
 
 @login_required(login_url="/autentificacion/")
 
-def listamensajes(request,user):
+def listamensajes(request,user,producto):
 
 	destino = request.user.id
 
-	mensajes = Chat.objects.filter(destino_id=destino,user_id=user).values('producto','producto__precio','destino','user','destino__username','user__username','mensaje','producto__titulo','producto__categoria')
+	# Mensajes que le llegan al dueno del producto
+
+	mensajes = Chat.objects.filter(destino_id=destino,user_id=user,producto_id=producto).values('producto','producto__precio','destino','user','destino__username','user__username','user__photo','mensaje','producto__titulo','producto__categoria')
+
+	# Mensajes que envia el dueno del producto al interesado
+
+
+
+
 
 	for p in range(len(mensajes)):
 

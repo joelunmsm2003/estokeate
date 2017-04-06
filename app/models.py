@@ -50,6 +50,10 @@ class AuthUser(models.Model):
     is_staff = models.IntegerField()
     is_active = models.IntegerField()
     date_joined = models.DateTimeField()
+    photo=models.FileField(upload_to='static')
+    telefono = models.CharField(max_length=1000)
+    direccion = models.CharField(max_length=1000)
+
 
     class Meta:
         managed = False

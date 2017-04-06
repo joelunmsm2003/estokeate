@@ -39,7 +39,7 @@ app.controller('myCtrl', function($scope,$http) {
 
     	$scope.receptor = data.id
 
-			$http.get("/listamensajes/"+data.user)
+			$http.get("/listamensajes/"+data.user+'/'+data.producto)
 			.then(function(response) {
 
 			console.log('chatin...',response)
@@ -66,24 +66,31 @@ app.controller('myCtrl', function($scope,$http) {
 
 <div class='row'>
 
-<div class="col-md-2">
+<div class="col-md-4 ">
 	
 	<div class="row">
 			
 			<div class="col-md-12" ng-repeat="c in chatin">
 				
 
-				<div class='row' ng-click='traemensajes(c)'>
+				<div class='row chatperfil' ng-click='traemensajes(c)'>
 
 					<div class="col-md-2 col-lg-4">
 
-					<img src="https://pbs.twimg.com/profile_images/581997434382897152/LQqbuhbV_reasonably_small.jpg" class='img-fluid    img-rounded'>
+					<img src="{[{host}]}{[{c.user__photo}]}" class='img-fluid    img-rounded'>
 					
 					</div>
 
 					<div class="col-md-10 col-lg-8" >
 
-					{[{c.user__username}]}
+					<small>{[{c.user__username}]}</small><br>
+
+					<small>{[{c.producto__titulo}]}</small><br>
+
+					<small>S/. {[{c.producto__precio}]}</small><br>
+
+				
+
 
 					</div>
 
@@ -104,7 +111,7 @@ app.controller('myCtrl', function($scope,$http) {
 </div>
 
 
-<div class='col-md-10 '>
+<div class='col-md-8'>
 
 
 <div class='row titulomensaje'>
@@ -146,35 +153,38 @@ app.controller('myCtrl', function($scope,$http) {
 
 		<div class="row">
 
-			<div class="col-md-2 detalleproducto">
 
-				<div class="row">
 
-				<div class="col-md-8">
-						<img src="{[{host}]}{[{m.photo_producto}]}" class='img-fluid'>
-				</div>
-
-				<div class="col-md-4">
-						{[{m.producto__titulo}]}
-
-						<small>S/.{[{m.producto__precio}]}</small>
-
-				</div>	
-
-				</div>			
-			
-				
-			</div>
-
-			<div class="col-md-10 ">
+			<div class="col-md-12 ">
 			
 				<div class='useractual'>
 
 				<div class="row">
 					
 					<div class="col-md-2">
-							<p>{[{m.user__username}]}</p>
+
+							<div class="row">
+								
+								<div class="col-md-8">
+
+								<img src="{[{host}]}{[{m.user__photo}]}" class='img-fluid' alt="" style="border-radius:100%;">
+									
+								</div>
+
+								<div class="col-md-4">
+
+								<div>
+									
+									<small>{[{m.user__username}]}</small>
 						
+								</div>
+
+								
+								</div>
+
+							</div>
+
+							
 					</div>
 
 					<div class="col-md-10">
@@ -252,6 +262,16 @@ app.controller('myCtrl', function($scope,$http) {
 	.titulomensaje{
 
 		background: #234;
+	}
+
+	.chatperfil{
+
+		padding: 12px;
+	}
+
+	.useractual{
+
+		padding: 12px;
 	}
 
 /*	.detalleproducto{

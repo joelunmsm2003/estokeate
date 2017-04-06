@@ -47,6 +47,9 @@ app.controller('myCtrl', function($scope,$http) {
 
 <br>
 
+
+
+
 <div class='row'>
 
     <div class='col-md-8'>
@@ -137,6 +140,21 @@ app.controller('myCtrl', function($scope,$http) {
 
             <div class='panel-body'>
 
+            <div class='row'>
+
+            <div class='col-md-12'>
+
+            <center><h4>{{producto.user.username}}</h4></center>
+
+            <center><h5>{{producto.user.telefono}}</h5></center>
+
+            <img src="{[{host}]}{{producto.user.photo}}" class='img-fluid' style="border-radius:100%; padding:18px;">
+
+            </div>
+
+            </div>
+
+
             <form method="post" action="/enviamensaje/" enctype="multipart/form-data">
             {% csrf_token %}
 
@@ -148,7 +166,6 @@ app.controller('myCtrl', function($scope,$http) {
 
             <textarea type="text" class="form-control" name='mensaje' rows='12' required id="pwd"  placeholder="Mensaje"></textarea>
             </div>
-
 
 
 
