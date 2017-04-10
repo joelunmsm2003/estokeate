@@ -156,45 +156,92 @@ app.controller('myCtrl', function($scope,$http) {
 
 
 			<div class="col-md-12 ">
+
 			
-				<div class='useractual'>
+			
+				<div class='useractual' ng-if='m.user__username=="{{usuario.username}}"'>
 
-				<div class="row">
-					
-					<div class="col-md-2">
+						<div class="row">
+							
+							<div class="col-md-10">
 
-							<div class="row">
-								
-								<div class="col-md-8">
-
-								<img src="{[{host}]}{[{m.user__photo}]}" class='img-fluid' alt="" style="border-radius:100%;">
 									
-								</div>
-
-								<div class="col-md-4">
-
-								<div>
+								<p>{[{m.mensaje}]}</p>
 									
-									<small>{[{m.user__username}]}</small>
-						
-								</div>
+							</div>
 
+							<div class="col-md-2">
+									
+
+									<div class="row">
+										
+										<div class="col-md-8">
+
+										<img src="{[{host}]}{[{m.user__photo}]}" class='img-fluid' alt="" style="border-radius:100%;">
+											
+										</div>
+
+										<div class="col-md-4">
+
+										<div>
+											
+											<small>{[{m.user__username}]}</small>
 								
-								</div>
+										</div>
+
+										
+										</div>
+
+									</div>
+			
+								
 
 							</div>
 
+						</div>
+
+				</div>		
+
+
+				<div class='useractual' ng-if='m.user__username!="{{usuario.username}}"'>
+
+						<div class="row">
 							
-					</div>
+							<div class="col-md-2">
 
-					<div class="col-md-10">
-							<p>{[{m.mensaje}]}</p>
-	
-						
+									<div class="row">
+										
+										<div class="col-md-8">
 
-					</div>
+										<img src="{[{host}]}{[{m.user__photo}]}" class='img-fluid' alt="" style="border-radius:100%;">
+											
+										</div>
 
-				</div>
+										<div class="col-md-4">
+
+										<div>
+											
+											<small>{[{m.user__username}]}</small>
+								
+										</div>
+
+										
+										</div>
+
+									</div>
+
+									
+							</div>
+
+							<div class="col-md-10">
+									<p>{[{m.mensaje}]}</p>
+			
+								
+
+							</div>
+
+						</div>
+
 				</div>				
 
 
@@ -220,12 +267,14 @@ app.controller('myCtrl', function($scope,$http) {
 
 	<div class="col-md-12">
 		
-			<form submit='/enviamensaje_perfil' method='POST'>
+			<form action='/enviamensaje_perfil/' method='POST'>
 
-			<input type="text" class='form-control' name='receptor' value="{{receptor}}" >
-			<input type="text" class='form-control' name='receptor' value="{{receptor}}" >
+			  {% csrf_token %}
+
+
+			<input type="hidden" class='form-control' name='producto' value="{[{mensajestitulo.producto}]}" >
+			<input type="hidden" class='form-control' name='receptor' value="{[{mensajestitulo.user}]}" >
 			<input type="text" class='form-control' name='mensaje'>
-
 
 			<button type="submit" class="btn btn-primary btn-md ">Enviar mensaje</button>
 

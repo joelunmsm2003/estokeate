@@ -241,18 +241,22 @@ def listamensajes(request,user,producto):
 
 	mensajes = Chat.objects.filter(destino_id=destino,user_id=user,producto_id=producto).values('producto','producto__precio','destino','user','destino__username','user__username','user__photo','mensaje','producto__titulo','producto__categoria')
 
-	# Mensajes que envia el dueno del producto al interesado
-
-
-
-
 
 	for p in range(len(mensajes)):
 
 		mensajes[p]['photo_producto'] = str(Photoproducto.objects.filter(producto_id=mensajes[p]['producto'])[0].photo.photo)
 
+	
+	# Mensajes que envia el dueno del producto al interesado
 
-	mensajes = ValuesQuerySetToDict(mensajes)
+
+	mensajes1 = Chat.objects.filter(destino_id=user,user_id=destino,producto_id=producto).values('producto','producto__precio','destino','user','destino__username','user__username','user__photo','mensaje','producto__titulo','producto__categoria')
+
+
+
+
+
+	mensajes = ValuesQuerySetToDict(mensajes) + ValuesQuerySetToDict(mensajes1)
 
 	mensajes = simplejson.dumps(mensajes)
 
@@ -385,17 +389,20 @@ def enviamensaje_perfil(request):
 
 		user = request.user.id
 
-		receptor = request.POST['receptor']
+		print 'Mesnaje.....',request.POST
+
+
+		producto = request.POST['producto']
 
 		mensaje = request.POST['mensaje']
 
-		receptor = Producto.objects.get(id=producto).user.id
+		receptor = request.POST['receptor']
 
-		Chat(user_id=usuario,destino_id=receptor,mensaje=mensaje,producto_id=producto).save()
+		Chat(user_id=user,destino_id=receptor,mensaje=mensaje,producto_id=producto).save()
 
 
 
-	return HttpResponseRedirect("/producto/"+producto)
+	return HttpResponseRedirect("/chat/")
 
 
 
