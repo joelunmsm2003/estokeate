@@ -219,7 +219,7 @@ def chatin(request,id):
 
 	user = request.user.id
 
-	compradores = Chat.objects.filter(destino_id=user).values('user','user__username','user__photo','producto','producto__titulo','producto__precio','producto__titulo',).annotate(count=Count('id')).order_by('-fecha')
+	compradores = Chat.objects.filter(destino_id=user).values('user','user__username','user__photo','producto','producto__titulo','producto__precio','producto__titulo').annotate(count=Count('id'))
 
 	compradores = ValuesQuerySetToDict(compradores)
 
@@ -231,6 +231,8 @@ def chatin(request,id):
 
 # MEsajes
 
+
+
 @login_required(login_url="/autentificacion/")
 
 def listamensajes(request,user,producto):
@@ -239,24 +241,39 @@ def listamensajes(request,user,producto):
 
 	# Mensajes que le llegan al dueno del producto
 
-	mensajes = Chat.objects.filter(destino_id=destino,user_id=user,producto_id=producto).values('producto','producto__precio','destino','user','destino__username','user__username','user__photo','mensaje','producto__titulo','producto__categoria')
+	mensajes = Chat.objects.filter(destino_id=destino,user_id=user,producto_id=producto).values('id','producto','producto__precio','destino','user','destino__username','user__username','user__photo','mensaje','producto__titulo','producto__categoria')
 
+	fmt = '%Y-%m-%d %H:%M:%S'
 
 	for p in range(len(mensajes)):
 
-		mensajes[p]['photo_producto'] = str(Photoproducto.objects.filter(producto_id=mensajes[p]['producto'])[0].photo.photo)
+		if Chat.objects.filter(id=mensajes[p]['id']).values('fecha')[0]['fecha']:
 
+			mensajes[p]['fecha'] = Chat.objects.get(id=mensajes[p]['id']).fecha.strftime(fmt)
 	
+		mensajes[p]['photo_producto'] = str(Photoproducto.objects.filter(producto_id=mensajes[p]['producto'])[0].photo.photo)
+		
 	# Mensajes que envia el dueno del producto al interesado
 
 
-	mensajes1 = Chat.objects.filter(destino_id=user,user_id=destino,producto_id=producto).values('producto','producto__precio','destino','user','destino__username','user__username','user__photo','mensaje','producto__titulo','producto__categoria')
+	mensajes1 = Chat.objects.filter(destino_id=user,user_id=destino,producto_id=producto).values('id','producto','producto__precio','destino','user','destino__username','user__username','user__photo','mensaje','producto__titulo','producto__categoria')
 
+	fmt = '%Y-%m-%d %H:%M:%S'
 
+	for p in range(len(mensajes1)):
+
+		if Chat.objects.filter(id=mensajes1[p]['id']).values('fecha')[0]['fecha']:
+
+			mensajes1[p]['fecha'] = Chat.objects.get(id=mensajes1[p]['id']).fecha.strftime(fmt)
+	
+		mensajes1[p]['photo_producto'] = str(Photoproducto.objects.filter(producto_id=mensajes1[p]['producto'])[0].photo.photo)
+		
 
 
 
 	mensajes = ValuesQuerySetToDict(mensajes) + ValuesQuerySetToDict(mensajes1)
+
+	print mensajes
 
 	mensajes = simplejson.dumps(mensajes)
 
@@ -368,41 +385,48 @@ def enviamensaje(request):
 
 		user = request.user.id
 
+		fecha = datetime.today()-timedelta(hours=5)
+
 		producto = request.POST['producto']
 
 		mensaje = request.POST['mensaje']
 
 		receptor = Producto.objects.get(id=producto).user.id
 
-		Chat(user_id=user,destino_id=receptor,mensaje=mensaje,producto_id=producto).save()
+		Chat(user_id=user,destino_id=receptor,mensaje=mensaje,producto_id=producto,fecha=fecha).save()
 
 
 
 	return HttpResponseRedirect("/producto/"+producto)
 
-
-@login_required(login_url="/autentificacion/")
-
+@csrf_exempt
 def enviamensaje_perfil(request):
 
 	if request.method == 'POST':
 
 		user = request.user.id
 
-		print 'Mesnaje.....',request.POST
+		print user
 
+		data = json.loads(request.body)['dato']
 
-		producto = request.POST['producto']
+		#{u'user__username': u'carla', u'destino__username': u'ander', u'producto': 55, u'mensaje': u'Hola Ander me interesa tu producto', u'producto__titulo': u'Iphone 7', u'photo_producto': u'static/iphone-8-hajek-2.jpg', u'destino': 3, u'user': 1, u'mensaje1': u'545', u'producto__precio': 121, u'producto__categoria': 4, u'user__photo': u'static/notachica_TZMPAOL.jpg'}
 
-		mensaje = request.POST['mensaje']
+		# print 'Mesnaje.....',request.POST
 
-		receptor = request.POST['receptor']
+		fecha = datetime.today()-timedelta(hours=5)
 
-		Chat(user_id=user,destino_id=receptor,mensaje=mensaje,producto_id=producto).save()
+		producto = data['producto']
 
+		mensaje = data['mensaje1']
 
+		receptor = data['user']
 
-	return HttpResponseRedirect("/chat/")
+		Chat(user_id=user,destino_id=receptor,mensaje=mensaje,producto_id=producto,fecha=fecha).save()
+
+		data = simplejson.dumps(data)
+
+	return HttpResponse(data, content_type="application/json")
 
 
 

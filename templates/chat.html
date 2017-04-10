@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html ng-app="myApp" ng-controller="myCtrl">
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-cookies.js'></script>
+
+
+<link rel="stylesheet" type="text/css" href="/static/css/bordeschat.css">
+
+
 <body>
 
 {% include "header.html" %}
@@ -11,12 +20,13 @@
 
 
 <script>
-var app = angular.module('myApp', []);
+var app = angular.module('myApp', ['ngCookies']);
 
 app.config(function($interpolateProvider){
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
-    });
-app.controller('myCtrl', function($scope,$http) {
+    })
+
+app.controller('myCtrl', function($scope,$http,$cookies) {
 
 
     $scope.host = 'http://localhost/'
@@ -51,6 +61,42 @@ app.controller('myCtrl', function($scope,$http) {
 			});
 
     }
+
+    $scope.enviarchat = function (chat) {
+  
+
+
+        console.log('$scope.model',chat)
+
+         var todo={dato: chat}
+
+
+        $http({
+        url: "/enviamensaje_perfil/",
+        data: todo,
+        method: 'POST',
+        headers: {
+        'X-CSRFToken': $cookies['csrftoken']
+        }
+        }).
+        success(function(data) {
+
+
+			$http.get("/listamensajes/"+data.user+'/'+data.producto)
+			.then(function(response) {
+
+			console.log('chatin...',response)
+
+			$scope.mensajes = response.data
+
+			$scope.mensajestitulo = response.data[0]
+
+			});
+
+
+        })
+
+    };
 
 
 });
@@ -165,8 +211,17 @@ app.controller('myCtrl', function($scope,$http) {
 							
 							<div class="col-md-10">
 
+								<div class="talk-bubble tri-right round border right-top">
+								  <div class="talktext">
+								   <small>{[{m.fecha}]}</small>
+								    <p>{[{m.mensaje}]}</p>
+								   
+								  </div>
+								  
+								</div>
+
+
 									
-								<p>{[{m.mensaje}]}</p>
 									
 							</div>
 
@@ -175,19 +230,21 @@ app.controller('myCtrl', function($scope,$http) {
 
 									<div class="row">
 										
-										<div class="col-md-8">
+										<div class="col-lg-12 col-md-12" style='text-align:center;'>
 
-										<img src="{[{host}]}{[{m.user__photo}]}" class='img-fluid' alt="" style="border-radius:100%;">
+										<img src="{[{host}]}{[{m.user__photo}]}" class='img-fluid' alt="" style="border-radius:100%; height: 59px;">
 											
 										</div>
 
-										<div class="col-md-4">
+										<div class="col-lg-12 col-md-12" style='text-align:center;'>
 
 										<div>
 											
 											<small>{[{m.user__username}]}</small>
+											
 								
 										</div>
+
 
 										
 										</div>
@@ -211,13 +268,13 @@ app.controller('myCtrl', function($scope,$http) {
 
 									<div class="row">
 										
-										<div class="col-md-8">
+										<div class="col-md-12" style='text-align:center;'>
 
-										<img src="{[{host}]}{[{m.user__photo}]}" class='img-fluid' alt="" style="border-radius:100%;">
+										<img src="{[{host}]}{[{m.user__photo}]}" class='img-fluid' alt="" style="border-radius:100%; height: 59px;">
 											
 										</div>
 
-										<div class="col-md-4">
+										<div class="col-md-12" style='text-align:center;'>
 
 										<div>
 											
@@ -233,12 +290,18 @@ app.controller('myCtrl', function($scope,$http) {
 									
 							</div>
 
-							<div class="col-md-10">
-									<p>{[{m.mensaje}]}</p>
-			
-								
+								<div class="col-md-10 ">
 
-							</div>
+									<div class="talk-bubble tri-right left-top">
+									<div class="talktext">
+									<small>{[{m.fecha}]}</small>
+									<p>{[{m.mensaje}]}</p>
+
+									</div>
+									</div>
+									</div>
+
+							
 
 						</div>
 
@@ -266,7 +329,7 @@ app.controller('myCtrl', function($scope,$http) {
 	<div class='row'>
 
 	<div class="col-md-12">
-		
+		<!-- 
 			<form action='/enviamensaje_perfil/' method='POST'>
 
 			  {% csrf_token %}
@@ -278,6 +341,17 @@ app.controller('myCtrl', function($scope,$http) {
 
 			<button type="submit" class="btn btn-primary btn-md ">Enviar mensaje</button>
 
+			 -->
+
+			 	<form>
+			 
+			    <input type="hidden" class="form-control" id="fono" ng-model = 'mensajestitulo.producto'  placeholder="producto" >
+			    <input type="hidden" class="form-control" id="fono" ng-model = 'mensajestitulo.user'  placeholder="user" >
+			    <input type="text" class="form-control" id="fono" ng-model = 'mensajestitulo.mensaje1'  placeholder="Mensaje..." >
+			
+			  
+			<button ng-click='enviarchat(mensajestitulo)' class="btn btn-default">Enviar mensaje</button>
+			  
 			</form>
 
 
@@ -320,21 +394,22 @@ app.controller('myCtrl', function($scope,$http) {
 
 	.useractual{
 
-		padding: 12px;
+		padding: 2px;
 	}
 
-/*	.detalleproducto{
+	.chatbody{
 
-		border:1px solid #234;
-		    padding: 0px !important;
-	}*/
+		background: #c69f5d;
+    color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    padding-top: 8px;
+	}
+
 </style>
 
 </body>
 </html>
-
-
-
 
 
 
