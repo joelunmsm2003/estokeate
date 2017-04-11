@@ -231,6 +231,9 @@ def chatin(request,id):
 
 # MEsajes
 
+def ordenar(data):
+         
+	return data['id']
 
 
 @login_required(login_url="/autentificacion/")
@@ -273,7 +276,7 @@ def listamensajes(request,user,producto):
 
 	mensajes = ValuesQuerySetToDict(mensajes) + ValuesQuerySetToDict(mensajes1)
 
-	print mensajes
+	mensajes = sorted(mensajes,key=ordenar)
 
 	mensajes = simplejson.dumps(mensajes)
 
