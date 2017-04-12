@@ -6,8 +6,10 @@
 
 <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-cookies.js'></script>
 
+ <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
 <link rel="stylesheet" type="text/css" href="/static/css/bordeschat.css">
+
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
 <body>
@@ -29,7 +31,7 @@ app.config(function($interpolateProvider){
 app.controller('myCtrl', function($scope,$http,$cookies) {
 
 
-    $scope.host = 'http://localhost/'
+    $scope.host = 'http://192.168.40.231/'
 
     $scope.firstName = "John";
     $scope.lastName = "Doe";
@@ -43,7 +45,21 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
         
     });
 
+        function doStuff() {
+
+    $("#chatin").scrollTop(100000)
+
+    $('.ultimo').addClass('animated zoomIn');
+
+
+}
+
+
     $scope.traemensajes=function(data){
+
+
+
+    $("#chatin").scrollTop(100000)
 
     	console.log(data)
 
@@ -51,7 +67,9 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 
     	$scope.userenvia = data.user
 
-    	
+    	var myTimer = setTimeout(doStuff, 2000);
+
+    
 
 			$http.get("/listamensajes/"+data.user+'/'+data.producto)
 			.then(function(response) {
@@ -63,39 +81,68 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 			$scope.mensajestitulo = response.data[0]
 
 
+			});
+
+
+
+
 
 			
 
-			});
+			setInterval(function(){ 
 
-			// setInterval(function(){ 
+						$http.get("/listamensajes/"+data.user+'/'+data.producto)
+						.then(function(response) {
 
-			// 			$http.get("/listamensajes/"+data.user+'/'+data.producto)
-			// 			.then(function(response) {
+						
 
-			// 			console.log('chatin...',response)
+						ult = response.data.length-1
 
-			// 			$scope.mensajes = response.data
+						$scope.ultimoregistro = response.data[ult]
 
-			// 			$scope.mensajestitulo = response.data[0]
+						console.log('ultimo...',$scope.ultimoregistro.user,'{{usuario.id}}')
 
-			// 			$scope.mensajestitulo.user = data.user
+						if($scope.ultimoregistro.user!='{{usuario.id}}'){
 
-			// 			});
+							var myTimer = setTimeout(doStuff, 2000);
 
+						}
 
+						$scope.mensajes = response.data
 
+						$scope.mensajestitulo = response.data[0]
 
-			// }, 3000);
+						$scope.mensajestitulo.user = data.user
+
+						});
+
+			}, 10000);
 
     }
 
-    $scope.enviarchat = function (chat,userenvia) {
+
+
+
+
+
+
+  
+
+    $scope.enviarchat = function (chat,userenvia,mensaje1) {
 
 
     	chat.user= userenvia
+    	chat.mensaje1x = mensaje1
 
     	console.log('he',$("#scroll").height())
+
+
+    	
+
+    	var myTimer = setTimeout(doStuff, 2000);
+
+
+
 
     	// console.log('kdkkdkd',$("#scroll").scrollTop())
   
@@ -116,20 +163,15 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
         }).
         success(function(data) {
 
+				
+				$scope.traemensajes(data)
 
-			$http.get("/listamensajes/"+data.user+'/'+data.producto)
-			.then(function(response) {
-
-			console.log('chatin...',response)
-
-			$scope.mensajes = response.data
-
-			$scope.mensajestitulo = response.data[0]
-
-			});
+				$scope.mensaje1=''
 
 
         })
+
+
 
     };
 
@@ -229,7 +271,7 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 
 		</div>
 
-<div class='row chatin'>
+<div class='row chatin' id='chatin'>
 
 
 
@@ -270,7 +312,7 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 
 							<div class="col-md-10" style='text-align:right;' ng-if='key==mensajes.length-1'>
 
-								<div class="talk-bubble tri-right round border right-top animated zoomIn">
+								<div class="talk-bubble tri-right round border right-top ultimo">
 								  <div class="talktext ">
 								   <small>{[{m.fecha}]}</small>
 								    <p>{[{m.mensaje}]}</p>
@@ -362,7 +404,7 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 
 								<div class="col-md-10" ng-if='key==mensajes.length-1'>
 
-									<div class="talk-bubble_1 tri-right_1 left-top animated zoomIn">
+									<div class="talk-bubble_1 tri-right_1 left-top ultimo">
 									<div class="talktext ">
 									<small>{[{m.fecha}]}</small>
 									<p>{[{m.mensaje}]}</p>
@@ -391,6 +433,8 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 			
 	</div>
 
+	<div id="myDiv"></div>
+
 
 </div>
 
@@ -417,10 +461,10 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 			 
 			    <input type="hidden" class="form-control" id="fono" ng-model = 'mensajestitulo.producto'  placeholder="producto" >
 			    <input type="hidden" class="form-control" id="fono" ng-model = 'userenvia'  placeholder="user" >
-			    <input type="text" class="form-control" id="fono" ng-model = 'mensajestitulo.mensaje1'  placeholder="Mensaje..." >
+			    <input type="text" class="form-control" id="fono" ng-model = 'mensaje1'  placeholder="Mensaje..." >
 			
 			  
-			<button ng-click='enviarchat(mensajestitulo,userenvia)' class="btn btn-default">Enviar mensaje</button>
+			<button ng-click='enviarchat(mensajestitulo,userenvia,mensaje1)' class="btn btn-default">Enviar mensaje</button>
 			  
 			</form>
 
@@ -447,7 +491,6 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 	
 	.chatin{
 
-		    padding: 15px;
     overflow-y: auto;
     height: 20em;
 	}
@@ -480,6 +523,9 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 	}
 
 </style>
+
+
+
 
 </body>
 </html>

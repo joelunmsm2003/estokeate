@@ -421,7 +421,7 @@ def enviamensaje_perfil(request):
 
 		producto = data['producto']
 
-		mensaje = data['mensaje1']
+		mensaje = data['mensaje1x']
 
 		receptor = data['user']
 
