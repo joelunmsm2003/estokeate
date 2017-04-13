@@ -95,13 +95,11 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 
     	chat.user= userenvia
 
-    	console.log('he',$("#scroll").height())
+    	console.log('he',$(".scroll").height())
 
-    	// console.log('kdkkdkd',$("#scroll").scrollTop())
+    	console.log('kdkkdkd',$(".chatin").scrollTop(545))
   
-
-
-        console.log('$scope.model',chat)
+		$(".chatin").scrollTop(545)
 
          var todo={dato: chat}
 
@@ -232,7 +230,7 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 <div class='row chatin'>
 
 
-
+<div class='scroll'>
 
 	
 	<div class="col-md-12" ng-repeat="(key, m) in mensajes">
@@ -391,6 +389,7 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 			
 	</div>
 
+</div>
 
 </div>
 
