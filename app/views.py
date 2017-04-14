@@ -38,7 +38,7 @@ from django.contrib.auth import authenticate
 
 def ValuesQuerySetToDict(vqs):
 
-    return [item for item in vqs]
+	return [item for item in vqs]
 
 def home(request):
 
@@ -161,10 +161,81 @@ def actualizaperfil(request):
 
 
 
-        return render(request, 'perfil.html',{'productos':productos,'usuario':usuario,'miperfil':'active'})
+		return render(request, 'perfil.html',{'productos':productos,'usuario':usuario,'miperfil':'active'})
 
-        
+def filtrarcategoria(request,dato,categoria):
 
+
+	dato = dato.replace('-',' ')
+
+	user = request.user.id
+
+	productos= Producto.objects.filter(descripcion__contains=dato,categoria_id=categoria)
+ 
+
+	subcat = Subcategoria.objects.filter(categoria_id=categoria)
+
+	cat = Categoria.objects.get(id=categoria)
+
+
+	resultados= Producto.objects.filter(descripcion__contains=dato).values('subcategoria','subcategoria__nombre').annotate(total=Count('subcategoria'))
+
+
+
+	usuario = None
+
+	if user:
+
+		usuario =AuthUser.objects.get(id=user)
+
+	for p in productos:
+
+		if Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo').count()>0:
+
+			p.photo = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[0]
+
+
+
+	return render(request, 'filtrasubcategoria.html',{'productos':productos,'dato':dato,'subcat':subcat,'categoria':cat.nombre,'resultados':resultados,'totalcat':productos.count()})
+
+def filtrarsubcategoria(request,dato,subcategoria):
+
+
+	dato = dato.replace('-',' ')
+
+	user = request.user.id
+
+
+
+	productos= Producto.objects.filter(descripcion__contains=dato,subcategoria_id=subcategoria)
+ 
+
+	subcat = Subcategoria.objects.get(id=subcategoria)
+
+	cat = Categoria.objects.get(id=subcategoria)
+
+	totalcat = Producto.objects.filter(descripcion__contains=dato,categoria_id=cat.id).count()
+ 
+
+	resultados= Producto.objects.filter(descripcion__contains=dato).values('subcategoria','subcategoria__nombre').annotate(total=Count('subcategoria'))
+
+
+
+	usuario = None
+
+	if user:
+
+		usuario =AuthUser.objects.get(id=user)
+
+	for p in productos:
+
+		if Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo').count()>0:
+
+			p.photo = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[0]
+
+
+
+	return render(request, 'resultadosubcategoria.html',{'productos':productos,'dato':dato,'subcat':subcat,'categoria':cat,'resultados':resultados,'totalsubcat':productos.count(),'totalcat':totalcat})
 
 
 
@@ -232,7 +303,7 @@ def chatin(request,id):
 # MEsajes
 
 def ordenar(data):
-         
+		 
 	return data['id']
 
 
@@ -296,28 +367,55 @@ def producto(request,id):
 
 	producto= Producto.objects.get(id=id)
 
+	videos = None
 
-	return render(request, 'productodetalle.html',{'producto':producto,'usuario':usuario})
+	if Videoproducto.objects.filter(producto_id=id):
+
+		videos = Videoproducto.objects.filter(producto_id=id)[0]
+
+
+	return render(request, 'productodetalle.html',{'producto':producto,'usuario':usuario,'videos':videos})
 
 
 
-def busqueda(request,dato):
+def busqueda(request):
 
-	user = request.user.id
 
-	usuario = None
-
-	if user:
-
-		usuario =AuthUser.objects.get(id=user)
-
-	categoria = Categoria.objects.all()
-
-		
-	productos = Producto.objects.filter(descripcion__contains=dato)
+	if request.method == 'POST':
 
 		
-	return render(request, 'busqueda.html',{'categoria':categoria,'productos':productos,'usuario':usuario,'dato':dato})
+
+		dato= request.POST['dato']
+
+		dato = dato.replace(' ','-')
+
+		user = request.user.id
+
+		usuario = None
+
+		if user:
+
+			usuario =AuthUser.objects.get(id=user)
+
+		categoria = Categoria.objects.all()
+
+			
+		productos = Producto.objects.filter(descripcion__contains=dato)
+
+		total = productos.count()
+
+		for p in productos:
+
+			if Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo').count()>0:
+
+				p.photo = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[0]
+
+
+		resultados= Producto.objects.filter(descripcion__contains=dato).values('categoria','categoria__nombre').annotate(total=Count('categoria'))
+
+
+			
+		return render(request, 'busqueda.html',{'categoria':categoria,'productos':productos,'total':total,'dato':dato,'resultados':resultados})
 
 
 def productojson(request,id):
@@ -336,6 +434,9 @@ def productojson(request,id):
 	for p in range(len(photos)):
 
 		photos[p]['detalle'] = str(Photoproducto.objects.get(id=photos[p]['id']).photo.photo).split('.jpg')[0]+'_thumbail.jpg'
+
+
+	videos = Videoproducto.objects.filter(producto_id=id).values('id','video__video')
 
 
 	photos = ValuesQuerySetToDict(photos)
@@ -421,7 +522,7 @@ def enviamensaje_perfil(request):
 
 		producto = data['producto']
 
-		mensaje = data['mensaje1']
+		mensaje = data['mensaje1x']
 
 		receptor = data['user']
 
@@ -432,6 +533,99 @@ def enviamensaje_perfil(request):
 	return HttpResponse(data, content_type="application/json")
 
 
+@csrf_exempt
+def traesubcategorias(request,categoria):
+
+	subcategorias = Subcategoria.objects.filter(categoria_id=categoria).values('id','nombre')
+
+	subcategorias = ValuesQuerySetToDict(subcategorias) 
+
+	subcategorias = simplejson.dumps(subcategorias)
+
+	return HttpResponse(subcategorias, content_type="application/json")
+
+
+@csrf_exempt
+def uploadphoto(request):
+
+
+		caption = request.FILES['file']
+
+
+
+		Photo(photo=caption).save()
+
+		id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
+
+		caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
+
+		data_json =str(Photo.objects.get(id=id_photo).photo)
+
+		fd_img = open(caption, 'r')
+
+		img = Image.open(fd_img)
+
+		width, height = img.size
+
+		photo = Photo.objects.filter(id=id_photo).values('id','photo')
+
+		img = resizeimage.resize_cover(img, [500, 500])
+
+		img.save(caption, img.format)
+
+		fd_img.close()
+
+		# Para la galeria
+
+		caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
+
+		fd_img = open(caption, 'r')
+
+		img = Image.open(fd_img)
+
+		img = resizeimage.resize_cover(img, [500, 600])
+
+		img.save(caption_galeria, img.format)
+
+		fd_img.close()
+
+		#para el home
+
+		fd_img = open(caption, 'r')
+
+		img = Image.open(fd_img)
+
+		img = resizeimage.resize_cover(img, [250, 300])
+
+		img.save(caption, img.format)
+
+		fd_img.close()
+
+		photo = ValuesQuerySetToDict(photo)
+
+		data_json = simplejson.dumps(photo)
+
+
+
+		return HttpResponse(data_json, content_type="application/json")
+
+
+@csrf_exempt
+def uploadvideo(request):
+
+		caption = request.FILES['file']
+
+		Video(video=caption).save()
+
+		id_video = Video.objects.all().values('id').order_by('-id')[0]['id']
+
+		videodata = Video.objects.filter(id=id_video).values('id','video')
+
+		videodata = ValuesQuerySetToDict(videodata)
+
+		data_json = simplejson.dumps(videodata)
+
+		return HttpResponse(data_json, content_type="application/json")
 
 
 @login_required(login_url="/autentificacion/")
@@ -441,9 +635,9 @@ def editarproducto(request,id):
 
 	if request.method == 'GET':
 
-		producto = Producto.objects.get(id=id)
+		producto = Producto.objects.filter(id=id)
 
-		return render(request, 'editarproducto.html',{'producto':producto})
+		return render(request, 'editarproducto.html',{'producto':producto[0]})
 
 	if request.method == 'POST':
 
@@ -467,206 +661,111 @@ def editarproducto(request,id):
 
 
 
-
+@csrf_exempt
 def vender(request):
 
 	user = request.user.id
+
+	id_user=None
 
 	usuario= None
 
 	if user:
 
-		usuario= AuthUser.objects.get(id=user)
+		id_user= AuthUser.objects.get(id=user).id
+
+		usuario=AuthUser.objects.get(id=user)
 
 	if request.method == 'POST':
 
 
-		print 'ooooooo',request.FILES
+		data = json.loads(request.body)['dato']
 
-		categoria = request.POST['categoria']
-		
-		titulo = request.POST['titulo']
+		titulo = data['titulo']
+		precio=data['precio']
+		descripcion=data['descripcion']
+		categoria=data['categoria']
+		subcategoria=data['subcategoria']
 
-		descripcion = request.POST['descripcion']
+		print 'hdhdh',data
 
-		precio = request.POST['precio']
 
-		Producto(user_id=user,titulo=titulo,categoria_id=categoria,descripcion=descripcion,precio=precio).save()
+		Producto(user_id=id_user,titulo=titulo,categoria_id=categoria,subcategoria_id=subcategoria,descripcion=descripcion,precio=precio).save()
 
 		id_producto = Producto.objects.all().values('id').order_by('-id')[0]['id']
 
-		y = 600
 
-		for p in request.FILES:
+		for d in data:
 
-			if p == 'picture':
 
-				photo =  request.FILES['picture']
+			print 'Queee...',d
 
-				#Photo
 
-				Photo(photo=photo).save()
+			if d=='image':
 
-				id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
+				image=data['image']
 
-				Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
+				print 'Imagen...',image
 
-				caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
+				Photoproducto(photo_id=image,producto_id=id_producto).save()
 
-				# Para la galeria
+			if d=='image_1':
+			
+				image_1 = data['image_1']
 
-				
+				Photoproducto(photo_id=image_1,producto_id=id_producto).save()
 
-				caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
+			if d=='image_2':
 
-				fd_img = open(caption, 'r')
+				image_2 = data['image_2']
 
-				img = Image.open(fd_img)
+				Photoproducto(photo_id=image_2,producto_id=id_producto).save()
 
-				
+			if d =='image_3':
 
-				img = resizeimage.resize_cover(img, [500, 600])
+				image_3 = data['image_3']
 
-				img.save(caption_galeria, img.format)
-				
-				fd_img.close()
+				Photoproducto(photo_id=image_3,producto_id=id_producto).save()
 
-				# Para el Home
 
-				fd_img = open(caption, 'r')
+			if d =='image_4':
 
-				img = Image.open(fd_img)
+				image_4 = data['image_4']
 
-				img = resizeimage.resize_cover(img, [250, 300])
+				Photoproducto(photo_id=image_4,producto_id=id_producto).save()
 
-				img.save(caption, img.format)
-				
-				fd_img.close()
 
+			if d =='image_5':
 
-			if p == 'picture1':
+				image_5 = data['image_5']
 
-				# Photo
+				Photoproducto(photo_id=image_5,producto_id=id_producto).save()
 
-				picture1 =  request.FILES['picture1']
 
-				Photo(photo=picture1).save()
+			if d =='image_6':
 
-				id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
+				image_6 = data['image_6']
 
-				Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
+				Photoproducto(photo_id=image_6,producto_id=id_producto).save()
 
-				caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
+			if d =='video':
 
-				# Para la galeria
+				video = data['video']
 
-				caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
+				Videoproducto(video_id=video,producto_id=id_producto).save()
 
-				fd_img = open(caption, 'r')
+		id_producto = simplejson.dumps(id_producto)
 
-				img = Image.open(fd_img)
 
-				img = resizeimage.resize_cover(img, [500, y])
+		return HttpResponse(id_producto, content_type="application/json")
 
-				img.save(caption_galeria, img.format)
-				
-				fd_img.close()
 
-				#Para el home
 
-				fd_img = open(caption, 'r')
+	categoria = Categoria.objects.all().values('id','nombre')
 
-				img = Image.open(fd_img)
 
-				img = resizeimage.resize_cover(img, [250, 300])
 
-				img.save(caption, img.format)
-				
-				fd_img.close()
-
-			if p=='picture2':
-
-						# Photo
-
-				picture2 =  request.FILES['picture2']
-
-				Photo(photo=picture2).save()
-
-				id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
-
-				Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
-
-				caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
-
-				# Para el galeria
-
-		 		caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
-
-				fd_img = open(caption, 'r')
-
-				img = Image.open(fd_img)
-
-				img = resizeimage.resize_cover(img, [500, y])
-
-				img.save(caption_galeria, img.format)
-				
-				fd_img.close()
-
-				#Para el home
-
-				fd_img = open(caption, 'r')
-
-				img = Image.open(fd_img)
-
-				img = resizeimage.resize_cover(img, [250, 300])
-
-				img.save(caption, img.format)
-				
-				fd_img.close()
-
-
-			if p=='picture3':
-
-						# Photo
-
-				picture3 =  request.FILES['picture3']
-
-				Photo(photo=picture3).save()
-
-				id_photo = Photo.objects.all().values('id').order_by('-id')[0]['id']
-
-				Photoproducto(photo_id=id_photo,producto_id=id_producto).save()
-
-				caption = '/var/www/html/'+str(Photo.objects.get(id=id_photo).photo)
-
-								# Para la galeria
-
-				caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
-
-				fd_img = open(caption, 'r')
-
-				img = Image.open(fd_img)
-
-				img = resizeimage.resize_cover(img, [500, y])
-
-				img.save(caption_galeria, img.format)
-				
-				fd_img.close()
-
-				#para el home
-
-				fd_img = open(caption, 'r')
-
-				img = Image.open(fd_img)
-
-				img = resizeimage.resize_cover(img, [250, 300])
-
-				img.save(caption, img.format)
-				
-				fd_img.close()
-
-
-	return render(request, 'vender.html',{'usuario':usuario})
+	return render(request, 'vender.html',{'usuario':usuario,'categoria':categoria})
 
 
 

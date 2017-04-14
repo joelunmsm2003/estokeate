@@ -1,0 +1,6 @@
+joel      1137  0.0  0.3 238768 30712 ?        Sl   11:32   0:00 /usr/bin/python3 /usr/share/system-config-printer/applet.py
+joel      1152  0.0  0.6 558164 53596 ?        Sl   11:32   0:00 /usr/bin/python3 /usr/bin/blueman-applet
+joel      2273  0.2  0.7 544656 60964 ?        Sl   11:34   0:11 /usr/bin/python /usr/bin/terminator
+root      8015  0.0  0.0  27084  6328 pts/2    S+   12:39   0:00 python procesos.py
+root      8016  0.0  0.0   4508   708 pts/2    S+   12:39   0:00 sh -c ps aux |grep python > log.txt
+root      8018  0.0  0.0  16760  1016 pts/2    S+   12:39   0:00 grep python

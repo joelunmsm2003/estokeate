@@ -23,8 +23,12 @@ urlpatterns = [
     url(r'^enviamensaje_perfil/$', 'app.views.enviamensaje_perfil'),
     url(r'^listamensajes/(\d+)/(\d+)$', 'app.views.listamensajes'),
     url(r'^listamensajes/(\d+)$', 'app.views.listamensajes'),
-    url(r'^busqueda/(\w+)$', 'app.views.busqueda'),
+    url(r'^busqueda/$', 'app.views.busqueda'),
     url(r'^actualizaperfil/$', 'app.views.actualizaperfil'),
-
+    url(r'^filtrarcategoria/(\w+)/(\d+)/', 'app.views.filtrarcategoria'),
+    url(r'^filtrarsubcategoria/(\w+)/(\d+)/', 'app.views.filtrarsubcategoria'),
+    url(r'^traesubcategorias/(\d+)', 'app.views.traesubcategorias'),
+    url(r'^uploadphoto/', 'app.views.uploadphoto'),
+    url(r'^uploadvideo/', 'app.views.uploadvideo'),
 
 ]

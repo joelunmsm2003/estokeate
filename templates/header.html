@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="myApp" ng-controller="myCtrl">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script>
+<!-- <script>
 var app = angular.module('myApp', []);
 
 app.config(function($interpolateProvider){
@@ -33,7 +33,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 
 });
-</script>
+</script> -->
 <head>
   <title>Estokealo</title>
   <meta charset="utf-8">
@@ -73,37 +73,43 @@ app.controller('myCtrl', function($scope,$http) {
       
 
 
-      <form class="form-inline">
+      <form class="form-inline my-2 my-sm-0" method="post" action="/busqueda/">
+      
+      {% csrf_token %}
+
+      <input class="form-control mr-sm-2" type="text" name='dato' placeholder="¿Que estas buscando?">
 
 
-      <input class="form-control mr-sm-2" type="text" ng-model='dato' placeholder="¿Que estas buscando?">
+      <button class='btn btn-primary' type='submit'  >Buscar</button>
 
 
-      <a href='/busqueda/{[{dato}]}' class='btn btn-primary'>Buscar</a>
       </form>
-
          
-    
+      <form class="form-inline my-2 my-sm-0">
 
       {% if usuario.username %}
 
       <li class="nav-item my-2 my-sm-0">
-        <a class="nav-link" href="/salir">Salir</a>
+        <a class='nav-link' href="/salir">Salir</a>
       </li>
 
-       <li class="nav-item">
-        <a class="nav-link" href="/productos/{{usuario.id}}">{{usuario.username}}</a>
+       <li class="nav-item my-2 my-sm-0">
+        <a class='nav-link' href="/productos/{{usuario.id}}">{{usuario.username}}</a>
       </li>
 
       {% else %}
 
-      <li class="nav-item">
-        <a class="nav-link" href="/ingresar">Ingresar</a>
+      <li class="nav-item my-2 my-sm-0">
+        <a class='nav-link' href="/ingresar">Ingresar</a>
       </li>
 
 
 
       {% endif %}
+
+      </form>
+
+  
 
     </ul>
 

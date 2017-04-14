@@ -17,7 +17,7 @@ app.config(function($interpolateProvider){
 app.controller('myCtrl', function($scope,$http) {
 
 
-    $scope.host = 'http://localhost/'
+    $scope.host = 'http://192.168.1.40/'
 
     $scope.firstName = "John";
     $scope.lastName = "Doe";
@@ -28,6 +28,8 @@ app.controller('myCtrl', function($scope,$http) {
     	console.log(response.data)
 
     	$scope.photos = response.data
+
+        $scope.photoprincipal = response.data[0].detalle
         
     });
 
@@ -113,7 +115,6 @@ app.controller('myCtrl', function($scope,$http) {
 
 
 
-
                                 <div ng-click='traeimagen(p)' class="card" >
 
                                 <img class="card-img-top" src="{[{host}]}{[{p.photo__photo}]}" alt="Card image cap">
@@ -133,6 +134,7 @@ app.controller('myCtrl', function($scope,$http) {
             </div>
 
     </div>
+
 
     <div class='col-md-2'>
     
@@ -186,7 +188,17 @@ app.controller('myCtrl', function($scope,$http) {
 </div>
 
 
+
+
 <h4>{{producto.descripcion}}</h4>
+
+<video width=500px class='img-fluid' controls>
+<source src="http://192.168.1.40/{{videos.video.video}}" type="video/mp4">
+<source src="movie.ogg" type="video/ogg">
+Your browser does not support the video tag.
+</video>
+
+
 
 </div>
 

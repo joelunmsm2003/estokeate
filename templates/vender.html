@@ -1,17 +1,505 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Vender Estokealo</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!doctype html>
+<html ng-app="myApp" ng-controller="myCtrl">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.js"></script>
 
- 
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-cookies.js'></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="height=device-height, initial-scale=1">
+
 </head>
+
+<script>
+var app = angular.module('myApp', ['ngCookies']);
+
+app.config(function($interpolateProvider){
+    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    })
+
+app.directive('fileModel', ['$parse', function ($parse) {
+            return {
+               restrict: 'A',
+               link: function(scope, element, attrs) {
+                  var model = $parse(attrs.fileModel);
+                  var modelSetter = model.assign;
+                  
+                  element.bind('change', function(){
+                     scope.$apply(function(){
+                        modelSetter(scope, element[0].files[0]);
+                     });
+                  });
+               }
+            };
+         }])
+
+app.controller('myCtrl', function($scope,$http,$cookies,$location) {
+
+
+    $scope.host = 'http://192.168.1.40/'
+
+    $scope.enviaventa ={}
+
+    //Primarea Imagen
+
+    $scope.setFile = function(element) {
+
+
+    $scope.statusimagen = 'Cargando imagen...'
+
+    $scope.currentFile = element.files[0];
+
+    console.log('file...',$scope.currentFile)
+
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+
+    $scope.image = event.target.result
+
+    $scope.$apply()
+
+    }
+    
+    reader.readAsDataURL(element.files[0]);
+
+    var file = $scope.myFile;
+
+    var fd = new FormData();
+
+    fd.append('file', $scope.currentFile);
+
+    $http.post('/uploadphoto/', fd, {
+    transformRequest: angular.identity,
+    headers: {'Content-Type': undefined}
+    })
+
+    .success(function(data){
+
+
+      console.log(data)
+
+      $scope.image = data[0].photo
+
+      $scope.enviaventa.image  = data[0].id
+
+      $scope.statusimagen =''
+
+
+    })
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+   
+
+    // Segunda Imagen
+
+    $scope.setFile1 = function(element) {
+
+    $scope.statusimagen1 = 'Cargando imagen...'
+
+    $scope.currentFile = element.files[0];
+
+    console.log('file...',$scope.currentFile)
+
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+
+    $scope.image_1 = event.target.result
+
+    $scope.$apply()
+
+    }
+    // when the file is read it triggers the onload event above.
+    reader.readAsDataURL(element.files[0]);
+
+    var file = $scope.myFile1;
+
+    var fd = new FormData();
+
+    fd.append('file', $scope.currentFile);
+
+    $http.post('/uploadphoto/', fd, {
+    transformRequest: angular.identity,
+    headers: {'Content-Type': undefined}
+    })
+
+    .success(function(data){
+
+
+      console.log(data)
+
+      $scope.image_1 = data[0].photo
+
+      $scope.enviaventa.image_1  = data[0].id
+
+      $scope.statusimagen1 =''
+
+
+    })
+
+
+
+    }
+
+    $scope.setFile2 = function(element) {
+
+
+    $scope.statusimagen2 = 'Cargando imagen...'
+
+    $scope.currentFile = element.files[0];
+
+    console.log('file...',$scope.currentFile)
+
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+
+    $scope.image_2 = event.target.result
+
+    $scope.$apply()
+
+    }
+    // when the file is read it triggers the onload event above.
+    reader.readAsDataURL(element.files[0]);
+
+    var file = $scope.myFile2;
+
+    var fd = new FormData();
+
+    fd.append('file', $scope.currentFile);
+
+    $http.post('/uploadphoto/', fd, {
+    transformRequest: angular.identity,
+    headers: {'Content-Type': undefined}
+    })
+
+    .success(function(data){
+
+
+      console.log(data)
+
+      $scope.image_2 = data[0].photo
+
+      $scope.enviaventa.image_2  = data[0].id
+
+      $scope.statusimagen2 =''
+
+
+    })
+
+
+    }
+
+      $scope.setFile3 = function(element) {
+
+    $scope.statusimagen3 = 'Cargando imagen...'
+
+    $scope.currentFile = element.files[0];
+
+    console.log('file...',$scope.currentFile)
+
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+
+    $scope.image_3 = event.target.result
+
+    $scope.$apply()
+
+    }
+    // when the file is read it triggers the onload event above.
+    reader.readAsDataURL(element.files[0]);
+
+        var file = $scope.myFile3;
+
+    var fd = new FormData();
+
+    fd.append('file', $scope.currentFile);
+
+    $http.post('/uploadphoto/', fd, {
+    transformRequest: angular.identity,
+    headers: {'Content-Type': undefined}
+    })
+
+    .success(function(data){
+
+
+      console.log(data)
+
+      $scope.image_3 = data[0].photo
+
+      $scope.enviaventa.image_3  = data[0].id
+
+      $scope.statusimagen3 =''
+
+
+    })
+
+
+    }
+
+      $scope.setFile4 = function(element) {
+
+    $scope.statusimagen4 = 'Cargando imagen...'
+
+    $scope.currentFile = element.files[0];
+
+    console.log('file...',$scope.currentFile)
+
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+
+    $scope.image_4 = event.target.result
+
+    $scope.$apply()
+
+    }
+    // when the file is read it triggers the onload event above.
+    reader.readAsDataURL(element.files[0]);
+
+        var file = $scope.myFile4;
+
+    var fd = new FormData();
+
+    fd.append('file', $scope.currentFile);
+
+    $http.post('/uploadphoto/', fd, {
+    transformRequest: angular.identity,
+    headers: {'Content-Type': undefined}
+    })
+
+    .success(function(data){
+
+
+      console.log(data)
+
+      $scope.image_4 = data[0].photo
+
+      $scope.enviaventa.image_4  = data[0].id
+
+      $scope.statusimagen4 =''
+
+
+    })
+
+
+    }
+
+      $scope.setFile5 = function(element) {
+
+    $scope.statusimagen5 = 'Cargando imagen...'
+
+    $scope.currentFile = element.files[0];
+
+    console.log('file...',$scope.currentFile)
+
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+
+    $scope.image_5 = event.target.result
+
+    $scope.$apply()
+
+    }
+    // when the file is read it triggers the onload event above.
+    reader.readAsDataURL(element.files[0]);
+
+        var file = $scope.myFile5;
+
+    var fd = new FormData();
+
+    fd.append('file', $scope.currentFile);
+
+    $http.post('/uploadphoto/', fd, {
+    transformRequest: angular.identity,
+    headers: {'Content-Type': undefined}
+    })
+
+    .success(function(data){
+
+
+      console.log(data)
+
+      $scope.image_5 = data[0].photo
+
+      $scope.enviaventa.image_5  = data[0].id
+
+      $scope.statusimagen5 =''
+
+
+    })
+
+
+    }
+
+      $scope.setFile6 = function(element) {
+
+    $scope.statusimagen6 = 'Cargando imagen...'
+
+    $scope.currentFile = element.files[0];
+
+    console.log('file...',$scope.currentFile)
+
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+
+    $scope.image_6 = event.target.result
+
+    $scope.$apply()
+
+    }
+    // when the file is read it triggers the onload event above.
+    reader.readAsDataURL(element.files[0]);
+
+        var file = $scope.myFile6;
+
+    var fd = new FormData();
+
+    fd.append('file', $scope.currentFile);
+
+    $http.post('/uploadphoto/', fd, {
+    transformRequest: angular.identity,
+    headers: {'Content-Type': undefined}
+    })
+
+    .success(function(data){
+
+
+      console.log(data)
+
+      $scope.image_6 = data[0].photo
+
+      $scope.enviaventa.image_6  = data[0].id
+
+      $scope.statusimagen5 =''
+
+
+    })
+
+
+    }
+
+    $scope.setFile7 = function(element) {
+
+    $scope.statusvideo ='Cargando video...'
+
+    $scope.currentFile = element.files[0];
+
+    var reader = new FileReader();
+
+    // when the file is read it triggers the onload event above.
+    reader.readAsDataURL(element.files[0]);
+
+    var file = $scope.myFile7;
+
+    var fd = new FormData();
+
+    fd.append('file', $scope.currentFile);
+
+    $http.post('/uploadvideo/', fd, {
+    transformRequest: angular.identity,
+    headers: {'Content-Type': undefined}
+    })
+
+    .success(function(data){
+
+
+      console.log(data)
+
+      $scope.video = data[0].video
+
+      $scope.enviaventa.video  = data[0].id
+
+      $scope.statusvideo = 'Completado 100%'
+
+
+    })
+
+
+    }
+
+
+
+
+        $scope.vender = function(data){
+
+
+            console.log(data)
+
+
+         var todo={dato: data}
+
+
+        $http({
+        url: "/vender/",
+        data: todo,
+        method: 'POST',
+        headers: {
+        'X-CSRFToken': $cookies['csrftoken']
+        }
+        }).
+        success(function(data) {
+
+          console.log('data',data)
+
+         window.location.href = '../producto/'+data;
+        
+       
+
+        })
+
+    }
+
+
+
+
+    $scope.traesubcategorias = function(data){
+
+          $scope.enviaventa.categoria = data
+
+              $http.get("/traesubcategorias/"+data)
+              .then(function(response) {
+
+                console.log('traesubcategorias...',response.data)
+
+                $scope.subcategorias = response.data
+
+
+
+                  
+              });
+
+
+    }
+
+
+
+});
+</script>
+
+
+
 <body>
 
 {% include "header.html" %}
 
-<div class="container">
+<div class="container-fluid">
 
 
 
@@ -20,79 +508,202 @@
 
 <div class='panel-body'>
 
-  <form method="post" action="/vender/" enctype="multipart/form-data">
+  <form ng-submit='vender(enviaventa)'>
   {% csrf_token %}
 
     <div class="form-group">
+      
+
+
+      <div class="row no-gutters">
+
+      <div class="col-6">
+
       <label for="email">Categoria:</label>
-      <select class='form-control' name='categoria' required>
+        
+          <ul class="list-group" >
 
-      <option value='1'>Vehiculos</option>
+          {% for c in categoria %}
 
-      <option value='2'>Propiedades-Inmuebles</option>
+          <li class="list-group-item" ng-click='traesubcategorias({{c.id}})'><a  >{{c.nombre}} </a></li>
 
-      <option value='3'>Teléfonos-Tablets</option>
+          {% endfor %}
 
-      <option value='4'>Electrónicos-Video</option>
+          </ul>
 
-      <option value='5'>Casa-Muebles-Jardin</option>
+      </div>
 
-      <option value='6'>Moda-Belleza</option>
+      <div class="col-6">
 
-      <option value='7'>Hobbies-Arte-Diseño</option>
+      <label for="email">Subcategoria:</label>
+        
+              <ul class="list-group" ng-repeat="c in subcategorias">
 
-      <option value='8'>Animales y Mascotas</option>
+              
+              
+              <li ng-click='enviaventa.subcategoria=c.id' class="list-group-item"><a  >{[{c.nombre}]} </a></li>
 
-      <option value='9'>Empleos y Servicios</option>
+              
+
+              </ul>
+  
+
+      </div>
 
 
-      </select>
+      
+
+      </div>
+
+      
+
+
+
     </div>
-<!--     <div class="form-group">
-      <label for="pwd">Agregar fotos para vender mas rapido</label>
-      <input type="password" class="form-control" id="pwd" placeholder="Enter password">
-    </div> -->
+
 
     <div class="form-group">
       <label for="pwd">Titulo</label>
-      <input type="text" class="form-control" name = 'titulo' required id="pwd"  placeholder="Ingrese titulo">
+      <input type="text" class="form-control" ng-model='enviaventa.titulo' name = 'titulo' required id="pwd"  placeholder="Ingrese titulo">
     </div>
 
     <div class="form-group">
       <label for="pwd">Descripcion</label>
-      <textarea type="text" class="form-control" name='descripcion' rows='12' required id="pwd"  placeholder="Agregar descripcion"></textarea>
+      <textarea type="text" class="form-control" ng-model='enviaventa.descripcion'  name='descripcion' rows='5' required id="pwd"  placeholder="Agregar descripcion"></textarea>
     </div>
 
     <div class="form-group">
       <label for="pwd">Precio</label>
-      S/.<input type="number" class="form-control" name = 'precio' required id="pwd"  placeholder="Ingrese precio">
+      S/.<input type="number" class="form-control" ng-model='enviaventa.precio' name = 'precio' required id="pwd"  placeholder="Ingrese precio">
     </div>
 
 
 
     <div class='form-group'>
 
-      <input type = "file"  
-      placeholder = "Picture" name = "picture" />
+    <label for="pwd">Fotos</label>
+    
+    <div class='row no-gutters col-md-10'>
+    
+    <div class="col-md-6">
+
+
+
+    <img height='200px'  src="{[{host}]}{[{image}]}" class='img-fluid'>
+
+    
+    <small>{[{statusimagen}]}</small>
+
+
+    <input onchange="angular.element(this).scope().setFile(this)" accept="image/*" type = "file" file-model = "myFile"/>
+
+    
+
+    </div>
+
+    
+    <div class="col-md-6">
+
+        <div class='row no-gutters'>
+ 
+            <div class="col-md-4">
+
+
+            <img height='200px'  src="{[{host}]}{[{image_1}]}" class='img-fluid'>
+
+            <small>{[{statusimagen1}]}</small>
+
+            <input onchange="angular.element(this).scope().setFile1(this)" accept="image/*" type = "file" file-model = "myFile1"/>
+
+            </div>
+            
+
+            <div class="col-md-4">
+
+            <img height='200px'  src="{[{host}]}{[{image_2}]}" class='img-fluid'>
+
+            <small>{[{statusimagen2}]}</small>
+
+            <input onchange="angular.element(this).scope().setFile2(this)" accept="image/*" type = "file" file-model = "myFile2"/>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+            <img height='200px'  src="{[{host}]}{[{image_3}]}" class='img-fluid'>
+
+            <small>{[{statusimagen3}]}</small>
+
+            <input onchange="angular.element(this).scope().setFile3(this)" accept="image/*" type = "file" file-model = "myFile3"/>
+
+
+            </div>
+<!-- 
+            <div class="col-md-4">
+
+              <img height='200px'  src="{[{host}]}{[{image_4}]}" class='img-fluid'>
+         
+              <small>{[{statusimagen4}]}</small>
+
+             <input onchange="angular.element(this).scope().setFile4(this)" accept="image/*" type = "file" file-model = "myFile4"/>
+
+
+            </div>
+            
+
+            <div class="col-md-4">
+
+
+              <img height='200px'  src="{[{host}]}{[{image_5}]}" class='img-fluid'>
+
+             
+              <small>{[{statusimagen5}]}</small>
+
+             <input onchange="angular.element(this).scope().setFile5(this)" accept="image/*" type = "file" file-model = "myFile5"/>
+
+
+            </div>
+
+
+            <div class="col-md-4">
+
+
+            <img height='200px'  src="{[{host}]}{[{image_6}]}" class='img-fluid'>
+         
+            <small>{[{statusimagen6}]}</small>
+
+
+             <input onchange="angular.element(this).scope().setFile6(this)" accept="image/*" type = "file" file-model = "myFile6"/>
+
+
+            </div> 
+ -->
+
+        </div>
+
+       
+      
+    </div>
+
+
+
+    </div>
+
+    
+
     </div>
 
     <div class='form-group'>
 
-      <input type = "file"  
-      placeholder = "Picture" name = "picture1" />
-    </div>
+    <label for="pwd">Video</label>
+    <br>
+    <small>{[{statusvideo}]}</small>
 
-    <div class='form-group'>
-
-      <input type = "file"  
-      placeholder = "Picture" name = "picture2" />
-    </div>
+ 
+    <input onchange="angular.element(this).scope().setFile7(this)" accept="video/*" type = "file" file-model = "myFile7"/>
 
 
-  <div class='form-group'>
-
-      <input type = "file"  
-      placeholder = "Picture" name = "picture3" />
     </div>
 
 
@@ -109,3 +720,42 @@
   </div>
 
 
+</body>
+
+</html>
+
+<style type="text/css">
+  
+
+
+[type='file'] {
+  -webkit-appearance: none;
+    color:#fff;
+   font-family: Open;
+}
+[type='file']::-webkit-file-upload-button {
+    border-radius: 4px;
+    border: 0;
+    background: #ffffff;
+    color: #00a1e1;
+    border: 1px solid #00a1e1;
+    padding: 8px;
+    font-family: Open Sans;
+    font-size: 15px;
+    cursor: pointer;
+
+
+
+}
+[type='file']::-webkit-file-upload-button:active, [type='file']::-webkit-file-upload-button:focus {
+  outline: 0;
+}
+
+input[type="file"] {
+    display: block;
+    opacity: 1.4;
+    
+}
+     
+
+</style>
