@@ -48,9 +48,7 @@ app.controller('myCtrl', function($scope,$http) {
 </script>
 
 
-<div class='container'>
-
-<br>
+<div class='container-fluid'>
 
 
 
@@ -96,6 +94,8 @@ app.controller('myCtrl', function($scope,$http) {
     
     <div class='col-md-12 col-xs-12 col-sm-12'>
 
+            <div class='container'>
+
 
              <div class="slider responsive">
 
@@ -106,10 +106,12 @@ app.controller('myCtrl', function($scope,$http) {
 
             </div>
 
+            </div>
+
     </div>
 
 
-    <div class='col-md-2 col-xs-12 col-sm-12'>
+    <div class='col-12'>
     
             <div class='panel'>
 
@@ -117,14 +119,34 @@ app.controller('myCtrl', function($scope,$http) {
 
             <div class='row'>
 
-            <div class='col-md-12 col-xs-2'>
+            <div class='col-4'>
 
-            <center><h4>{{producto.user.username}}</h4></center>
+            <div class="row">
 
-            <center><h5>{{producto.user.telefono}}</h5></center>
+                    <div class='col-8'>
 
-            <img src="{{host}}{{producto.user.photo}}" class='img-fluid' style="border-radius:100%; padding:18px;">
+                    <img src="{{host}}{{producto.user.photo}}" class='img-fluid rounded-circle' ">
 
+
+                 
+                    </div>
+
+                    <div class="col-4">
+
+                       <center><h4>{{producto.user.username}}</h4></center>
+
+                    <center><h5>{{producto.user.telefono}}</h5></center>
+                    
+                        
+
+                  
+
+                    </div>
+                
+
+            </div>
+
+        
             </div>
 
             </div>
@@ -166,7 +188,7 @@ app.controller('myCtrl', function($scope,$http) {
 <h4>{{producto.descripcion}}</h4>
 
 <video width=500px class='img-fluid' controls>
-<source src="http://192.168.1.40/{{videos.video.video}}" type="video/mp4">
+<source src="{{host}}/{{videos.video.video}}" type="video/mp4">
 <source src="movie.ogg" type="video/ogg">
 Your browser does not support the video tag.
 </video>
