@@ -20,7 +20,7 @@ app.config(function($interpolateProvider){
 app.controller('myCtrl', function($scope,$http) {
 
 
-    $scope.host = 'http://estokealo.com:8080/'
+    $scope.host = 'http://192.168.1.40/'
 
 
 
@@ -81,26 +81,31 @@ app.controller('myCtrl', function($scope,$http) {
     </div>
 
 
-<div class='container'>
+<div class='container-fluid'>
+
 
 <div class='row'>
 		{% for producto in productos %}
 
 
  
-			<div class='col-md-3 card1'>
+			<div class='col-6  col-lg-2 col-lg-2 col-sm-4 card1'>
 
          <a class='item' href="/producto/{{producto.id}}">
     
+
       
 			<div class="card" >
-			  <img class="card-img-top" src="{[{host}]}{{producto.photo.photo__photo}}" alt="Card image cap">
+			  <img class="card-img-top img-fluid" src="{{host}}{{producto.photo.photo__photo}}" alt="Card image cap">
 			  <div class="card-block">
 			    <h4 class="card-title">{{producto.title}}</h4>
 			    <p class="card-text">{{producto.descripcion}}</p>
 			    
 			  </div>
 			</div>
+
+
+
        </a>
 			</div>
      

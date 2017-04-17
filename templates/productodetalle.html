@@ -17,7 +17,6 @@ app.config(function($interpolateProvider){
 app.controller('myCtrl', function($scope,$http) {
 
 
-    $scope.host = 'http://estokealo.com:8080/'
 
     $scope.firstName = "John";
     $scope.lastName = "Doe";
@@ -28,6 +27,8 @@ app.controller('myCtrl', function($scope,$http) {
     	console.log(response.data)
 
     	$scope.photos = response.data
+
+        $scope.photoprincipal = response.data[0].detalle
         
     });
 
@@ -46,6 +47,9 @@ app.controller('myCtrl', function($scope,$http) {
 <div class='container'>
 
 <br>
+
+
+
 
 <div class='row'>
 
@@ -94,7 +98,7 @@ app.controller('myCtrl', function($scope,$http) {
                 	<div class='col-md-6'>
                 	
                 			
-                				<img class="img-responsive" src="{[{host}]}{[{photoprincipal}]}" alt="Card image cap">
+                				<img class="img-responsive" src="{{host}}{[{photoprincipal}]}" alt="Card image cap">
 
                 			
 
@@ -110,10 +114,9 @@ app.controller('myCtrl', function($scope,$http) {
 
 
 
-
                                 <div ng-click='traeimagen(p)' class="card" >
 
-                                <img class="card-img-top" src="{[{host}]}{[{p.photo__photo}]}" alt="Card image cap">
+                                <img class="card-img-top" src="{{host}}{[{p.photo__photo}]}" alt="Card image cap">
 
                                 </div>
 
@@ -131,11 +134,27 @@ app.controller('myCtrl', function($scope,$http) {
 
     </div>
 
+
     <div class='col-md-2'>
     
             <div class='panel'>
 
             <div class='panel-body'>
+
+            <div class='row'>
+
+            <div class='col-md-12'>
+
+            <center><h4>{{producto.user.username}}</h4></center>
+
+            <center><h5>{{producto.user.telefono}}</h5></center>
+
+            <img src="{{host}}{{producto.user.photo}}" class='img-fluid' style="border-radius:100%; padding:18px;">
+
+            </div>
+
+            </div>
+
 
             <form method="post" action="/enviamensaje/" enctype="multipart/form-data">
             {% csrf_token %}
@@ -148,7 +167,6 @@ app.controller('myCtrl', function($scope,$http) {
 
             <textarea type="text" class="form-control" name='mensaje' rows='12' required id="pwd"  placeholder="Mensaje"></textarea>
             </div>
-
 
 
 
@@ -169,7 +187,17 @@ app.controller('myCtrl', function($scope,$http) {
 </div>
 
 
+
+
 <h4>{{producto.descripcion}}</h4>
+
+<video width=500px class='img-fluid' controls>
+<source src="http://192.168.1.40/{{videos.video.video}}" type="video/mp4">
+<source src="movie.ogg" type="video/ogg">
+Your browser does not support the video tag.
+</video>
+
+
 
 </div>
 

@@ -50,6 +50,10 @@ class AuthUser(models.Model):
     is_staff = models.IntegerField()
     is_active = models.IntegerField()
     date_joined = models.DateTimeField()
+    photo=models.FileField(upload_to='static')
+    telefono = models.CharField(max_length=1000)
+    direccion = models.CharField(max_length=1000)
+
 
     class Meta:
         managed = False
@@ -83,7 +87,13 @@ class Categoria(models.Model):
         managed = False
         db_table = 'categoria'
 
+class Subcategoria(models.Model):
+    categoria = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='categoria', blank=True, null=True)
+    nombre = models.CharField(max_length=100, blank=True, null=True)
 
+    class Meta:
+        managed = False
+        db_table = 'subcategoria'
 
 
 class Distrito(models.Model):
@@ -145,6 +155,13 @@ class Photo(models.Model):
         managed = False
         db_table = 'photo'
 
+class Video(models.Model):
+    video = models.FileField(upload_to='static')
+
+    class Meta:
+        managed = False
+        db_table = 'video'
+
 
 class Photoproducto(models.Model):
     photo = models.ForeignKey(Photo, models.DO_NOTHING, db_column='photo', blank=True, null=True)
@@ -154,6 +171,15 @@ class Photoproducto(models.Model):
         managed = False
         db_table = 'photoproducto'
 
+class Videoproducto(models.Model):
+    video = models.ForeignKey(Video, models.DO_NOTHING, db_column='video', blank=True, null=True)
+    producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='producto', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'videoproducto'
+
+
 
 class Producto(models.Model):
     user = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='user', blank=True, null=True)
@@ -161,6 +187,7 @@ class Producto(models.Model):
     titulo = models.CharField(max_length=1000, blank=True, null=True)
     descripcion = models.CharField(max_length=1000, blank=True, null=True)
     precio = models.IntegerField(blank=True, null=True)
+    subcategoria = models.ForeignKey(Subcategoria, models.DO_NOTHING, db_column='subcategoria', blank=True, null=True)
 
     class Meta:
         managed = False

@@ -49,7 +49,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 <br>
 
-<h6>Se encontraron {{total}} resultados para <strong>"{{dato}}"</strong> en Perú </h6>
+<h6>Se encontraron {{totalcat}} resultados para <strong>"{{dato}}"</strong> en Perú </h6>
 
 
 
@@ -66,11 +66,35 @@ app.controller('myCtrl', function($scope,$http) {
 			
 		<ul class="list-group">
 
+	 
+
+	 
+	    
+  		<li class="list-group-item"><a href='#' >{{categoria}} </a><span style='float:right;padding-left: 12px;'>({{totalcat}})</span></li>
+
+		
+
+
+
+	    </ul>
+	  
+	  </div>
+	</div>
+
+
+	<div class="card">
+	  <div class="card-header">
+	    Subategorias
+	  </div>
+	  <div class="card-block ">
+			
+		<ul class="list-group">
+
 	  	{% for c in resultados %}
 
 	 
 	    
-  		<li class="list-group-item"><a href='/filtrarcategoria/{{dato}}/{{c.categoria}}/' >{{c.categoria__nombre}} </a><span style='float:right;padding-left: 12px;'>({{c.total}})</span></li>
+  		<li class="list-group-item"><a href='/filtrarsubcategoria/{{dato}}/{{c.subcategoria}}/' >{{c.subcategoria__nombre}} </a><span style='float:right;padding-left: 12px;'>({{c.total}})</span></li>
 
 		
 
@@ -80,9 +104,6 @@ app.controller('myCtrl', function($scope,$http) {
 	  
 	  </div>
 	</div>
-
-
-
 
 
 	<div class="card">
