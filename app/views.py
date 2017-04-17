@@ -31,7 +31,7 @@ import requests
 import os
 from PIL import Image
 from resizeimage import resizeimage
-
+from estokeate.settings import *
 from datetime import datetime,timedelta
 
 from django.contrib.auth import authenticate
@@ -58,7 +58,7 @@ def home(request):
 
 		usuario= AuthUser.objects.get(id=user)
 
-	return render(request, 'home.html',{'productos':productos,'usuario':usuario})
+	return render(request, 'home.html',{'productos':productos,'usuario':usuario,'host':host})
 
 
 def autentificacion(request):
@@ -93,7 +93,7 @@ def perfil(request):
 	usuario= AuthUser.objects.get(id=user)
 
 
-	return render(request, 'perfil.html',{'productos':productos,'usuario':usuario,'miperfil':'active'})
+	return render(request, 'perfil.html',{'productos':productos,'usuario':usuario,'miperfil':'active','host':host})
 
 
 @login_required(login_url="/autentificacion")
@@ -161,7 +161,7 @@ def actualizaperfil(request):
 
 
 
-		return render(request, 'perfil.html',{'productos':productos,'usuario':usuario,'miperfil':'active'})
+		return render(request, 'perfil.html',{'productos':productos,'usuario':usuario,'miperfil':'active','host':host})
 
 def filtrarcategoria(request,dato,categoria):
 
@@ -196,7 +196,7 @@ def filtrarcategoria(request,dato,categoria):
 
 
 
-	return render(request, 'filtrasubcategoria.html',{'productos':productos,'dato':dato,'subcat':subcat,'categoria':cat.nombre,'resultados':resultados,'totalcat':productos.count()})
+	return render(request, 'filtrasubcategoria.html',{'host':host,'productos':productos,'dato':dato,'subcat':subcat,'categoria':cat.nombre,'resultados':resultados,'totalcat':productos.count()})
 
 def filtrarsubcategoria(request,dato,subcategoria):
 
@@ -235,7 +235,7 @@ def filtrarsubcategoria(request,dato,subcategoria):
 
 
 
-	return render(request, 'resultadosubcategoria.html',{'productos':productos,'dato':dato,'subcat':subcat,'categoria':cat,'resultados':resultados,'totalsubcat':productos.count(),'totalcat':totalcat})
+	return render(request, 'resultadosubcategoria.html',{'host':host,'productos':productos,'dato':dato,'subcat':subcat,'categoria':cat,'resultados':resultados,'totalsubcat':productos.count(),'totalcat':totalcat})
 
 
 
@@ -253,7 +253,7 @@ def chat(request):
 	usuario= AuthUser.objects.get(id=user)
 
 
-	return render(request, 'chat.html',{'productos':productos,'usuario':usuario,'mimensaje':'active'})
+	return render(request, 'chat.html',{'host':host,'productos':productos,'usuario':usuario,'mimensaje':'active'})
 
 # Prductos de un usuario
 
@@ -280,7 +280,7 @@ def productos(request,id):
 
 	usuario= AuthUser.objects.get(id=user)
 
-	return render(request, 'productosuser.html',{'productos':productos,'usuario':usuario,'mianuncio':'active'})
+	return render(request, 'productosuser.html',{'host':host,'productos':productos,'usuario':usuario,'mianuncio':'active'})
 
 # Compradores de un usuario
 
@@ -374,7 +374,7 @@ def producto(request,id):
 		videos = Videoproducto.objects.filter(producto_id=id)[0]
 
 
-	return render(request, 'productodetalle.html',{'producto':producto,'usuario':usuario,'videos':videos})
+	return render(request, 'productodetalle.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
 
 
 
@@ -415,7 +415,7 @@ def busqueda(request):
 
 
 			
-		return render(request, 'busqueda.html',{'categoria':categoria,'productos':productos,'total':total,'dato':dato,'resultados':resultados})
+		return render(request, 'busqueda.html',{'host':host,'categoria':categoria,'productos':productos,'total':total,'dato':dato,'resultados':resultados})
 
 
 def productojson(request,id):
@@ -454,7 +454,7 @@ def usuario(request,id):
 
 	usuario= AuthUser.objects.get(id=user)
 
-	return render(request, 'usuario.html',{'usuario':usuario})
+	return render(request, 'usuario.html',{'host':host,'usuario':usuario})
 
 
 
@@ -655,7 +655,7 @@ def editarproducto(request,id):
 		p.save()
 
 
-		return render(request, 'editarproducto.html',{'producto':p})
+		return render(request, 'editarproducto.html',{'producto':p,'host':host})
 
 
 
@@ -765,7 +765,7 @@ def vender(request):
 
 
 
-	return render(request, 'vender.html',{'usuario':usuario,'categoria':categoria})
+	return render(request, 'vender.html',{'host':host,'usuario':usuario,'categoria':categoria})
 
 
 
@@ -801,4 +801,4 @@ def ingresar(request):
 		
 		else:
 
-			return render(request, 'login.html',{})
+			return render(request, 'login.html',{'host':host})
