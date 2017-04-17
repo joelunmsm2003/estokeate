@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html ng-app="myApp" ng-controller="myCtrl">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="/static/slick-carousel/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/slick-carousel/slick/slick-theme.css"/>
 <body>
 
 {% include "header.html" %}
@@ -90,44 +94,14 @@ app.controller('myCtrl', function($scope,$http) {
 
 <div class='row'>
     
-    <div class='col-md-10 col-xs-12 col-sm-12'>
-
-            <div class='row'>
+    <div class='col-md-12 col-xs-12 col-sm-12'>
 
 
-                	<div class='col-md-6 col-xs-6 col-sm-6'>
-                	
-                			
-                				<img class="img-responsive" src="{{host}}{[{photoprincipal}]}" alt="Card image cap">
+             <div class="slider responsive">
 
-                			
-
-                	</div>
-
-                    <div class='col-md-6 col-xs-6 col-sm-6'>
-
-
-
-                                <div class='row'>
-
-                                <div class='col-md-6 col-xs-12 col-sm-12 detalleproducto' ng-repeat="p in photos">
-
-
-
-                                <div ng-click='traeimagen(p)' class="card" >
-
-                                <img class="card-img-top" src="{{host}}{[{p.photo__photo}]}" alt="Card image cap">
-
-                                </div>
-
-
-
-
-
-                                </div>
-                                </div>
-
-                	</div>
+                    <div ng-repeat="p in photos">
+                    <div ><h3><img src="{{host}}{[{p.detalle}]}" class='img-fluid'></h3></div>
+                    </div>
 
 
             </div>
@@ -198,8 +172,13 @@ Your browser does not support the video tag.
 </video>
 
 
-   
+
+
 </div>
+
+    <script type="text/javascript" src="/static/slick-carousel/slick/slick.min.js"></script>
+    <script type="text/javascript" src="/static/js/carousel.js"></script>
+
 
 </body>
 </html>

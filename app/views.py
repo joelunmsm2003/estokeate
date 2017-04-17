@@ -371,7 +371,7 @@ def producto(request,id):
 		videos = Videoproducto.objects.filter(producto_id=id)[0]
 
 
-	return render(request, 'productodetalle.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
+	return render(request, 'productodetallemovil.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
 
 
 
