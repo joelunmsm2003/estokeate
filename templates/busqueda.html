@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+	<html ng-app="myApp" ng-controller="myCtrl">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<head>
+		<meta charset="UTF-8">
+		<title>{{dato}}</title>
+	</head>
+
+
+	<script>
+var app = angular.module('myApp', []);
+
+app.config(function($interpolateProvider){
+    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    });
+app.controller('myCtrl', function($scope,$http) {
+
+
+    $scope.host = 'http://localhost/'
+
+    $scope.firstName = "John";
+    $scope.lastName = "Doe";
+
+    $http.get("/productojson/{{producto.id}}")
+    .then(function(response) {
+
+    	console.log(response.data)
+
+    	$scope.photos = response.data
+        
+    });
+
+    $scope.traeimagen=function(data){
+
+    	console.log(data)
+
+    	$scope.photoprincipal = data.detalle
+    }
+
+
+});
+</script>
+
+	<body>
+
+	{% include "header.html" %}
+			
+<div class='container'>
+
+<br>
+
+<div class="row">
+	
+
+<div class="col-md-4">
+
+	<div class="card">
+	  <div class="card-header">
+	    Categorias
+	  </div>
+	  <div class="card-block blockcategoria">
+
+	  	{% for c in categoria %}
+
+	    <p class="card-text categoria"><a href='/busqueda/{{c.nombre}}' >{{c.nombre}}</a></p>
+
+	    {% endfor %}
+	  
+	  </div>
+	</div>
+		
+	
+
+
+
+</div>
+
+
+<div class="col-md-8">
+
+
+
+
+
+		{% for producto in productos %}
+
+
+		<div class="row">
+				
+			<div class="col-md-4">
+
+
+			<img class="img-fluid" src="{[{host}]}{{producto.photo.photo__photo}}" alt="Card image cap">
+
+			</div>
+			
+			<div class="col-md-8">
+
+			{{producto.titulo}}
+
+			{{producto.descripcion}}
+				
+
+
+			</div>
+
+		</div>
+
+
+
+     
+
+		{% endfor %}
+			
+
+	
+
+</div>
+
+</div>
+
+
+
+
+
+		</div>
+
+	</body>
+
+
+	<style type="text/css">
+		
+		.categoria{
+
+padding-left: 25px;
+padding-top: 8px;
+padding-bottom: 8px;
+border: 1px solid #fff;
+margin-bottom: 0 !important;
+
+		}
+
+		.categoria:hover{
+
+			border: 1px solid #747577;
+   
+				
+		}
+
+		.blockcategoria{
+
+			padding-left: 0px;
+    padding-right: 0px;
+
+		}
+
+
+
+	</style>
+	</html>

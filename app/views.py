@@ -196,6 +196,26 @@ def producto(request,id):
 	return render(request, 'productodetalle.html',{'producto':producto,'usuario':usuario})
 
 
+
+def busqueda(request,dato):
+
+	user = request.user.id
+
+	usuario = None
+
+	if user:
+
+		usuario =AuthUser.objects.get(id=user)
+
+	categoria = Categoria.objects.all()
+
+		
+	productos = Producto.objects.filter(descripcion__contains=dato)
+
+		
+	return render(request, 'busqueda.html',{'categoria':categoria,'productos':productos,'usuario':usuario,'dato':dato})
+
+
 def productojson(request,id):
 
 	user = request.user.id
