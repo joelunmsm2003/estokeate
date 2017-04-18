@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 print 'BASE_DIR',BASE_DIR
 
-host = 'http://192.168.1.40/'
+host = 'http://192.168.40.231/'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -30,7 +30,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-host= 'http://localhost/'
 
 PROJECT_PATH = os.path.dirname(os.path.realpath(__file__))
 

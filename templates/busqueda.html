@@ -70,7 +70,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 	 
 	    
-  		<li class="list-group-item"><a href='/filtrarcategoria/{{dato}}/{{c.categoria}}/' >{{c.categoria__nombre}} </a><span style='float:right;padding-left: 12px;'>({{c.total}})</span></li>
+  		<li class="list-group-item"><a href='/filtrarcategoria/{{dato}}/{{c.categoria}}/'><span class='iconocat' style='padding-right: 4px; '><i class="fa fa-{{c.categoria__icon}}" aria-hidden="true"></i></span> {{c.categoria__nombre}} </a><span style='float:right;padding-left: 12px;'>({{c.total}})</span></li>
 
 		
 
@@ -85,7 +85,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 
 
-	<div class="card">
+<!-- 	<div class="card">
 	  <div class="card-header">
 	    Precio
 	  </div>
@@ -107,7 +107,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 	  </div>
 	</div>
-
+ -->
 
 
 		
@@ -137,7 +137,7 @@ app.controller('myCtrl', function($scope,$http) {
 			<div class="card" >
 			  <img class="card-img-top img-fluid" src="{{host}}{{producto.photo.photo__photo}}" alt="Card image cap">
 			  <div class="card-block">
-			    <h4 class="card-title">{{producto.title}}</h4>
+			    <h4 class="card-title">{{producto.titulo}}</h4>
 			    <p class="card-text">{{producto.descripcion}}</p>
 			    
 			  </div>

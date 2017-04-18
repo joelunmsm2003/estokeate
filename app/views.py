@@ -64,7 +64,9 @@ def home(request):
 
 		usuario= AuthUser.objects.get(id=user)
 
-	return render(request, 'home.html',{'productos':productos,'usuario':usuario,'host':host})
+	categoria = Categoria.objects.all().values('id','nombre','icon')
+
+	return render(request, 'home.html',{'productos':productos,'usuario':usuario,'host':host,'categoria':categoria})
 
 
 def autentificacion(request):
@@ -208,21 +210,15 @@ def filtrarsubcategoria(request,dato,subcategoria):
 
 	user = request.user.id
 
-
-
 	productos= Producto.objects.filter(descripcion__contains=dato,subcategoria_id=subcategoria)
  
-
 	subcat = Subcategoria.objects.get(id=subcategoria)
 
 	cat = Categoria.objects.get(id=subcategoria)
 
 	totalcat = Producto.objects.filter(descripcion__contains=dato,categoria_id=cat.id).count()
  
-
 	resultados= Producto.objects.filter(descripcion__contains=dato).values('subcategoria','subcategoria__nombre').annotate(total=Count('subcategoria'))
-
-
 
 	usuario = None
 
@@ -289,6 +285,26 @@ def productos(request,id):
 
 	return render(request, 'productosuser.html',{'host':host,'productos':productos,'usuario':usuario,'mianuncio':'active'})
 
+# Productos por categoria
+
+def productocategoria(request,id):
+
+	producto = Producto.objects.filter(categoria_id=id).values('id','titulo','descripcion','precio')
+
+	for p in range(len(producto)):
+
+		print str(Photoproducto.objects.filter(producto_id=producto[p]['id']).values('photo','photo__photo')[0]['photo__photo'])
+		producto[p]['detalle'] = str(Photoproducto.objects.filter(producto_id=producto[p]['id']).values('photo','photo__photo')[0]['photo__photo'])
+
+
+
+	producto = ValuesQuerySetToDict(producto)
+
+	producto = simplejson.dumps(producto)
+
+	return HttpResponse(producto, content_type="application/json")
+
+
 # Compradores de un usuario
 
 @login_required(login_url="/autentificacion/")
@@ -349,9 +365,6 @@ def listamensajes(request,user,producto):
 	
 		mensajes1[p]['photo_producto'] = str(Photoproducto.objects.filter(producto_id=mensajes1[p]['producto'])[0].photo.photo)
 		
-
-
-
 	mensajes = ValuesQuerySetToDict(mensajes) + ValuesQuerySetToDict(mensajes1)
 
 	mensajes = sorted(mensajes,key=ordenar)
@@ -431,7 +444,7 @@ def busqueda(request):
 				p.photo = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[0]
 
 
-		resultados= Producto.objects.filter(descripcion__contains=dato).values('categoria','categoria__nombre').annotate(total=Count('categoria'))
+		resultados= Producto.objects.filter(descripcion__contains=dato).values('categoria','categoria__nombre','categoria__icon').annotate(total=Count('categoria'))
 
 
 			
