@@ -470,7 +470,13 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
 
 
+
     $scope.traesubcategorias = function(data){
+
+    
+          $scope.datacat = data
+
+          console.log('$scope.datacat',$scope.datacat)
 
           $scope.enviaventa.categoria = data
 
@@ -518,7 +524,7 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
       <div class="row no-gutters">
 
-      <div class="col-6">
+      <div class="col-6" style='padding: 12px;'>
 
       <label for="email">Categoria:</label>
         
@@ -526,7 +532,9 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
           {% for c in categoria %}
 
-          <li class="list-group-item" ng-click='traesubcategorias({{c.id}})'><span class='iconocat' style='padding-right: 12px; '><i class="fa fa-{{c.icon}}" aria-hidden="true"></i></span>  {{c.nombre}} </a></li>
+
+
+          <li  class="list-group-item" ng-class="{'activo': datacat==={{c.id}}}" href="/hotel/{{rows.id}}" ng-click='traesubcategorias({{c.id}})'><span class='iconocat' style='padding-right: 12px; '><i class="fa fa-{{c.icon}}" aria-hidden="true"></i></span>  {{c.nombre}} </a></li>
 
           {% endfor %}
 
@@ -534,7 +542,7 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
       </div>
 
-      <div class="col-6">
+      <div class="col-6" style='padding: 12px;'>
 
       <label for="email">Subcategoria:</label>
         
@@ -767,6 +775,12 @@ input[type="file"] {
 .iconocat:hover{
 
   color: #fff;
+}
+
+.activo{
+
+  background: #234;
+  color:#fff;
 }
      
 
