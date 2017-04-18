@@ -15,6 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+print 'BASE_DIR',BASE_DIR
+
 host = 'http://estokealo.com:8080/'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -26,6 +28,7 @@ SECRET_KEY = 'xn^k2b6d6lu4^9lkz1l7z^+ot(np4p31kbwvr%4-@ea&#-g4hw'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 
 PROJECT_PATH = os.path.dirname(os.path.realpath(__file__))

@@ -33,8 +33,10 @@ from PIL import Image
 from resizeimage import resizeimage
 from estokeate.settings import *
 from datetime import datetime,timedelta
-
 from django.contrib.auth import authenticate
+
+from django.contrib.sites.shortcuts import get_current_site
+
 
 def ValuesQuerySetToDict(vqs):
 
@@ -43,6 +45,10 @@ def ValuesQuerySetToDict(vqs):
 def home(request):
 
 	user = request.user.id
+
+	current_site = get_current_site(request)
+
+	print current_site
 
 	usuario = None
 
@@ -356,6 +362,14 @@ def producto(request,id):
 
 	user = request.user.id
 
+	current_site = get_current_site(request)
+
+	p = str(current_site).split('.')[0]
+
+
+
+	print p
+	
 	usuario = None
 
 	if user:
@@ -370,9 +384,14 @@ def producto(request,id):
 
 		videos = Videoproducto.objects.filter(producto_id=id)[0]
 
+	if p=='m':	
 
-	return render(request, 'productodetalle.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
+		return render(request, 'productodetallemovil.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
 
+	else:	
+
+		return render(request, 'productodetalle.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
+		
 
 
 def busqueda(request):
