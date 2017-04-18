@@ -278,7 +278,11 @@ def productos(request,id):
 
 		if Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo').count()>0:
 
-			p.photo = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[0]
+			p.photo = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[0]['photo__photo']
+
+			p.detalle = p.photo.split('.jpg')[0]+'_thumbail.jpg'
+
+			print 'jdjdj',p.detalle
 
 
 	usuario= AuthUser.objects.get(id=user)
