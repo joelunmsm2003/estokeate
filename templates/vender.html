@@ -473,6 +473,8 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
     $scope.traesubcategorias = function(data){
 
+
+
     
           $scope.datacat = data
 
@@ -493,6 +495,15 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
               });
 
 
+    }
+
+    $scope.datasub = 1000
+
+    $scope.enviasuv=function(data){
+
+      console.log('jjdjd',data)
+
+      $scope.datasub = data
     }
 
 
@@ -550,12 +561,13 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
               
               
-              <li ng-repeat="c in subcategorias" ng-click='enviaventa.subcategoria=c.id' class="list-group-item"><a>{[{c.nombre}]} </a></li>
+              <li ng-repeat="c in subcategorias" ng-click='enviaventa.subcategoria=c.id;enviasuv(c.id)' ng-class="{'activo': datasub===c.id}" class="list-group-item"><a > {[{c.nombre}]} </a></li>
 
               
 
               </ul>
-  
+
+           
 
       </div>
 
@@ -571,7 +583,7 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
     </div>
 
 
-    <div class="form-group">
+    <div class="form-group" >
       <label for="pwd">Titulo</label>
       <input type="text" class="form-control" ng-model='enviaventa.titulo' name = 'titulo' required id="pwd"  placeholder="Ingrese titulo">
     </div>
@@ -703,7 +715,7 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
     </div>
 
-    <div class='form-group'>
+    <div class='form-group' id='subcateg'>
 
     <label for="pwd">Video</label>
     <br>
@@ -782,6 +794,26 @@ input[type="file"] {
   background: #234;
   color:#fff;
 }
+
+
+.desactivo{
+
+  background: #fff;
+  color:#000;
+}
      
 
 </style>
+
+<script type="text/javascript">
+    
+
+    $('.ancla').on('click', function(e){
+e.preventDefault();
+var strAncla = '#' + $(this).data('ancla');
+$('html,body').animate({scrollTop: $(strAncla).offset().top-100}, 2000);
+});
+
+
+    
+</script>
