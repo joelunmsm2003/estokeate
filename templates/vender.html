@@ -470,7 +470,13 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
 
 
+
     $scope.traesubcategorias = function(data){
+
+    
+          $scope.datacat = data
+
+          console.log('$scope.datacat',$scope.datacat)
 
           $scope.enviaventa.categoria = data
 
@@ -500,7 +506,7 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
 {% include "header.html" %}
 
-<div class="container-fluid">
+<div class="container">
 
 
 
@@ -518,7 +524,7 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
       <div class="row no-gutters">
 
-      <div class="col-6">
+      <div class="col-6" style='padding: 12px;'>
 
       <label for="email">Categoria:</label>
         
@@ -526,7 +532,9 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
           {% for c in categoria %}
 
-          <li class="list-group-item" ng-click='traesubcategorias({{c.id}})'><a  >{{c.nombre}} </a></li>
+
+
+          <li  class="list-group-item" ng-class="{'activo': datacat==={{c.id}}}" href="/hotel/{{rows.id}}" ng-click='traesubcategorias({{c.id}})'><span class='iconocat' style='padding-right: 12px; '><i class="fa fa-{{c.icon}}" aria-hidden="true"></i></span>  {{c.nombre}} </a></li>
 
           {% endfor %}
 
@@ -534,15 +542,15 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
       </div>
 
-      <div class="col-6">
+      <div class="col-6" style='padding: 12px;'>
 
       <label for="email">Subcategoria:</label>
         
-              <ul class="list-group" ng-repeat="c in subcategorias">
+              <ul class="list-group" >
 
               
               
-              <li ng-click='enviaventa.subcategoria=c.id' class="list-group-item"><a  >{[{c.nombre}]} </a></li>
+              <li ng-repeat="c in subcategorias" ng-click='enviaventa.subcategoria=c.id' class="list-group-item"><a>{[{c.nombre}]} </a></li>
 
               
 
@@ -756,6 +764,23 @@ input[type="file"] {
     display: block;
     opacity: 1.4;
     
+}
+
+.list-group-item:hover{
+
+  background: #0275d8;
+  color:#fff;
+}
+
+.iconocat:hover{
+
+  color: #fff;
+}
+
+.activo{
+
+  background: #234;
+  color:#fff;
 }
      
 

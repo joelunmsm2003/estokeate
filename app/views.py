@@ -777,7 +777,7 @@ def vender(request):
 
 
 
-	categoria = Categoria.objects.all().values('id','nombre')
+	categoria = Categoria.objects.all().values('id','nombre','icon')
 
 
 

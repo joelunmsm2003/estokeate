@@ -82,6 +82,7 @@ class AuthUserUserPermissions(models.Model):
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, blank=True, null=True)
+    icon = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
         managed = False
