@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+	<html ng-app="myApp" ng-controller="myCtrl">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<head>
+		<meta charset="UTF-8">
+		<title>{{dato}}</title>
+	</head>
+
+
+	<script>
+var app = angular.module('myApp', []);
+
+app.config(function($interpolateProvider){
+    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    });
+app.controller('myCtrl', function($scope,$http) {
+
+
+
+});
+</script>
+
+	<body>
+
+	{% include "header.html" %}
+			
+<div class='container-fluid'>
+
+<br>
+
+<h6>Se encontraron {{total}} resultados  en Perú </h6>
+
+
+
+<div class="row">
+	
+
+<div class="col-md-4">
+
+	<div class="card">
+	  <div class="card-header">
+	    Categorias
+	  </div>
+	  <div class="card-block ">
+			
+		<ul class="list-group">
+
+
+	 
+	    
+  		<li class="list-group-item"><a ><span class='iconocat' style='padding-right: 4px; '><i class="fa fa-{{categoria.icon}}" aria-hidden="true"></i></span> {{categoria.nombre}} </a><span style='float:right;padding-left: 12px;'>({{total}})</span></li>
+
+		
+
+	    
+
+	    </ul>
+	  
+	  </div>
+	</div>
+
+
+
+
+
+<!-- 	<div class="card">
+	  <div class="card-header">
+	    Precio
+	  </div>
+	  <div class="card-block ">
+			
+		<form class="form-inline">
+		  <div class="form-group">
+
+		    <input type="text" class="form-control" id="email" placeholder='Min.'>
+		  </div>
+		  <div class="form-group">
+		   
+		    <input type="text" class="form-control" id="pwd" placeholder='Max.'>
+		  </div>
+		
+		  <button type="submit" class="btn btn-default">Buscar</button>
+		</form>
+
+
+	  </div>
+	</div>
+ -->
+
+
+		
+	
+
+
+
+</div>
+
+
+<div class="col-md-8">
+
+
+
+<div class='row'>
+		{% for p in productos %}
+
+
+
+  			<div class='col-6  col-lg-3  col-sm-4 card1'>
+  						
+  						         <a class='item' href="/producto/{{p.id}}">
+  						    
+  						
+  						      
+  									<div class="card" >
+  									  <img class="card-img-top img-fluid" src="{{host}}{{p.detalle}}" alt="Card image cap">
+  									  <div class="card-block">
+  									    <h4 class="card-title">{{p.titulo}}</h4>
+  									    <p class="card-text">{{p.descripcion}}</p>
+  									    
+  									  </div>
+  									</div>
+  						
+  						
+  						
+  						       </a>
+  									</div>
+						    
+
+			{% endfor %}
+			
+			</div>
+
+	
+
+</div>
+
+</div>
+
+
+
+
+
+		</div>
+
+	</body>
+
+
+	<style type="text/css">
+		
+		.categoria{
+
+padding-left: 25px;
+padding-top: 8px;
+padding-bottom: 8px;
+border: 1px solid #fff;
+margin-bottom: 0 !important;
+
+		}
+
+		.categoria:hover{
+
+			border: 1px solid #747577;
+   
+				
+		}
+
+		.blockcategoria{
+
+			padding-left: 0px;
+    padding-right: 0px;
+
+		}
+
+
+
+	</style>
+	</html>

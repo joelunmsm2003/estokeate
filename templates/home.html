@@ -49,6 +49,16 @@ app.controller('myCtrl', function($scope,$http) {
       console.log('jjdjd',data)
 
       $scope.datasub = data
+
+      location.href='/busquedacategoria/'+0+'/'+data
+    }
+
+    $scope.buscat=function(data){
+
+      console.log(data)
+
+      location.href='/busquedacategoria/'+data+'/0'
+
     }
 
 
@@ -76,7 +86,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 
 
-          <li  class="list-group-item" ng-class="{'activo': datacat==={{c.id}}}" ng-click='traesubcategorias({{c.id}})'><span class='iconocat' style='padding-right: 12px; '><i class="fa fa-{{c.icon}}" aria-hidden="true"></i></span>  {{c.nombre}} </a></li>
+          <li ng-click='buscat({{c.id}})' class="list-group-item"  ng-mouseover='traesubcategorias({{c.id}})'><a ><span class='iconocat' style='padding-right: 12px; '><i class="fa fa-{{c.icon}}" aria-hidden="true"></i></span>  {{c.nombre}} </a></li>
 
 
 
@@ -93,7 +103,7 @@ app.controller('myCtrl', function($scope,$http) {
 
            <ul class="list-group subcat" >
 
-           <li ng-repeat="c in subcategorias" ng-click='enviasuv(c.id)' ng-class="{'activo': datasub===c.id}" class="list-group-item"><a > {[{c.nombre}]} </a></li>
+           <li ng-repeat="c in subcategorias" ng-click='enviasuv(c.id)'  class="list-group-item "><a > {[{c.nombre}]} </a></li>
 
            </ul>
 
