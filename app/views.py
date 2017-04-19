@@ -297,13 +297,13 @@ def busquedacategoria(request,categoria,subcategoria):
 
 		producto = Producto.objects.filter(categoria_id=categoria).values('id','titulo','descripcion','precio')
 
-		categoria = Categoria.objects.get(id=categoria)
+		cat = Categoria.objects.get(id=categoria)
 
 	if int(categoria)==0:
 	
 		producto = Producto.objects.filter(subcategoria_id=subcategoria).values('id','titulo','descripcion','precio')
 
-		categoria = Subcategoria.objects.get(id=subcategoria)
+		cat = Subcategoria.objects.get(id=subcategoria)
 
 
 	for p in range(len(producto)):
@@ -317,7 +317,7 @@ def busquedacategoria(request,categoria,subcategoria):
 
 	
 
-	return render(request, 'busquedacategoria.html',{'host':host,'productos':producto,'total':total,'categoria':categoria})
+	return render(request, 'busquedacategoria.html',{'host':host,'productos':producto,'total':total,'categoria':cat})
 
 
 
