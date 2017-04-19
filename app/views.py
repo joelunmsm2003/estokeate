@@ -285,6 +285,42 @@ def productos(request,id):
 
 	return render(request, 'productosuser.html',{'host':host,'productos':productos,'usuario':usuario,'mianuncio':'active'})
 
+# Busqueda por categoria
+
+def busquedacategoria(request,categoria,subcategoria):
+
+	print categoria
+
+	if int(subcategoria)==0:
+
+		print 'entre..'
+
+		producto = Producto.objects.filter(categoria_id=categoria).values('id','titulo','descripcion','precio')
+
+		categoria = Categoria.objects.get(id=categoria)
+
+	if int(categoria)==0:
+	
+		producto = Producto.objects.filter(subcategoria_id=subcategoria).values('id','titulo','descripcion','precio')
+
+		categoria = Subcategoria.objects.get(id=subcategoria)
+
+
+	for p in range(len(producto)):
+
+		if Photoproducto.objects.filter(producto_id=producto[p]['id']).values('photo','photo__photo').count()>0:
+		
+			producto[p]['detalle'] = Photoproducto.objects.filter(producto_id=producto[p]['id']).values('photo','photo__photo')[0]['photo__photo']
+
+
+	total = producto.count()
+
+	
+
+	return render(request, 'busquedacategoria.html',{'host':host,'productos':producto,'total':total,'categoria':categoria})
+
+
+
 # Productos por categoria
 
 def productocategoria(request,id):

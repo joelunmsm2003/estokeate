@@ -31,5 +31,6 @@ urlpatterns = [
     url(r'^uploadphoto/', 'app.views.uploadphoto'),
     url(r'^uploadvideo/', 'app.views.uploadvideo'),
     url(r'^productocategoria/(\w+)/', 'app.views.productocategoria'),
+    url(r'^busquedacategoria/(\w+)/(\w+)/', 'app.views.busquedacategoria'),
 
 ]
