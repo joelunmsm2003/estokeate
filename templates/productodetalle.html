@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html ng-app="myApp" ng-controller="myCtrl">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+
 <body>
 
 {% include "header.html" %}
@@ -35,6 +37,11 @@ app.controller('myCtrl', function($scope,$http) {
     $scope.traeimagen=function(data){
 
     	console.log(data)
+
+
+        $('#principal').addClass('animated fadeIn');
+
+        $('#principal').removeClass('animated fadeIn');
 
     	$scope.photoprincipal = data.detalle
     }
@@ -90,15 +97,15 @@ app.controller('myCtrl', function($scope,$http) {
 
 <div class='row'>
     
-    <div class='col-md-10 col-xs-12 col-sm-12'>
+    <div class='col-md-10 col-xs-12 col-sm-12 animated fadeIn'>
 
             <div class='row'>
 
 
-                	<div class='col-md-6 col-xs-6 col-sm-6'>
+                	<div class='col-md-6 col-xs-6 col-sm-6 '>
                 	
                 			
-                				<img class="img-responsive" src="{{host}}{[{photoprincipal}]}" alt="Card image cap">
+                				<img id='principal' class="img-responsive " src="{{host}}{[{photoprincipal}]}" alt="Card image cap">
 
                 			
 
