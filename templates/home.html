@@ -1,10 +1,12 @@
 <!doctype html>
 <html ng-app="myApp" ng-controller="myCtrl">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 
 
@@ -86,7 +88,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 
 
-          <li ng-click='buscat({{c.id}})' class="list-group-item"  ng-mouseover='traesubcategorias({{c.id}})'><a ><span class='iconocat' style='padding-right: 12px; '><i class="fa fa-{{c.icon}}" aria-hidden="true"></i></span>  {{c.nombre}} </a></li>
+          <li ng-click='buscat({{c.id}})' class="list-group-item"  ng-mouseover='traesubcategorias({{c.id}})'><span class='iconocat' style='padding-right: 12px; '><i class="material-icons">{{c.icon}}</i></span>  {{c.nombre}} </li>
 
 
 
@@ -184,7 +186,7 @@ app.controller('myCtrl', function($scope,$http) {
 			<div class="card" >
 			  <img class="card-img-top img-fluid" src="{{host}}{{producto.photo.photo__photo}}" alt="Card image cap">
 			  <div class="card-block">
-			    <h5 class="card-title">{{producto.titulo}}</h5>
+			    <h6 class="card-title">{{producto.titulo}}</h6>
 			    <p class="card-text">{{producto.descripcion}}</p>
 			    
 			  </div>

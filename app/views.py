@@ -48,7 +48,9 @@ def home(request):
 
 	current_site = get_current_site(request)
 
-	print current_site
+	m = str(current_site).split('.')[0]
+
+	print m
 
 	usuario = None
 
@@ -66,7 +68,15 @@ def home(request):
 
 	categoria = Categoria.objects.all().values('id','nombre','icon')
 
-	return render(request, 'home.html',{'productos':productos,'usuario':usuario,'host':host,'categoria':categoria})
+	if m=='m':	
+
+		print 'Entreeeeeeeeeee'
+
+		return render(request, 'homemovil.html',{'productos':productos,'usuario':usuario,'host':host,'categoria':categoria})
+
+	else:	
+
+		return render(request, 'homemovil.html',{'productos':productos,'usuario':usuario,'host':host,'categoria':categoria})
 
 
 def autentificacion(request):
@@ -443,7 +453,7 @@ def producto(request,id):
 
 	else:	
 
-		return render(request, 'productodetalle.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
+		return render(request, 'productodetallemovil.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
 		
 
 
@@ -638,7 +648,7 @@ def uploadphoto(request):
 
 		photo = Photo.objects.filter(id=id_photo).values('id','photo')
 
-		img = resizeimage.resize_cover(img, [500, 500])
+		img = resizeimage.resize_cover(img, [1200, 500])
 
 		img.save(caption, img.format)
 
@@ -652,7 +662,7 @@ def uploadphoto(request):
 
 		img = Image.open(fd_img)
 
-		img = resizeimage.resize_cover(img, [500, 600])
+		img = resizeimage.resize_cover(img, [500, 500])
 
 		img.save(caption_galeria, img.format)
 
@@ -834,7 +844,7 @@ def vender(request):
 
 
 
-	return render(request, 'vender.html',{'host':host,'usuario':usuario,'categoria':categoria})
+	return render(request, 'vendermovil.html',{'host':host,'usuario':usuario,'categoria':categoria})
 
 
 
@@ -871,3 +881,17 @@ def ingresar(request):
 		else:
 
 			return render(request, 'login.html',{'host':host})
+
+
+
+def categorias(request):
+
+	c = Categoria.objects.all().values('id','nombre')
+
+	c = ValuesQuerySetToDict(c)
+
+	data_json = simplejson.dumps(c)
+
+
+
+	return HttpResponse(data_json, content_type="application/json")
