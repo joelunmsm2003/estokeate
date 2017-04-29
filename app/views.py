@@ -76,7 +76,7 @@ def home(request):
 
 	else:	
 
-		return render(request, 'homemovil.html',{'productos':productos,'usuario':usuario,'host':host,'categoria':categoria})
+		return render(request, 'home.html',{'productos':productos,'usuario':usuario,'host':host,'categoria':categoria})
 
 
 def autentificacion(request):
@@ -453,7 +453,7 @@ def producto(request,id):
 
 	else:	
 
-		return render(request, 'productodetallemovil.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
+		return render(request, 'productodetalle.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
 		
 
 
@@ -706,6 +706,54 @@ def uploadvideo(request):
 
 		return HttpResponse(data_json, content_type="application/json")
 
+@csrf_exempt
+def loginxfacebook(request):
+
+	usuario =''
+
+	categoria = ''
+
+	if request.method == 'POST':
+
+		if request.user.is_authenticated():
+
+			print 'Autentificado.... OK'
+
+			id_producto = simplejson.dumps('Ya esta logeado')
+
+			return HttpResponse(id_producto, content_type="application/json")
+		else:
+
+			id= request.POST['id']
+		
+			user = authenticate(username=id, password=id)
+
+			if user is not None:
+
+				if user.is_active:
+
+					login(request, user)
+
+					id_producto = simplejson.dumps('Bienbenido')
+
+					return HttpResponse(id_producto, content_type="application/json")
+
+			else:
+
+				User.objects.create_user(id, id, id)
+
+				user = authenticate(username=id, password=id)
+
+				id_producto = simplejson.dumps('nuevo user')
+
+				return HttpResponse(id_producto, content_type="application/json")
+
+
+
+
+
+
+
 
 @login_required(login_url="/autentificacion/")
 
@@ -842,9 +890,18 @@ def vender(request):
 
 	categoria = Categoria.objects.all().values('id','nombre','icon')
 
+	current_site = get_current_site(request)
 
+	m = str(current_site).split('.')[0]
 
-	return render(request, 'vendermovil.html',{'host':host,'usuario':usuario,'categoria':categoria})
+	if m=='m':
+
+		return render(request, 'vendermovil.html',{'host':host,'usuario':usuario,'categoria':categoria})
+
+	else:
+
+		return render(request, 'vender.html',{'host':host,'usuario':usuario,'categoria':categoria})
+
 
 
 

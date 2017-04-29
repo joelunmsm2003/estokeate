@@ -33,5 +33,6 @@ urlpatterns = [
     url(r'^categorias/', 'app.views.categorias'),
     url(r'^productocategoria/(\w+)/', 'app.views.productocategoria'),
     url(r'^busquedacategoria/(\w+)/(\w+)/', 'app.views.busquedacategoria'),
+    url(r'^loginxfacebook/$', 'app.views.loginxfacebook'),
 
 ]
