@@ -706,6 +706,54 @@ def uploadvideo(request):
 
 		return HttpResponse(data_json, content_type="application/json")
 
+@csrf_exempt
+def loginxfacebook(request):
+
+	usuario =''
+
+	categoria = ''
+
+	if request.method == 'POST':
+
+		if request.user.is_authenticated():
+
+			print 'Autentificado.... OK'
+
+			id_producto = simplejson.dumps('Ya esta logeado')
+
+			return HttpResponse(id_producto, content_type="application/json")
+		else:
+
+			id= request.POST['id']
+		
+			user = authenticate(username=id, password=id)
+
+			if user is not None:
+
+				if user.is_active:
+
+					login(request, user)
+
+					id_producto = simplejson.dumps('Bienbenido')
+
+					return HttpResponse(id_producto, content_type="application/json")
+
+			else:
+
+				User.objects.create_user(id, id, id)
+
+				user = authenticate(username=id, password=id)
+
+				id_producto = simplejson.dumps('nuevo user')
+
+				return HttpResponse(id_producto, content_type="application/json")
+
+
+
+
+
+
+
 
 @login_required(login_url="/autentificacion/")
 
@@ -848,6 +896,13 @@ def vender(request):
 
 	categoria = Categoria.objects.all().values('id','nombre','icon')
 
+<<<<<<< HEAD
+=======
+	current_site = get_current_site(request)
+
+	m = str(current_site).split('.')[0]
+
+>>>>>>> 18f87b3ecb4701d43261392f78f7fc6aba362960
 	if m=='m':
 
 		return render(request, 'vendermovil.html',{'host':host,'usuario':usuario,'categoria':categoria})
