@@ -76,7 +76,7 @@ def home(request):
 
 	else:	
 
-		return render(request, 'homemovil.html',{'productos':productos,'usuario':usuario,'host':host,'categoria':categoria})
+		return render(request, 'home.html',{'productos':productos,'usuario':usuario,'host':host,'categoria':categoria})
 
 
 def autentificacion(request):
@@ -453,7 +453,7 @@ def producto(request,id):
 
 	else:	
 
-		return render(request, 'productodetallemovil.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
+		return render(request, 'productodetalle.html',{'host':host,'producto':producto,'usuario':usuario,'videos':videos})
 		
 
 
