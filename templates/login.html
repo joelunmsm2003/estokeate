@@ -2,8 +2,9 @@
 <html >
 <head>
   <meta charset="UTF-8">
+
   <title>Ingresar- Estokealo</title>
-  
+
   
   <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Open+Sans:600'>
 
@@ -13,8 +14,32 @@
 </head>
 
 
+
+<body>
+
+
+
+{% include "header.html" %}
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+<div id="fb-root"></div>
 <script>
-  // This is called with the results from from FB.getLoginStatus().
+
+
+
+
+
+
+
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.9&appId=1913601308895607";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
     console.log(response);
@@ -27,19 +52,16 @@
       testAPI();
     } else {
       // The person is not logged into your app or we are unable to tell.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into this app.';
+
     }
   }
 
-  // This function is called when someone finishes with the Login
-  // Button.  See the onlogin handler attached to it in the sample
-  // code below.
-  function checkLoginState() {
+   function checkLoginState() {
     FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
     });
   }
+
 
   window.fbAsyncInit = function() {
   FB.init({
@@ -64,39 +86,31 @@
 
   FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
-
-    console.log('ooo',response)
-
   });
 
   };
 
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
-  function testAPI() {
+   function testAPI() {
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
-      console.log('Successful login for: ' + response);
-      document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';
+
+
+		$.post( "../loginxfacebook/", { id: response.id })
+		  .done(function( data ) {
+		    console.log(data)
+		  });
+
+
+
+      console.log('Successful login for: ' + response.id);
+
     });
   }
+
+
 </script>
 
-<body>
 
-
-
-{% include "header.html" %}
   <div class="login-wrap">
 	<div class="login-html">
 		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Ingresar</label>
@@ -110,6 +124,9 @@
 
 		<div class="login-form">
 			<div class="sign-in-htm">
+				<br>
+			<center><div class="fb-login-button" data-width="1000" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></div></center>
+			<br>
 
 			<form method="post" action="/ingresar/">
 
@@ -137,6 +154,8 @@
 				</div>
 
 			</form>
+
+
 			</div>
 			<div class="sign-up-htm">
 
@@ -170,13 +189,6 @@
 
 		
 	</div>
-</div>
-  
-
- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-</fb:login-button>
-
-<div id="status">
 </div>
 
   

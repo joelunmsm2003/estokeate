@@ -26,6 +26,33 @@ app.config(function($interpolateProvider){
 app.controller('myCtrl', function($scope,$http) {
 
 
+  var getBrowserWidth = function(){
+    if(window.innerWidth < 768){
+        // Extra Small Device
+        return "xs";
+    } else if(window.innerWidth < 991){
+        // Small Device
+        return "sm"
+    } else if(window.innerWidth < 1199){
+        // Medium Device
+        return "md"
+    } else {
+        // Large Device
+        return "lg"
+    }
+};
+
+var device = getBrowserWidth();
+
+if(device === "xs"){
+
+  window.location='http://m.'+'{{host}}'.split('http://')[1].split('/')[0]+':8000'
+
+}
+
+
+
+
 
     $scope.traesubcategorias = function(data){
 
@@ -107,7 +134,7 @@ app.controller('myCtrl', function($scope,$http) {
     <div class="col-10">
 
 
-           <ul class="list-group subcat  animated bounceIn" >
+           <ul class="list-group subcat" >
 
            <li ng-repeat="c in subcategorias" ng-click='enviasuv(c.id)'  class="list-group-item"><a > {[{c.nombre}]} </a></li>
 
