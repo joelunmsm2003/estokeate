@@ -550,7 +550,7 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
       <label for="email">Categoria:</label>
 
 
-      <select class='form-control' ng-options="item as item.nombre for item in categorias track by item.id" ng-model="item" ng-click='traesubcategorias(item.id)'></select>
+      <select class='form-control' ng-options="item as item.nombre for item in categorias track by item.id" ng-model="item" ng-change='traesubcategorias(item.id)'></select>
         
  
 

@@ -648,7 +648,7 @@ def uploadphoto(request):
 
 		photo = Photo.objects.filter(id=id_photo).values('id','photo')
 
-		img = resizeimage.resize_cover(img, [1200, 500])
+		img = resizeimage.resize_cover(img, [1000, 500])
 
 		img.save(caption, img.format)
 
@@ -674,7 +674,7 @@ def uploadphoto(request):
 
 		img = Image.open(fd_img)
 
-		img = resizeimage.resize_cover(img, [250, 300])
+		img = resizeimage.resize_cover(img, [250, 250])
 
 		img.save(caption, img.format)
 
@@ -725,6 +725,8 @@ def loginxfacebook(request):
 		else:
 
 			id= request.POST['id']
+
+			name = request.POST['name']
 		
 			user = authenticate(username=id, password=id)
 
@@ -734,7 +736,15 @@ def loginxfacebook(request):
 
 					login(request, user)
 
-					id_producto = simplejson.dumps('Bienbenido')
+					id_user = request.user.id
+
+					u = AuthUser.objects.get(id=id_user)
+
+					u.first_name = name
+
+					u.save()
+					
+					id_producto = simplejson.dumps('Bienvenido'+'-'+str(id_user))
 
 					return HttpResponse(id_producto, content_type="application/json")
 

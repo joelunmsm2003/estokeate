@@ -91,12 +91,28 @@ app.controller('myCtrl', function($scope,$http) {
 
       {% if usuario.username %}
 
-      <li class="nav-item my-2 my-sm-0">
-        <a class='nav-link' href="/salir">Salir</a>
-      </li>
+    
 
        <li class="nav-item my-2 my-sm-0">
-        <a class='nav-link' href="/productos/{{usuario.id}}">{{usuario.username}}</a>
+
+
+       
+         <div class="dropdown" style='margin-left: 11px;'>
+          <a class="nav-link btn btn-secondary dropdown-toggle" href="/productos/{{usuario.id}}" id="xxxx" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{usuario.first_name}}
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="xxxx">
+            <a class="dropdown-item" href="/productos/{{usuario.id}}">Mis Anuncios</a>
+            <a class="dropdown-item" href="/perfil">Mi Perfil</a>
+            <a class="dropdown-item" href="/salir">Salir</a>
+          </div>
+        </div>
+
+
+
+
+
       </li>
 
       {% else %}
