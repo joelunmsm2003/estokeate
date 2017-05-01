@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 	<html ng-app="myApp" ng-controller="myCtrl">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 	<head>
 		<meta charset="UTF-8">
 		<title>{{dato}}</title>
@@ -66,7 +68,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 	 
 	    
-  		<li class="list-group-item"><a href='/filtrarcategoria/{{dato}}/{{c.categoria}}/'><span class='iconocat' style='padding-right: 4px; '><i class="fa fa-{{c.categoria__icon}}" aria-hidden="true"></i></span> {{c.categoria__nombre}} </a><span style='float:right;padding-left: 12px;'>({{c.total}})</span></li>
+  		<li class="list-group-item"><a href='/filtrarcategoria/{{dato}}/{{c.categoria}}/'><span class='iconocat' style='padding-right: 4px; '><i class="material-icons">{{categoria.icon}}</i></span> {{c.categoria__nombre}} </a><span style='float:right;padding-left: 12px;'>({{c.total}})</span></li>
 
 		
 

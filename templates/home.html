@@ -56,6 +56,18 @@ if(device === "xs"){
 
     $scope.traesubcategorias = function(data){
 
+          $('.subcat').fadeIn(500);
+
+          
+
+            $('.subcat').css('margin-top',(data-1)*55)
+
+        
+
+
+
+          console.log('cat',data)
+
           $scope.datacat = data
 
           console.log(data)
@@ -94,7 +106,16 @@ if(device === "xs"){
 
     }
 
+  
+   $scope.ocultasub=function(){
 
+      console.log('data')
+
+      $('.subcat').hide()
+
+     
+
+    }
 
 
 
@@ -117,7 +138,7 @@ if(device === "xs"){
 
           {% for c in categoria %}
 
-
+          
 
           <li ng-click='buscat({{c.id}})' class="list-group-item"  ng-mouseover='traesubcategorias({{c.id}})'><span class='iconocat' style='padding-right: 12px; '><i class="material-icons">{{c.icon}}</i></span>  {{c.nombre}} </li>
 
@@ -139,7 +160,7 @@ if(device === "xs"){
 
            </ul>
 
-           <div id="myCarousel" class="carousel slide" data-ride="carousel">
+           <div id="myCarousel" class="carousel slide" data-ride="carousel" ng-mouseover='ocultasub()'>
             <ol class="carousel-indicators">
               <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
               <li data-target="#myCarousel" data-slide-to="1"></li>
