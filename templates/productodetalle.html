@@ -152,7 +152,7 @@ app.controller('myCtrl', function($scope,$http) {
 
             <div class='col-md-12 col-xs-2'>
 
-            <center><h4>{{producto.user.username}}</h4></center>
+            <center><h4>{{producto.user.first_name}}</h4></center>
 
             <center><h5>{{producto.user.telefono}}</h5></center>
 
@@ -199,7 +199,7 @@ app.controller('myCtrl', function($scope,$http) {
 <h4>{{producto.descripcion}}</h4>
 
 <video width=500px class='img-fluid' controls>
-<source src="http://192.168.1.40/{{videos.video.video}}" type="video/mp4">
+<source src="{{host}}/{{videos.video.video}}" type="video/mp4">
 <source src="movie.ogg" type="video/ogg">
 Your browser does not support the video tag.
 </video>
