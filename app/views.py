@@ -123,6 +123,13 @@ def actualizaperfil(request):
 
 		user = request.user.id
 
+		direccion = None
+
+		nombre=None
+
+		telefono= None
+
+
 		productos= Producto.objects.filter(user_id=user)
 
 		usuario= AuthUser.objects.get(id=user)
@@ -155,8 +162,6 @@ def actualizaperfil(request):
 		u.first_name = nombre
 
 		u.telefono=telefono
-
-		u.nombre = nombre
 
 		u.save()
 
