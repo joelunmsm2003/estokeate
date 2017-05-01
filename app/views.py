@@ -131,9 +131,9 @@ def actualizaperfil(request):
 		
 		direccion = request.POST['direccion']
 
-		email = request.POST['email']
-
 		telefono = request.POST['telefono']
+
+		nombre = request.POST['nombre']
 
 		for p in request.FILES:
 
@@ -152,9 +152,11 @@ def actualizaperfil(request):
 
 		u.direccion = direccion
 
-		u.email=email
+		u.first_name = nombre
 
 		u.telefono=telefono
+
+		u.nombre = nombre
 
 		u.save()
 
@@ -706,6 +708,35 @@ def uploadvideo(request):
 
 		return HttpResponse(data_json, content_type="application/json")
 
+
+
+@csrf_exempt
+def verificalogin(request):
+
+	usuario =''
+
+	categoria = ''
+
+	if request.method == 'POST':
+
+		if request.user.is_authenticated():
+
+			print 'Autentificado.... OK'
+
+			data = simplejson.dumps('Logeado')
+
+			return HttpResponse(data, content_type="application/json")
+
+		else:
+
+
+			data = simplejson.dumps('No-Logeado')
+
+			return HttpResponse(data, content_type="application/json")
+
+
+
+
 @csrf_exempt
 def loginxfacebook(request):
 
@@ -743,7 +774,7 @@ def loginxfacebook(request):
 					u.first_name = name
 
 					u.save()
-					
+
 					id_producto = simplejson.dumps('Bienvenido'+'-'+str(id_user))
 
 					return HttpResponse(id_producto, content_type="application/json")
