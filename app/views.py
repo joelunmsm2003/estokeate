@@ -123,6 +123,13 @@ def actualizaperfil(request):
 
 		user = request.user.id
 
+		direccion = None
+
+		nombre=None
+
+		telefono= None
+
+
 		productos= Producto.objects.filter(user_id=user)
 
 		usuario= AuthUser.objects.get(id=user)
@@ -131,9 +138,9 @@ def actualizaperfil(request):
 		
 		direccion = request.POST['direccion']
 
-		email = request.POST['email']
-
 		telefono = request.POST['telefono']
+
+		nombre = request.POST['nombre']
 
 		for p in request.FILES:
 
@@ -152,7 +159,7 @@ def actualizaperfil(request):
 
 		u.direccion = direccion
 
-		u.email=email
+		u.first_name = nombre
 
 		u.telefono=telefono
 
@@ -648,7 +655,7 @@ def uploadphoto(request):
 
 		photo = Photo.objects.filter(id=id_photo).values('id','photo')
 
-		img = resizeimage.resize_cover(img, [1200, 500])
+		img = resizeimage.resize_cover(img, [1000, 500])
 
 		img.save(caption, img.format)
 
@@ -674,7 +681,7 @@ def uploadphoto(request):
 
 		img = Image.open(fd_img)
 
-		img = resizeimage.resize_cover(img, [250, 300])
+		img = resizeimage.resize_cover(img, [250, 250])
 
 		img.save(caption, img.format)
 
@@ -706,6 +713,35 @@ def uploadvideo(request):
 
 		return HttpResponse(data_json, content_type="application/json")
 
+
+
+@csrf_exempt
+def verificalogin(request):
+
+	usuario =''
+
+	categoria = ''
+
+	if request.method == 'POST':
+
+		if request.user.is_authenticated():
+
+			print 'Autentificado.... OK'
+
+			data = simplejson.dumps('Logeado')
+
+			return HttpResponse(data, content_type="application/json")
+
+		else:
+
+
+			data = simplejson.dumps('No-Logeado')
+
+			return HttpResponse(data, content_type="application/json")
+
+
+
+
 @csrf_exempt
 def loginxfacebook(request):
 
@@ -725,6 +761,8 @@ def loginxfacebook(request):
 		else:
 
 			id= request.POST['id']
+
+			name = request.POST['name']
 		
 			user = authenticate(username=id, password=id)
 
@@ -734,7 +772,15 @@ def loginxfacebook(request):
 
 					login(request, user)
 
-					id_producto = simplejson.dumps('Bienbenido')
+					id_user = request.user.id
+
+					u = AuthUser.objects.get(id=id_user)
+
+					u.first_name = name
+
+					u.save()
+
+					id_producto = simplejson.dumps('Bienvenido'+'-'+str(id_user))
 
 					return HttpResponse(id_producto, content_type="application/json")
 

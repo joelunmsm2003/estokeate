@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 	<html ng-app="myApp" ng-controller="myCtrl">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 	<head>
 		<meta charset="UTF-8">
 		<title>{{dato}}</title>
@@ -37,18 +39,13 @@ app.controller('myCtrl', function($scope,$http) {
 
 <div class="col-md-4">
 
-	<div class="card">
-	  <div class="card-header">
-	    Categorias
-	  </div>
-	  <div class="card-block ">
+	  
 			
 		<ul class="list-group">
 
 
-	 
 	    
-  		<li class="list-group-item"><a ><span class='iconocat' style='padding-right: 4px; '><i class="fa fa-{{categoria.icon}}" aria-hidden="true"></i></span> {{categoria.nombre}} </a><span style='float:right;padding-left: 12px;'>({{total}})</span></li>
+  		<li class="list-group-item"><span class='iconocat' style='padding-right: 15px; '><i class="material-icons">{{categoria.icon}}</i></span> <div>{{categoria.nombre}} </div><span style='float:right;padding-left: 12px;'>({{total}})</span></li>
 
 		
 
@@ -56,8 +53,8 @@ app.controller('myCtrl', function($scope,$http) {
 
 	    </ul>
 	  
-	  </div>
-	</div>
+	  
+	
 
 
 

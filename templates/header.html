@@ -1,39 +1,11 @@
 <!DOCTYPE html>
 <html ng-app="myApp" ng-controller="myCtrl">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<!-- <script>
-var app = angular.module('myApp', []);
-
-app.config(function($interpolateProvider){
-    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
-    });
-app.controller('myCtrl', function($scope,$http) {
 
 
-    $scope.host = 'http://estokealo.com:8080/'
-
-    $scope.firstName = "John";
-    $scope.lastName = "Doe";
-
-    $http.get("/productojson/{{producto.id}}")
-    .then(function(response) {
-
-      console.log(response.data)
-
-      $scope.photos = response.data
-        
-    });
-
-    $scope.traeimagen=function(data){
-
-      console.log(data)
-
-      $scope.photoprincipal = data.detalle
-    }
 
 
-});
-</script> -->
+
 <head>
   <title>Estokealo</title>
   <meta charset="utf-8">
@@ -91,18 +63,42 @@ app.controller('myCtrl', function($scope,$http) {
 
       {% if usuario.username %}
 
-      <li class="nav-item my-2 my-sm-0">
-        <a class='nav-link' href="/salir">Salir</a>
-      </li>
+    
 
        <li class="nav-item my-2 my-sm-0">
-        <a class='nav-link' href="/productos/{{usuario.id}}">{{usuario.username}}</a>
+
+
+       
+         <div class="dropdown" style='margin-left: 11px; width: 100%'>
+          <a class="nav-link btn btn-secondary dropdown-toggle" href="/productos/{{usuario.id}}" id="xxxx" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{usuario.first_name}}
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="xxxx">
+            <a class="dropdown-item" href="/productos/{{usuario.id}}">Mis Anuncios</a>
+            <a class="dropdown-item" href="/perfil">Mi Perfil</a>
+            <a class="dropdown-item"  href="/salir">Salir</a>
+          </div>
+        </div>
+
+
+
+
+
+      </li>
+
+       <li class="nav-item my-2 my-sm-0" >
+      
+
+        <a class="btn btn-outline-success my-2 my-sm-0" href="/chat/" style='margin-left: 20px; width: 100%'> <i class="fa fa-comments" aria-hidden="true"></i> Mis mensajes</a>
       </li>
 
       {% else %}
 
       <li class="nav-item my-2 my-sm-0">
-        <a class='nav-link' href="/ingresar">Ingresar</a>
+
+        <a class="btn btn-outline-success my-2 my-sm-0" href="/ingresar/" style='margin-left: 20px; width: 100%'> <i class="fa fa-sign-in" aria-hidden="true"></i> Ingresar</a>
+
       </li>
 
 

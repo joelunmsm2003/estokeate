@@ -2,6 +2,9 @@
 <html ng-app="myApp" ng-controller="myCtrl">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 <body>
 
@@ -99,13 +102,13 @@ app.controller('myCtrl', function($scope,$http) {
     
     <div class='col-md-10 col-xs-12 col-sm-12 animated fadeIn'>
 
-            <div class='row'>
+            <div class='row no-gutters'>
 
 
                 	<div class='col-md-6 col-xs-6 col-sm-6 '>
                 	
                 			
-                				<img id='principal' class="img-responsive " src="{{host}}{[{photoprincipal}]}" alt="Card image cap">
+                				<img id='principal' class="img-fluid " src="{{host}}{[{photoprincipal}]}" alt="Card image cap">
 
                 			
 
@@ -115,15 +118,15 @@ app.controller('myCtrl', function($scope,$http) {
 
 
 
-                                <div class='row'>
+                                <div class='row no-gutters'>
 
-                                <div class='col-md-6 col-xs-12 col-sm-12 detalleproducto' ng-repeat="p in photos">
+                                <div class='col-md-6 col-xs-12 col-sm-12 ' ng-repeat="p in photos">
 
 
 
                                 <div ng-click='traeimagen(p)' class="card" >
 
-                                <img class="card-img-top" src="{{host}}{[{p.photo__photo}]}" alt="Card image cap">
+                                <img class="card-img-top img-fluid" src="{{host}}{[{p.photo__photo}]}" alt="Card image cap">
 
                                 </div>
 
@@ -152,7 +155,7 @@ app.controller('myCtrl', function($scope,$http) {
 
             <div class='col-md-12 col-xs-2'>
 
-            <center><h4>{{producto.user.username}}</h4></center>
+            <center><h4>{{producto.user.first_name}}</h4></center>
 
             <center><h5>{{producto.user.telefono}}</h5></center>
 
@@ -199,7 +202,7 @@ app.controller('myCtrl', function($scope,$http) {
 <h4>{{producto.descripcion}}</h4>
 
 <video width=500px class='img-fluid' controls>
-<source src="http://192.168.1.40/{{videos.video.video}}" type="video/mp4">
+<source src="{{host}}/{{videos.video.video}}" type="video/mp4">
 <source src="movie.ogg" type="video/ogg">
 Your browser does not support the video tag.
 </video>
