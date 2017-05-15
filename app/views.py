@@ -58,9 +58,19 @@ def home(request):
 
 	for p in productos:
 
+		p.imagen1 = 'true'
+
+		print p.id,Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo').count()
+
 		if Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo').count()>0:
 
 			p.photo = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[0]
+
+		if Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo').count()>1:
+
+			print 'hahah'
+
+			p.photo1 = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[1]
 
 	if user:
 
@@ -301,6 +311,24 @@ def productos(request,id):
 	usuario= AuthUser.objects.get(id=user)
 
 	return render(request, 'productosuser.html',{'host':host,'productos':productos,'usuario':usuario,'mianuncio':'active'})
+
+# Prductos de un usuario
+
+def productosjson(request):
+
+	productos_ = Producto.objects.all().values('id','categoria__nombre','precio','subcategoria__nombre','titulo','user','descripcion')
+
+
+	for p in range(len(productos_)):
+
+		productos_[p]['photo'] = ValuesQuerySetToDict(Photoproducto.objects.filter(producto_id=productos_[p]['id']).values('id','photo__photo'))
+
+	productos_ = ValuesQuerySetToDict(productos_)
+
+	productos_ = simplejson.dumps(productos_)
+	
+
+	return HttpResponse(productos_, content_type="application/json")
 
 # Busqueda por categoria
 
