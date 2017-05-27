@@ -62,6 +62,10 @@ def home(request):
 
 			p.photo = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[0]
 
+			if Photoproducto.objects.filter(producto_id=p.id)>1:
+
+				p.photo_1 = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[1]
+
 	if user:
 
 		usuario= AuthUser.objects.get(id=user)
