@@ -58,13 +58,17 @@ def home(request):
 
 	for p in productos:
 
+		p.imagen1 = 'true'
+
+		print p.id,Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo').count()
+
 		if Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo').count()>0:
 
 			p.photo = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[0]
 
-			if Photoproducto.objects.filter(producto_id=p.id)>1:
+		if Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo').count()>1:
 
-				p.photo_1 = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[1]
+			p.photo1 = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[1]
 
 	if user:
 
@@ -305,6 +309,24 @@ def productos(request,id):
 	usuario= AuthUser.objects.get(id=user)
 
 	return render(request, 'productosuser.html',{'host':host,'productos':productos,'usuario':usuario,'mianuncio':'active'})
+
+# Prductos de un usuario
+
+def productosjson(request):
+
+	productos_ = Producto.objects.all().values('id','categoria__nombre','precio','subcategoria__nombre','titulo','user','descripcion')
+
+
+	for p in range(len(productos_)):
+
+		productos_[p]['photo'] = ValuesQuerySetToDict(Photoproducto.objects.filter(producto_id=productos_[p]['id']).values('id','photo__photo'))
+
+	productos_ = ValuesQuerySetToDict(productos_)
+
+	productos_ = simplejson.dumps(productos_)
+	
+
+	return HttpResponse(productos_, content_type="application/json")
 
 # Busqueda por categoria
 
@@ -657,39 +679,45 @@ def uploadphoto(request):
 
 		width, height = img.size
 
+		print 'tamanos',width,height
+
 		photo = Photo.objects.filter(id=id_photo).values('id','photo')
 
-		img = resizeimage.resize_cover(img, [1000, 500])
+		if int(height) > 500:
 
-		img.save(caption, img.format)
+			img = resizeimage.resize_cover(img, [1000, 500])
 
-		fd_img.close()
+			img.save(caption, img.format)
 
-		# Para la galeria
+			fd_img.close()
 
-		caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
+			# Para la galeria
 
-		fd_img = open(caption, 'r')
+			caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
 
-		img = Image.open(fd_img)
+			fd_img = open(caption, 'r')
 
-		img = resizeimage.resize_cover(img, [500, 500])
+			img = Image.open(fd_img)
 
-		img.save(caption_galeria, img.format)
 
-		fd_img.close()
 
-		#para el home
+			img = resizeimage.resize_cover(img, [500, 500])
 
-		fd_img = open(caption, 'r')
+			img.save(caption_galeria, img.format)
 
-		img = Image.open(fd_img)
+			fd_img.close()
 
-		img = resizeimage.resize_cover(img, [250, 250])
+			#para el home
 
-		img.save(caption, img.format)
+			fd_img = open(caption, 'r')
 
-		fd_img.close()
+			img = Image.open(fd_img)
+
+			img = resizeimage.resize_cover(img, [250, 250])
+
+			img.save(caption, img.format)
+
+			fd_img.close()
 
 		photo = ValuesQuerySetToDict(photo)
 

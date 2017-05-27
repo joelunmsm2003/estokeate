@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="myCtrl">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-cookies.js'></script>
+
+ <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/static/css/bordeschat.css">
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+<body>
+
+{% include "header.html" %}
+
+
+<br>
+
+
+
+<script>
+var app = angular.module('myApp', ['ngCookies']);
+
+app.config(function($interpolateProvider){
+    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    })
+
+app.controller('myCtrl', function($scope,$http,$cookies) {
+
+
+    $scope.host = 'http://192.168.1.40/'
+
+    $scope.firstName = "John";
+    $scope.lastName = "Doe";
+
+    $http.get("/chatin/{{usuario.id}}")
+    .then(function(response) {
+
+    	console.log('chatin...',response)
+
+    	$scope.chatin = response.data
+        
+    });
+
+        function doStuff() {
+
+    $("#chatin").scrollTop(100000)
+
+    $('.ultimo').addClass('animated zoomIn');
+
+
+}
+
+
+    $scope.traemensajes=function(data){
+
+
+
+    $("#chatin").scrollTop(100000)
+
+    	console.log(data)
+
+    	$scope.receptor = data.id
+
+    	$scope.userenvia = data.user
+
+    	var myTimer = setTimeout(doStuff, 1000);
+
+    
+
+			$http.get("/listamensajes/"+data.user+'/'+data.producto)
+			.then(function(response) {
+
+			console.log('chatin...',response)
+
+			$scope.mensajes = response.data
+
+			$scope.mensajestitulo = response.data[0]
+
+
+			});
+
+
+
+
+
+			
+
+			setInterval(function(){ 
+
+						$http.get("/listamensajes/"+data.user+'/'+data.producto)
+						.then(function(response) {
+
+						
+
+						ult = response.data.length-1
+
+						$scope.ultimoregistro = response.data[ult]
+
+						console.log('ultimo...',$scope.ultimoregistro.user,'{{usuario.id}}')
+
+						if($scope.ultimoregistro.user!='{{usuario.id}}'){
+
+							var myTimer = setTimeout(doStuff, 2000);
+
+
+							 $scope.mensajes = response.data
+
+							$scope.mensajestitulo = response.data[0]
+
+							$scope.mensajestitulo.user = data.user
+
+						}
+
+
+						});
+
+			}, 10000);
+
+    }
+
+
+
+
+
+
+
+  
+
+    $scope.enviarchat = function (chat,userenvia,mensaje1) {
+
+
+    	chat.user= userenvia
+    	chat.mensaje1x = mensaje1
+
+    	console.log('he',$(".scroll").height())
+
+    	
+
+    	var myTimer = setTimeout(doStuff, 1000);
+
+
+
+  
+		$(".chatin").scrollTop(545)
+
+         var todo={dato: chat}
+
+
+        $http({
+        url: "/enviamensaje_perfil/",
+        data: todo,
+        method: 'POST',
+        headers: {
+        'X-CSRFToken': $cookies['csrftoken']
+        }
+        }).
+        success(function(data) {
+
+				
+				$scope.traemensajes(data)
+
+				$scope.mensaje1=''
+
+
+        })
+
+
+
+    };
+
+
+});
+</script>
+
+
+<div class='container'>
+
+{% include "headeruser.html" %}
+
+<br>
+
+
+<div class='row'>
+
+<div class="col-lg-12 col-md-12 ">
+	
+	<div class="row">
+			
+			<div class="col-md-12" ng-repeat="c in chatin">
+				
+
+				<div class='row chatperfil' ng-click='traemensajes(c)' ng-if='c.user__username!="{{usuario.username}}"'>
+
+					<div class="col-4">
+
+					<img src="{{host}}{[{c.user__photo}]}" class='img-fluid    img-rounded'>
+					
+					</div>
+
+					<div class="col-8" >
+
+
+					<small>{[{c.user__first_name}]}</small><br>
+
+					<small>{[{c.producto__titulo}]}</small><br>
+
+					<small>S/. {[{c.producto__precio}]}</small><br>
+
+				
+
+
+					</div>
+
+
+				</div>
+
+			
+				
+			
+
+
+			</div>
+			
+
+	</div>
+
+
+</div>
+
+
+
+
+
+</div>
+
+<style type="text/css">
+	
+	.chatin{
+
+    overflow-y: auto;
+    height: 20em;
+	}
+
+	.titulomensaje{
+
+		background: #234;
+    padding: 6px;
+    color: #fff;
+
+	}
+
+	.chatperfil{
+
+		padding: 12px;
+	}
+
+	.useractual{
+
+		padding: 2px;
+	}
+
+	.chatbody{
+
+		background: #c69f5d;
+    color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    padding-top: 8px;
+	}
+
+</style>
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+

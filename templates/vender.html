@@ -89,6 +89,12 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
     })
 
+    .error(function(data){
+
+
+      console.log('error',data)
+    })
+
 
 
 
@@ -442,8 +448,22 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
         $scope.vender = function(data){
 
 
-            console.log(data)
+            console.log(data.categoria)
 
+               if(!data.subcategoria){
+
+
+              $scope.alerta ='Porfavor ingrese subcategoria'
+            }
+
+
+            if(!data.categoria){
+
+
+              $scope.alerta ='Porfavor ingrese categoria'
+            }
+
+          
 
          var todo={dato: data}
 
@@ -544,11 +564,7 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
           {% for c in categoria %}
 
-
-
           <li  class="list-group-item" ng-class="{'activo': datacat==={{c.id}}}" href="/hotel/{{rows.id}}" ng-click='traesubcategorias({{c.id}})'><span class='iconocat' style='padding-right: 12px; '><i class="material-icons">{{c.icon}}</i></span>  {{c.nombre}} </a></li>
-
-
 
 
           {% endfor %}
@@ -731,10 +747,13 @@ app.controller('myCtrl', function($scope,$http,$cookies,$location) {
 
     </div>
 
-
-
+<div ng-if='alerta' class="alert alert-danger">
+  {[{alerta}]}
+</div>
     
     <button type="submit" class="btn btn-primary btn-lg">Publicar</button>
+
+   
   </form>
 
   </div>
