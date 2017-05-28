@@ -68,8 +68,6 @@ def home(request):
 
 		if Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo').count()>1:
 
-			print 'hahah'
-
 			p.photo1 = Photoproducto.objects.filter(producto_id=p.id).values('id','photo__photo')[1]
 
 	if user:
@@ -681,39 +679,45 @@ def uploadphoto(request):
 
 		width, height = img.size
 
+		print 'tamanos',width,height
+
 		photo = Photo.objects.filter(id=id_photo).values('id','photo')
 
-		img = resizeimage.resize_cover(img, [1000, 500])
+		if int(height) > 500:
 
-		img.save(caption, img.format)
+			img = resizeimage.resize_cover(img, [1000, 500])
 
-		fd_img.close()
+			img.save(caption, img.format)
 
-		# Para la galeria
+			fd_img.close()
 
-		caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
+			# Para la galeria
 
-		fd_img = open(caption, 'r')
+			caption_galeria = caption.split('.jpg')[0]+'_thumbail.jpg'
 
-		img = Image.open(fd_img)
+			fd_img = open(caption, 'r')
 
-		img = resizeimage.resize_cover(img, [500, 500])
+			img = Image.open(fd_img)
 
-		img.save(caption_galeria, img.format)
 
-		fd_img.close()
 
-		#para el home
+			img = resizeimage.resize_cover(img, [500, 500])
 
-		fd_img = open(caption, 'r')
+			img.save(caption_galeria, img.format)
 
-		img = Image.open(fd_img)
+			fd_img.close()
 
-		img = resizeimage.resize_cover(img, [250, 250])
+			#para el home
 
-		img.save(caption, img.format)
+			fd_img = open(caption, 'r')
 
-		fd_img.close()
+			img = Image.open(fd_img)
+
+			img = resizeimage.resize_cover(img, [250, 250])
+
+			img.save(caption, img.format)
+
+			fd_img.close()
 
 		photo = ValuesQuerySetToDict(photo)
 
