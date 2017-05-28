@@ -243,7 +243,7 @@ if(device === "xs"){
 
 
 
-<!-- 
+
 <div class='container-fluid'>
 
 
@@ -260,8 +260,22 @@ if(device === "xs"){
 
       
 			<div class="card" >
-			  <img class="card-img-top img-fluid" ng-show={{producto.imagen1}} ng-mouseover='cambiaimagen(producto)' src="{{host}}{{producto.photo.photo__photo}}" alt="Card image cap">
-        <img class="card-img-top img-fluid" ng-show='producto.imagen2'  src="{{host}}{{producto.photo1.photo__photo}}" alt="Card image cap">
+
+    
+
+        <div class='one'>
+			  <img class="img-fluid" src="{{host}}{{producto.photo.photo__photo}}" alt="Card image cap">
+
+
+        <div class='two'>
+        <img class="card-img-top img-fluid" src="{{host}}{{producto.photo1.photo__photo}}" alt="Card image cap">
+
+        </div>
+
+        </div>
+
+
+
 			  <div class="card-block">
 			    <h6 class="card-title">{{producto.titulo}}</h6>
 			    <p class="card-text">{{producto.descripcion}}</p>
@@ -280,9 +294,9 @@ if(device === "xs"){
 			</div>
 
 
-		</div> -->
+		</div>
 
-
+<!-- 
     <div class='container-fluid'>
 
 
@@ -330,7 +344,7 @@ if(device === "xs"){
 
 
     </div>
-
+ -->
 
 	
 <script src="/static/js/jquery-2.1.1.js"></script>
