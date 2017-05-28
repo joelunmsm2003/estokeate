@@ -36,5 +36,6 @@ urlpatterns = [
     url(r'^loginxfacebook/$', 'app.views.loginxfacebook'),
     url(r'^verificalogin/$', 'app.views.verificalogin'),
     url(r'^productosjson$', 'app.views.productosjson'),
+    url(r'^detallechat/(\w+)/(\w+)/$', 'app.views.detallechat'),
 
 ]

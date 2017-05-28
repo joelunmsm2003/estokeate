@@ -14,7 +14,7 @@
 
 <body>
 
-{% include "header.html" %}
+{% include "headermovil.html" %}
 
 
 <br>
@@ -31,6 +31,12 @@ app.config(function($interpolateProvider){
 app.controller('myCtrl', function($scope,$http,$cookies) {
 
 
+
+	console.log('ddddd','{{user}}')
+
+	$scope.userenvia = '{{user}}'
+
+
     $scope.host = 'http://192.168.1.40/'
 
     $scope.firstName = "John";
@@ -45,14 +51,41 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
         
     });
 
-        function doStuff() {
+	function doStuff() {
 
-    $("#chatin").scrollTop(100000)
+	$("#chatin").scrollTop(100000)
 
-    $('.ultimo').addClass('animated zoomIn');
+	$('.ultimo').addClass('animated zoomIn');
 
 
-}
+	}
+
+	$http.get("/listamensajes/"+'{{user}}'+'/'+'{{producto}}')
+
+	.then(function(response) {
+
+	console.log('chatin...',response)
+
+	$scope.mensajes = response.data
+
+	$scope.mensajestitulo = response.data[0]
+
+
+	});
+
+	setInterval(function(){ 
+
+						$http.get("/listamensajes/"+'{{user}}'+'/'+'{{producto}}')
+						.then(function(response) {
+
+						
+
+						$scope.mensajes = response.data
+
+
+						});
+
+			}, 1000);
 
 
     $scope.traemensajes=function(data){
@@ -67,27 +100,22 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 
     	$scope.userenvia = data.user
 
-    	//var myTimer = setTimeout(doStuff, 1000);
 
     
+		$http.get("/listamensajes/"+'{{user}}'+'/'+'{{producto}}')
 
-			$http.get("/listamensajes/"+data.user+'/'+data.producto)
-			.then(function(response) {
+		.then(function(response) {
 
-			console.log('chatin...',response)
+		console.log('chatin...',response)
 
-			$scope.mensajes = response.data
+		$scope.mensajes = response.data
 
-			$scope.mensajestitulo = response.data[0]
-
-
-			});
+		$scope.mensajestitulo = response.data[0]
 
 
+		});
 
 
-
-			
 
 			// setInterval(function(){ 
 
@@ -177,92 +205,36 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 </script>
 
 
-<div class='container'>
 
-{% include "headeruser.html" %}
+<div class='container-fluid' onclick="cierranav()" >
 
-<br>
-
-
-<div class='row'>
-
-<div class="col-lg-4 col-md-4 ">
-	
-	<div class="row">
-			
-			<div class="col-md-12" ng-repeat="c in chatin">
-				
-
-				<div class='row chatperfil' ng-click='traemensajes(c)' ng-if='c.user__username!="{{usuario.username}}"'>
-
-					<div class="col-4">
-
-					<img src="{{host}}{[{c.user__photo}]}" class='img-fluid    img-rounded'>
-					
-					</div>
-
-					<div class="col-8" >
-
-
-					<small>{[{c.user__first_name}]}</small><br>
-
-					<small>{[{c.producto__titulo}]}</small><br>
-
-					<small>S/. {[{c.producto__precio}]}</small><br>
-
-				
-
-
-					</div>
-
-
-				</div>
-
-			
-				
-			
-
-
-			</div>
-			
-
-	</div>
-
-
-</div>
-
-
-<div class='col-lg-8 col-md-8'>
-
-
-	<div class='row no-gutters' style='background: #234;color:#fff;padding: 4px;'>
+<!-- {% include "headeruser.html" %}
+ -->
 
 
 
-	<div class='col-6'>
 
-	<div class='row'>
 
-		<div class='col-2'>
+	<div class='row' style='background: #234;color:#fff;margin-top: -23px;'>
+
+
+
+		<div class='col-4'>
 
 		<img src="{{host}}{[{mensajestitulo.photo_producto}]}" alt="" style="height: 65px;
 	    ">
 
 		</div>
 
-		<div class='col-10'>
-
-		{[{mensajestitulo.producto__titulo}]}
+		<div class='col-8'>
+	
+		<small>{[{mensajestitulo.user__first_name}]}</small><br>
+		<small>Producto {[{mensajestitulo.producto__titulo}]}</small><br>
 		{[{mensajestitulo.producto__descripcion}]}
+		
 
 
 		</div>
-
-
-
-	</div>
-
-	</div>
 
 
 		</div>
@@ -274,26 +246,21 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 	
 	<div class="col-md-12" ng-repeat="(key, m) in mensajes">
 
-		<div class="row no-gutters">
-
-
-
-			<div class="col-md-12">
-
+	
 			
-			
-				<div class='useractual' ng-if='m.user__username=="{{usuario.username}}"'> 
+				<div class='useractual' ng-if='m.user__username!="{{usuario.username}}"'> 
 
 			
 
 						<div class="row no-gutters">
 							
-							<div class="col-10" style='text-align:right;' ng-if='key!=mensajes.length-1'>
+							<div class="col-12" style='text-align:right;' ng-if='key!=mensajes.length-1'>
 
 								<div class="talk-bubble tri-right round border right-top">
 								  <div class="talktext ">
-								   <small>{[{m.fecha}]}</small>
-								    <p>{[{m.mensaje}]}</p>
+								  <!-- <small>{[{m.user__first_name}]}</small><br> -->
+								   <!-- <small style='font-size:8px;'> {[{m.fecha}]}</small><br> -->
+								    <small>{[{m.mensaje}]}</small>
 
 
 
@@ -305,12 +272,13 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 
 							</div>
 
-							<div class="col-10" style='text-align:right;' ng-if='key==mensajes.length-1'>
+							<div class="col-12" style='text-align:right;' ng-if='key==mensajes.length-1'>
 
 								<div class="talk-bubble tri-right round border right-top ultimo">
 								  <div class="talktext ">
-								   <small>{[{m.fecha}]}</small>
-								    <p>{[{m.mensaje}]}</p>
+							<!-- 	  <small>{[{m.user__first_name}]}</small><br> -->
+								 <!--   <small style='font-size:8px;'>{[{m.fecha}]}</small><br> -->
+								    <small>{[{m.mensaje}]}</small>
 
 								  </div>
 								  
@@ -321,88 +289,38 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 
 
 
-							<div class="col-2">
-									
-
-									<div class="row no-gutters">
-										
-										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style='text-align:center;'>
-
-										<img src="{{host}}{[{m.user__photo}]}"  alt="" style="border-radius:100%; height: 59px; width:59px;">
-											
-										</div>
-
-										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style='text-align:center;'>
-
-										<div>
-											
-											<small>{[{m.user__username}]}</small>
-											
-								
-										</div>
-
-
-										
-										</div>
-
-									</div>
-			
-								
-
-							</div>
+					
 
 						</div>
 
 				</div>		
 
 
-				<div class='useractual' ng-if='m.user__username!="{{usuario.username}}"'>
+				<div class='useractual' ng-if='m.user__username=="{{usuario.username}}"'>
 
 						<div class="row no-gutters">
 							
-							<div class="col-2">
+				
 
-									<div class="row no-gutters">
-										
-										<div class="col-md-12" style='text-align:center;'>
-
-										<img src="{{host}}{[{m.user__photo}]}"  alt="" style="border-radius:100%; height: 59px; width:59px;">
-											
-										</div>
-
-										<div class="col-md-12" style='text-align:center;'>
-
-										<div>
-											
-											<small>{[{m.user__username}]}</small>
-								
-										</div>
-
-										
-										</div>
-
-									</div>
-
-									
-							</div>
-
-								<div class="col-10" ng-if='key!=mensajes.length-1'>
+								<div class="col-12" ng-if='key!=mensajes.length-1'>
 
 									<div class="talk-bubble_1 tri-right_1 left-top">
 									<div class="talktext ">
-									<small>{[{m.fecha}]}</small>
-									<p>{[{m.mensaje}]}</p>
+						<!-- 			<small>{[{m.user__first_name}]}</small><br> -->
+								<!-- 	<small style='font-size:8px;'>{[{m.fecha}]}</small><br> -->
+									<small>{[{m.mensaje}]}</small>
 
 									</div>
 									</div>
 								</div>
 
-								<div class="col-10" ng-if='key==mensajes.length-1'>
+								<div class="col-12" ng-if='key==mensajes.length-1'>
 
 									<div class="talk-bubble_1 tri-right_1 left-top ultimo">
 									<div class="talktext ">
-									<small>{[{m.fecha}]}</small>
-									<p>{[{m.mensaje}]}</p>
+									<!-- <small>{[{m.user__first_name}]}</small><br> -->
+									<!-- <small style='font-size:8px;'>{[{m.fecha}]}</small><br> -->
+									<small>{[{m.mensaje}]}</small>
 
 									</div>
 									</div>
@@ -419,11 +337,6 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 
 
 
-			</div>
-				
-			
-
-		</div>
 
 			
 	</div>
@@ -434,49 +347,35 @@ app.controller('myCtrl', function($scope,$http,$cookies) {
 
 
 
+<br>
 
-	<div class='row'>
-
-	<div class="col-md-12">
-		<!-- 
-			<form action='/enviamensaje_perfil/' method='POST'>
-
-			  {% csrf_token %}
-
-
-			<input type="hidden" class='form-control' name='producto' value="{[{mensajestitulo.producto}]}" >
-			<input type="hidden" class='form-control' name='receptor' value="{[{mensajestitulo.user}]}" >
-			<input type="text" class='form-control' name='mensaje'>
-
-			<button type="submit" class="btn btn-primary btn-md ">Enviar mensaje</button>
-
-			 -->
 
 			 	<form>
+
+			 	<div class="row no-gutters">
+			 		<div class="col-10"><input type="hidden" class="form-control" id="fono" ng-model = 'mensajestitulo.producto'  placeholder="producto" >
+					    <input type="hidden" class="form-control" id="fono" ng-model = 'userenvia'  placeholder="user" >
+					    <input type="text" class="form-control" id="fono" ng-model = 'mensaje1'  placeholder="Mensaje..." >
+					</div>
+
+			 		<div class="col-2">
+			 			<button ng-click='enviarchat(mensajestitulo,userenvia,mensaje1)' class="btn btn-primary"> <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+			 		</div>
+			 	</div>
 			 
-			    <input type="hidden" class="form-control" id="fono" ng-model = 'mensajestitulo.producto'  placeholder="producto" >
-			    <input type="hidden" class="form-control" id="fono" ng-model = 'userenvia'  placeholder="user" >
-			    <input type="text" class="form-control" id="fono" ng-model = 'mensaje1'  placeholder="Mensaje..." >
+			    
+			  
 			
-			  
-			<button ng-click='enviarchat(mensajestitulo,userenvia,mensaje1)' class="btn btn-default">Enviar mensaje</button>
-			  
 			</form>
 
 
-	</div>
-
-
-	</div>
 
 
 
 
 
-</div>
 
 
-</div>
 
 
 

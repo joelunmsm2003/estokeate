@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="myCtrl">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+
+
+
+
+<head>
+  <title>Estokealo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+
+  <link rel="stylesheet" type="text/css" href="/static/css/carousel.css">
+
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+
+  <script type="text/javascript" src='/static/js/bootstrap.js'></script>
+
+  <script type="text/javascript" src='/static/js/index.js'></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+
+</head>
+
+
+<div class="drawer">
+  
+<ul class='list-group'>
+
+{% if usuario.username %}
+
+<li class='list-group-item'>
+  
+<a href="/productos/{{usuario.id}}">Mis Anuncios</a>
+</li>
+
+
+<li class='list-group-item'>
+  
+<a href='/perfil'>Mi Perfil</a>
+</li>
+
+<li class='list-group-item'>
+  
+<a href='/chat'>Mis Mensajes</a>
+</li>
+
+<li class='list-group-item'>
+  
+<a href='/vender'>Vender</a>
+</li>
+
+<li class='list-group-item'>
+  
+<a href='/salir'>Salir</a>
+</li>
+
+
+
+ {% else %}
+
+
+<li class='list-group-item'>
+  
+<a href='/ingresar'>Ingresar</a>
+</li>
+
+ {% endif %}
+
+
+
+
+</ul>
+
+</div>
+<body>
+
+
+
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+  <div class="row no-gutters">
+    
+    <div class="col-2"><button class="navbar-toggler"  onclick="myFunction()" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</div>
+    <div class="col-10"><img src="{{host}}/static/estokealo_logo_final.png" class='img-fluid'>
+</div>
+  </div>
+  
+  
+</nav>
+
+
+
+
+
+<style type="text/css">
+  
+    .drawer{
+
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    left: -230px;
+    z-index: 100;
+    height: 100%;
+    will-change: transform;
+    pointer-events: auto;
+    width: 230px;
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+
+}
+
+</style>
+
+
+<script>
+function myFunction() {
+
+
+    $(".drawer").css("left", "0px");
+}
+
+
+function cierranav() {
+
+  $(".drawer").css("left", "-230px");
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>
+
+

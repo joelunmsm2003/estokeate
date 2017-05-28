@@ -184,11 +184,15 @@ def actualizaperfil(request):
 
 				img = Image.open(fd_img)
 
-				img = resizeimage.resize_cover(img, [500, 500])
+				width, height = img.size
 
-				img.save(caption, img.format)
+				if height > 500:
 
-				fd_img.close()
+					img = resizeimage.resize_cover(img, [500, 500])
+
+					img.save(caption, img.format)
+
+					fd_img.close()
 
 
 		return HttpResponseRedirect("/perfil/")
@@ -277,7 +281,7 @@ def chat(request):
 	usuario= AuthUser.objects.get(id=user)
 
 
-	return render(request, 'chat.html',{'host':host,'productos':productos,'usuario':usuario,'mimensaje':'active'})
+	return render(request, 'chatmovil.html',{'host':host,'productos':productos,'usuario':usuario,'mimensaje':'active'})
 
 # Prductos de un usuario
 
@@ -309,6 +313,20 @@ def productos(request,id):
 	usuario= AuthUser.objects.get(id=user)
 
 	return render(request, 'productosuser.html',{'host':host,'productos':productos,'usuario':usuario,'mianuncio':'active'})
+
+
+# Prductos de un usuario
+
+def detallechat(request,user,producto):
+
+	usuario= AuthUser.objects.get(id=user)
+
+
+
+
+	return render(request, 'detallechat.html',{'host':host,'user':user,'producto':producto,'usuario':usuario})
+
+
 
 # Prductos de un usuario
 
@@ -392,7 +410,7 @@ def chatin(request,id):
 
 	user = request.user.id
 
-	compradores = Chat.objects.filter(destino_id=user).values('user','user__username','user__photo','producto','producto__titulo','producto__precio','producto__titulo').annotate(count=Count('id'))
+	compradores = Chat.objects.filter(destino_id=user).values('user','user__first_name','user__username','user__photo','producto','producto__titulo','producto__precio','producto__titulo').annotate(count=Count('id'))
 
 	compradores = ValuesQuerySetToDict(compradores)
 
@@ -417,7 +435,7 @@ def listamensajes(request,user,producto):
 
 	# Mensajes que le llegan al dueno del producto
 
-	mensajes = Chat.objects.filter(destino_id=destino,user_id=user,producto_id=producto).values('id','producto','producto__precio','destino','user','destino__username','user__username','user__photo','mensaje','producto__titulo','producto__categoria')
+	mensajes = Chat.objects.filter(destino_id=destino,user_id=user,producto_id=producto).values('user__first_name','id','producto','producto__precio','destino','user','destino__username','user__username','user__photo','mensaje','producto__titulo','producto__categoria')
 
 	fmt = '%Y-%m-%d %H:%M:%S'
 
@@ -431,8 +449,7 @@ def listamensajes(request,user,producto):
 		
 	# Mensajes que envia el dueno del producto al interesado
 
-
-	mensajes1 = Chat.objects.filter(destino_id=user,user_id=destino,producto_id=producto).values('id','producto','producto__precio','destino','user','destino__username','user__username','user__photo','mensaje','producto__titulo','producto__categoria')
+	mensajes1 = Chat.objects.filter(destino_id=user,user_id=destino,producto_id=producto).values('user__first_name','id','producto','producto__precio','destino','user','destino__username','user__username','user__photo','mensaje','producto__titulo','producto__categoria')
 
 	fmt = '%Y-%m-%d %H:%M:%S'
 

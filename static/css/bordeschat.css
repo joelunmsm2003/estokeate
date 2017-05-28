@@ -279,12 +279,14 @@
 
 /* talk bubble contents */
 .talktext{
-  padding: 15px;
-	text-align: left;
-  line-height: 1.5em;
-      padding-top: 4px;
+
+    text-align: left;
+    line-height: 1.3em;
+    /* padding-top: 4px; */
+    padding-left: 10px;
+    padding-top: 0px;
 }
-.talktext p{
+.talktext small{
   /* remove webkit p margins */
   -webkit-margin-before: 0em;
   -webkit-margin-after: 0em;
