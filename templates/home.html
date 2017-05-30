@@ -180,7 +180,7 @@ if(device === "xs"){
 
            <ul class="list-group subcat" >
 
-           <li ng-repeat="c in subcategorias" ng-click='enviasuv(c.id)'  class="list-group-item"><a > {[{c.nombre}]} </a></li>
+           <li ng-repeat="c in subcategorias" ng-click='enviasuv(c.id)'  class="list-group-item "><a > {[{c.nombre}]} </a></li>
 
            </ul>
 
@@ -189,38 +189,52 @@ if(device === "xs"){
               <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
               <li data-target="#myCarousel" data-slide-to="1"></li>
               <li data-target="#myCarousel" data-slide-to="2"></li>
+              <li data-target="#myCarousel" data-slide-to="3"></li>
             </ol>
             <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
-                <div class="container">
+              <div class="carousel-item primera active">
+           <!--      <img class="first-slide" src="https://s3.amazonaws.com/eb-blog-bloguk/wp-content/uploads/2016/05/03100406/sell-tickets-through-facebook.jpg" alt="First slide"> -->
+                <div class="container" style='background: rgba(37, 87, 127,.8);'>
                   <div class="carousel-caption d-none d-md-block text-left">
-                    <h1>Example headline.</h1>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+                    <h1>Compra & Vendelo Todo</h1>
+                    <p>Desde tu celular o computadora</p>
+                    <p><a class="btn btn-lg btn-primary" href="/vender" role="button">Vender</a></p>
                   </div>
                 </div>
               </div>
-              <div class="carousel-item">
-                <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide">
-                <div class="container">
+              <div class="carousel-item segunda">
+                <!-- <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide"> -->
+                <div class="container" style='background: rgba(38, 92, 130,.8);' >
                   <div class="carousel-caption d-none d-md-block">
-                    <h1>Another example headline.</h1>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+                    <h1>Registrate y inicia sesion</h1>
+                    <p>Es completamente gratis</p>
+                    <p><a class="btn btn-lg btn-primary" href="/ingresar" role="button">Registrate</a></p>
                   </div>
                 </div>
               </div>
-              <div class="carousel-item">
-                <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
-                <div class="container">
+              <div class="carousel-item tercera">
+               <!--  <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide"> -->
+                <div class="container" style='background: rgba(38, 92, 130,.8);' >
                   <div class="carousel-caption d-none d-md-block text-right">
-                    <h1>One more for good measure.</h1>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+                    <h1>Imagenes Video y Mensajes</h1>
+                    <p>Interactua efizcamente</p>
+                    <p><a class="btn btn-lg btn-primary" href="/vender" role="button">Vender</a></p>
                   </div>
                 </div>
               </div>
+
+              <div class="carousel-item cuarta">
+               <!--  <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide"> -->
+                <div class="container" style='background: rgba(38, 92, 130,.8);' >
+                  <div class="carousel-caption d-none d-md-block text-right">
+                    <h1>Tienda Virtual</h1>
+                    <p>Al registrate ya tendras tu propia tienda virtual</p>
+                    <p><a class="btn btn-lg btn-primary" href="/vender" role="button">Vender</a></p>
+                  </div>
+                </div>
+              </div>
+
+
             </div>
             <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -375,7 +389,7 @@ a{
 */
 .list-group-item:hover{
 
-  background: #0275d8;
+  background: rgb(2, 169, 188);
   color:#fff;
 }
 
@@ -436,6 +450,29 @@ position: absolute;
   /* For Safari 3.1 to 6.0 */
   transition: opacity .8s; }
 
+  .primera{
+
+    background: url(https://blog.pinterest.com/sites/blog/files/blog-buyit-hero.jpg) no-repeat center;
+  }
+
+
+  .segunda{
+
+    
+    background: url(https://s3.amazonaws.com/eb-blog-bloguk/wp-content/uploads/2016/05/03100406/sell-tickets-through-facebook.jpg) no-repeat center;
+
+  }
+
+  .tercera{
+
+    background: url(http://www.mystorexpress.com/images/demo-gratis-mystore-xpress.jpg) no-repeat center;
+  }
+
+  .cuarta{
+
+    background: url(https://cdn01.vulcanpost.com/wp-uploads/2014/07/Us-online-shopping.jpg) no-repeat center;
+
+  }
 
 
 </style>

@@ -888,6 +888,12 @@ def vender(request):
 
 	user = request.user.id
 
+	current_site = get_current_site(request)
+
+	m = str(current_site).split('.')[0]
+
+
+
 	id_user=None
 
 	usuario= None
